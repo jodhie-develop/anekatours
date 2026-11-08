@@ -7,7 +7,7 @@
   --orange-dark: #b5121b;
   --white: #ffffff;
 
-  --font-display: 'Milonga', Georgia, serif;
+  --font-display: 'Poppins', 'Nunito', system-ui, sans-serif;
   --font-body: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   --max: 1200px;
@@ -57,7 +57,7 @@ p {
 /* ---------- Typography ---------- */
 .display {
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 600;
   font-size: 64px;
   line-height: 1.12;
   letter-spacing: -0.04em;
@@ -65,7 +65,7 @@ p {
 
 .h2 {
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 600;
   font-size: 42px;
   line-height: 1.2;
   letter-spacing: -0.04em;
@@ -163,6 +163,7 @@ p {
 
 .logo {
   font-family: var(--font-display);
+  font-weight: 700;
   font-size: 28px;
   letter-spacing: -0.02em;
   text-decoration: none;
@@ -481,7 +482,7 @@ p {
 
 .program__title {
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 600;
   font-size: 24px;
   line-height: 1.2;
   letter-spacing: -0.02em;
