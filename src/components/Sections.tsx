@@ -65,16 +65,21 @@ export function PageHero({ title, intro, image }: { title: string; intro?: strin
 
 export function Intro() {
   return (
-    <Reveal as="section" className="section container">
-      <h2 className="h2 intro__statement">{intro.statement}</h2>
-      <ul className="stats">
-        {intro.stats.map((s) => (
-          <li key={s.label}>
-            <StatCounter value={s.value} />
-            <span className="stats__label">{s.label}</span>
-          </li>
-        ))}
-      </ul>
+    <Reveal as="section" className="intro">
+      <div className="intro__inner container">
+        <div className="intro__copy">
+          <p className="eyebrow eyebrow--light">Your local partner for Indonesia</p>
+          <h2 className="h2 intro__statement">{intro.statement}</h2>
+        </div>
+        <ul className="stats">
+          {intro.stats.map((s) => (
+            <li key={s.label}>
+              <StatCounter value={s.value} />
+              <span className="stats__label">{s.label}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </Reveal>
   );
 }

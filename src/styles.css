@@ -392,28 +392,82 @@ p {
 .reveal.is-visible > *:nth-child(5) { transition-delay: 0.28s; }
 
 /* ---------- Intro ---------- */
+.intro {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 112px 0;
+  background: var(--green);
+  color: var(--cream);
+}
+
+.intro::before,
+.intro::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  content: '';
+}
+
+.intro::before {
+  z-index: -2;
+  background: url('/images/bali.jpg') center 48% / cover no-repeat;
+}
+
+.intro::after {
+  background: linear-gradient(105deg, rgba(10, 23, 99, 0.94) 0%, rgba(10, 23, 99, 0.82) 48%, rgba(10, 23, 99, 0.32) 100%);
+}
+
+.intro__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.intro__copy {
+  max-width: 840px;
+}
+
+.intro__copy .eyebrow {
+  color: #ffdce0;
+}
+
 .intro__statement {
-  max-width: 1072px;
+  max-width: 840px;
+  color: var(--white);
+  font-size: clamp(34px, 4vw, 52px);
+  text-wrap: balance;
 }
 
 .stats {
   list-style: none;
   padding: 0;
-  margin: 40px 0 0;
+  margin: 0;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: 0;
+  padding: 28px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 20px;
+  background: rgba(250, 250, 255, 0.96);
+  box-shadow: 0 18px 48px rgba(4, 10, 48, 0.2);
 }
 
 .stats li {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  justify-content: center;
+  gap: 8px;
+  padding: 4px 28px;
+}
+
+.stats li:not(:last-child) {
+  border-right: 1px solid var(--line);
 }
 
 .stats__value {
   color: var(--green);
-  font-size: 40px;
+  font-size: clamp(34px, 4vw, 46px);
   font-weight: 700;
   line-height: 1.1;
   font-variant-numeric: tabular-nums;
@@ -421,7 +475,7 @@ p {
 
 .stats__label {
   color: var(--orange-dark);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   text-transform: capitalize;
 }
@@ -830,7 +884,7 @@ p {
   }
 
   .stats {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .bento {
@@ -888,7 +942,26 @@ p {
 
   .stats {
     grid-template-columns: 1fr;
-    gap: 12px;
+    padding: 12px 20px;
+  }
+
+  .intro {
+    padding: 76px 0;
+  }
+
+  .intro__inner {
+    gap: 32px;
+  }
+
+  .stats li,
+  .stats li:not(:last-child) {
+    padding: 16px 4px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .stats li:last-child {
+    border-bottom: 0;
   }
 
   .bento {
