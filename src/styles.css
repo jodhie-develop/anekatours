@@ -1,13 +1,13 @@
 :root {
-  --green: #10069f;
+  --green: #0a1763;
   --cream: #fafaff;
   --sage: #eeeeff;
   --line: #c7c7df;
-  --orange: #ed1c24;
-  --orange-dark: #b5121b;
+  --orange: #b5122a;
+  --orange-dark: #8f1022;
   --white: #ffffff;
 
-  --font-display: 'Poppins', 'Nunito', system-ui, sans-serif;
+  --font-display: 'Red Hat Display', 'Nunito', system-ui, sans-serif;
   --font-body: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   --max: 1200px;
@@ -136,11 +136,11 @@ p {
 
 .btn--primary {
   background: var(--orange);
-  color: var(--green);
+  color: var(--white);
 }
 
 .btn--primary:hover {
-  background: #ff4148;
+  background: #941021;
   transform: translateY(-1px);
 }
 
@@ -281,7 +281,7 @@ p {
 .hero__shade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(16, 6, 159, 0.45) 0%, rgba(16, 6, 159, 0.15) 55%, rgba(16, 6, 159, 0) 100%);
+  background: linear-gradient(90deg, rgba(10, 23, 99, 0.45) 0%, rgba(10, 23, 99, 0.15) 55%, rgba(10, 23, 99, 0) 100%);
 }
 
 .hero__content {
@@ -411,7 +411,7 @@ p {
 .dest-card__shade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(16, 6, 159, 0) 40%, rgba(16, 6, 159, 0.85) 100%);
+  background: linear-gradient(180deg, rgba(10, 23, 99, 0) 40%, rgba(10, 23, 99, 0.85) 100%);
 }
 
 .dest-card__name {
@@ -478,7 +478,7 @@ p {
 
 .program:hover {
   transform: translateY(-4px);
-  box-shadow: 0 16px 40px rgba(16, 6, 159, 0.08);
+  box-shadow: 0 16px 40px rgba(10, 23, 99, 0.08);
 }
 
 .program__img {
@@ -609,7 +609,7 @@ p {
 
 .field select {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%2310069f' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%230a1763' stroke-width='1.5'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 16px center;
 }
@@ -619,7 +619,7 @@ p {
 .field textarea:focus {
   outline: none;
   border-color: var(--green);
-  box-shadow: 0 0 0 3px rgba(16, 6, 159, 0.12);
+  box-shadow: 0 0 0 3px rgba(10, 23, 99, 0.12);
 }
 
 .form__submit {
@@ -803,7 +803,7 @@ p {
   }
 
   .hero__shade {
-    background: linear-gradient(180deg, rgba(16, 6, 159, 0.1) 0%, rgba(16, 6, 159, 0.6) 100%);
+    background: linear-gradient(180deg, rgba(10, 23, 99, 0.1) 0%, rgba(10, 23, 99, 0.6) 100%);
   }
 
   .stats {
@@ -890,7 +890,7 @@ p {
 }
 
 .hero__shade--page {
-  background: linear-gradient(90deg, rgba(16, 6, 159, 0.7) 0%, rgba(16, 6, 159, 0.3) 60%, rgba(16, 6, 159, 0.05) 100%);
+  background: linear-gradient(90deg, rgba(10, 23, 99, 0.7) 0%, rgba(10, 23, 99, 0.3) 60%, rgba(10, 23, 99, 0.05) 100%);
 }
 
 .section--tight-top {
@@ -1012,7 +1012,7 @@ p {
   }
 
   .hero--page .hero__shade--page {
-    background: linear-gradient(180deg, rgba(16, 6, 159, 0.1) 0%, rgba(16, 6, 159, 0.7) 100%);
+    background: linear-gradient(180deg, rgba(10, 23, 99, 0.1) 0%, rgba(10, 23, 99, 0.7) 100%);
   }
 
   .about__photo {
