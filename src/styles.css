@@ -349,8 +349,29 @@ p {
   padding: 0;
   margin: 40px 0 0;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
+}
+
+.stats li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stats__value {
+  color: var(--green);
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.stats__label {
+  color: var(--orange-dark);
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: capitalize;
 }
 
 /* ---------- Destinations bento ---------- */

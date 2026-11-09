@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Reveal from './Reveal';
 import { Link } from '../router';
 import { destinations, hero, intro, programs, services, team, testimonial, pages } from '../data/site';
@@ -70,12 +70,61 @@ export function Intro() {
       <ul className="stats">
         {intro.stats.map((s) => (
           <li key={s.label}>
-            {s.value} {s.label}
+            <StatCounter value={s.value} />
+            <span className="stats__label">{s.label}</span>
           </li>
         ))}
       </ul>
     </Reveal>
   );
+}
+
+function StatCounter({ value }: { value: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const animate = () => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        setCount(value);
+        return;
+      }
+
+      const duration = 1400;
+      const start = performance.now();
+      let frame = 0;
+      const tick = (now: number) => {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - (1 - progress) ** 3;
+        setCount(Math.round(value * eased));
+        if (progress < 1) frame = requestAnimationFrame(tick);
+      };
+      frame = requestAnimationFrame(tick);
+      return () => cancelAnimationFrame(frame);
+    };
+
+    if (!('IntersectionObserver' in window)) {
+      return animate();
+    }
+
+    let cancelAnimation = () => {};
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        cancelAnimation = animate() ?? (() => {});
+        observer.disconnect();
+      }
+    }, { threshold: 0.4 });
+    observer.observe(element);
+    return () => {
+      observer.disconnect();
+      cancelAnimation();
+    };
+  }, [value]);
+
+  return <span className="stats__value" ref={ref}>{count.toLocaleString('id-ID')}</span>;
 }
 
 export function Destinations({ compactTop = false }: { compactTop?: boolean }) {

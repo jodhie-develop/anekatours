@@ -33,10 +33,9 @@ export const intro = {
   statement:
     'We work exclusively with tour operators and travel agents. You bring the travellers. We bring Indonesia to life.',
   stats: [
-    { value: '[YEARS]', label: 'years of experience' },
-    { value: '[NUMBER OF GROUPS]', label: 'groups per year' },
-    { value: '[PARTNER COUNTRIES]', label: 'partner countries' },
-    { value: '[GUIDE LANGUAGES]', label: 'guide languages' },
+    { value: 24, label: 'years of experience' },
+    { value: 2000, label: 'clients per year' },
+    { value: 15, label: 'partner countries' },
   ],
 };
 
