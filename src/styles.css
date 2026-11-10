@@ -25,6 +25,13 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: var(--header-h);
+  /* hide the page's vertical scrollbar; scrolling by wheel, touchpad, keys and touch still works */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* old Edge */
+}
+
+html::-webkit-scrollbar {
+  display: none; /* Chrome, Edge, Safari */
 }
 
 body {
