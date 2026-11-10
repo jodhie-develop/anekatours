@@ -3,6 +3,7 @@
 
 export const company = {
   name: 'aneka tours',
+  brandName: 'Aneka Kartika', // name shown in the header logo (public/images/logo-aneka-kartika.png)
   legalName: '[COMPANY LEGAL NAME]',
   address: '[OFFICE ADDRESS]',
   licence: '[LICENCE NUMBER]',

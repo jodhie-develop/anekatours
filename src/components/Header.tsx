@@ -5,6 +5,14 @@ import { Link } from '../router';
 export default function Header({ current }: { current: string }) {
   const [open, setOpen] = useState(false);
   const [lang, setLang] = useState('EN');
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
@@ -16,10 +24,16 @@ export default function Header({ current }: { current: string }) {
   const close = () => setOpen(false);
 
   return (
-    <header className="header">
+    <header className={`header ${scrolled || open ? 'is-scrolled' : ''}`}>
       <div className="header__inner">
-        <Link to="/" className="logo" onClick={close}>
-          {company.name}
+        <Link to="/" className="header__brand" onClick={close} aria-label={`${company.brandName} — home`}>
+          <img
+            src="/images/logo-aneka-kartika.png"
+            alt={`${company.brandName} tours & travel service`}
+            width={898}
+            height={150}
+            decoding="async"
+          />
         </Link>
 
         <nav className="header__nav" aria-label="Main">

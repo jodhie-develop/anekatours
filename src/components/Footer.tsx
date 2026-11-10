@@ -7,8 +7,15 @@ export default function Footer() {
     <>
       <footer className="footer">
         <div className="footer__inner">
-          <Link to="/" className="logo logo--lg">
-            {company.name}
+          <Link to="/" className="footer__brand" aria-label={`${company.brandName} — home`}>
+            <img
+              src="/images/logo-aneka-kartika-white.png"
+              alt={`${company.brandName} tours & travel service`}
+              width={1077}
+              height={180}
+              loading="lazy"
+              decoding="async"
+            />
           </Link>
           <nav className="footer__nav" aria-label="Footer">
             {navLinks.map((l) => (
