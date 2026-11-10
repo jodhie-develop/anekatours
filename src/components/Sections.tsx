@@ -4,10 +4,69 @@ import { Link } from '../router';
 import { destinations, hero, intro, programs, services, team, testimonial, pages } from '../data/site';
 
 /**
- * Home hero with a scroll reveal: a cream cover layer with the letters "AT" cut out of it
- * sits over a video. Scrolling enlarges the letters until the video fills the screen,
- * then the headline and buttons fade in.
+ * Home hero with a scroll reveal: a blue cover layer with the Aneka Kartika logo mark
+ * cut out of it sits over a video. Scrolling enlarges the mark until the video fills
+ * the screen, then the headline and buttons fade in.
  */
+// ---- Aneka Kartika logo mark, drawn for use inside an SVG mask ----
+// black = cut-out (video shows through), white = cover stays
+const LEG_SLOPE = 0.316;
+const legLeft = (y: number) => 20 + LEG_SLOPE * (y - 83);
+const outerEdge = (y: number) => 18.4 - 0.353 * (y - 84.6);
+const pts = (list: [number, number][]) => list.map(([x, y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(' ');
+
+const BLUE_LEG = pts([
+  [20, 83],
+  [30, 83],
+  [30 + LEG_SLOPE * 23, 106],
+  [46, 106],
+  [46, 114.4],
+  [19.6, 114.4],
+  [21, 111.3],
+  [legLeft(111.3), 111.3],
+]);
+const RED_BAND = pts([
+  [outerEdge(84.6), 84.6],
+  [legLeft(84.6) - 0.9, 84.6],
+  [legLeft(111.3) - 1, 111.3],
+  [legLeft(111.3) - 1, 114.4],
+  [5, 114.4],
+  [5, 105.6],
+  [outerEdge(105.6), 105.6],
+]);
+// white gaps between the red stripes: nested chevrons parallel to the outer edge and the foot
+const STRIPE_PITCH = 2.1;
+const STRIPE_GAPS = Array.from({ length: 6 }, (_, i) => {
+  const c = (i + 0.83) * STRIPE_PITCH;
+  const xAt = (y: number) => outerEdge(y) + c / 0.943;
+  const cornerY = 105.6 + c;
+  return pts([
+    [xAt(78), 78],
+    [xAt(cornerY), cornerY],
+    [0, cornerY],
+  ]);
+});
+const STAR = pts(
+  Array.from({ length: 10 }, (_, i) => {
+    const a = ((-90 + i * 36) * Math.PI) / 180;
+    const r = i % 2 === 0 ? 8 : 3.2;
+    return [24.2 + r * Math.cos(a), 107.2 + r * Math.sin(a) * 0.76] as [number, number];
+  }),
+);
+
+function LogoMarkMask() {
+  return (
+    <>
+      <polygon points={RED_BAND} fill="#000" />
+      {STRIPE_GAPS.map((p) => (
+        <polyline key={p} points={p} fill="none" stroke="#fff" strokeWidth={STRIPE_PITCH * 0.34} strokeLinejoin="miter" />
+      ))}
+      <polygon points={BLUE_LEG} fill="#000" />
+      <polygon points={STAR} fill="#fff" />
+    </>
+  );
+}
+
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -16,17 +75,17 @@ export function Hero() {
   const [videoOk, setVideoOk] = useState(true);
   const maskId = 'at-reveal-mask';
 
-  // letter geometry, in px, derived from the stage size
-  const fs = Math.min(size.w * (size.w < 600 ? 0.64 : 0.5), size.h * 0.62);
+  // Logo mark geometry, in the logo's own units (bounding box x 5–46, y 83–114.4).
+  // k converts those units to px for the current stage size.
+  const k = Math.min((size.h * 0.5) / 31.4, (size.w * (size.w < 600 ? 0.72 : 0.4)) / 41);
   const cx = size.w / 2;
-  const cy = size.h / 2 - size.h * 0.03;
-  // "T" sits right of centre; the middle of its stem is the zoom origin, so the stem
-  // grows to cover the whole screen and the video ends up fully visible
-  const tX = cx + fs * 0.33;
-  const aX = cx - fs * 0.33;
-  const originX = tX + fs * 0.03;
-  const originY = cy + fs * 0.12;
-  const maxScale = (4 * Math.hypot(size.w, size.h)) / (fs * 0.17);
+  const cy = size.h / 2 - size.h * 0.04;
+  const markX = cx - 25.5 * k;
+  const markY = cy - 98.7 * k;
+  // zoom origin: middle of the blue leg, so it grows to cover the whole screen
+  const originX = markX + 27.8 * k;
+  const originY = markY + 92 * k;
+  const maxScale = (4 * Math.hypot(size.w, size.h)) / (10 * k);
 
   useEffect(() => {
     const stage = stageRef.current;
@@ -43,29 +102,49 @@ export function Hero() {
     const zoom = zoomRef.current;
     if (!section || !zoom) return;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const clamp = (v: number) => Math.min(1, Math.max(0, v));
+    // ease-in-out so the zoom starts and ends gently
+    const ease = (t: number) => 0.5 - 0.5 * Math.cos(Math.PI * t);
+    const logMax = Math.log(maxScale);
     let frame = 0;
+    let current = -1; // smoothed progress
+    let target = 0; // progress from the real scroll position
 
-    const update = () => {
-      frame = 0;
+    const readTarget = () => {
       const rect = section.getBoundingClientRect();
       const travel = section.offsetHeight - (stageRef.current?.offsetHeight ?? 0);
-      const p = reduce ? 1 : Math.min(1, Math.max(0, -rect.top / Math.max(1, travel)));
-      // zoom happens over the first 80% of the scroll, easing in slowly
-      const z = Math.min(1, p / 0.8);
-      const scale = 1 + (maxScale - 1) * Math.pow(z, 2.2);
+      target = reduce ? 1 : clamp(-rect.top / Math.max(1, travel));
+    };
+
+    const render = (p: number) => {
+      // zoom runs over the first 80% of the scroll; scaling in log space keeps
+      // the growth feeling even instead of crawling at first and then jumping
+      const z = ease(clamp(p / 0.8));
+      const scale = Math.exp(logMax * z);
       zoom.setAttribute(
         'transform',
-        `translate(${originX} ${originY}) scale(${scale}) translate(${-originX} ${-originY})`,
+        `translate(${originX} ${originY}) scale(${scale.toFixed(4)}) translate(${-originX} ${-originY})`,
       );
-      section.style.setProperty('--intro-o', String(Math.max(0, 1 - p / 0.18)));
-      section.style.setProperty('--cover-o', String(p < 0.64 ? 1 : Math.max(0, 1 - (p - 0.64) / 0.14)));
-      section.style.setProperty('--content-o', String(Math.min(1, Math.max(0, (p - 0.74) / 0.18))));
-      section.style.setProperty('--video-scale', String(1.15 - 0.15 * z));
+      section.style.setProperty('--intro-o', String(1 - ease(clamp(p / 0.2))));
+      section.style.setProperty('--cover-o', String(1 - ease(clamp((p - 0.62) / 0.18))));
+      section.style.setProperty('--content-o', String(ease(clamp((p - 0.74) / 0.2))));
+      section.style.setProperty('--video-scale', String(1.12 - 0.12 * z));
+    };
+
+    // follow the scroll position with a little inertia, so wheel steps glide instead of jump
+    const tick = () => {
+      frame = 0;
+      current = current < 0 ? target : current + (target - current) * 0.14;
+      if (Math.abs(target - current) < 0.0005) current = target;
+      render(current);
+      if (current !== target) frame = requestAnimationFrame(tick);
     };
     const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(update);
+      readTarget();
+      if (!frame) frame = requestAnimationFrame(tick);
     };
-    update();
+    readTarget();
+    tick();
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
     return () => {
@@ -116,12 +195,9 @@ export function Hero() {
             <mask id={maskId} maskUnits="userSpaceOnUse" x="0" y="0" width={size.w} height={size.h}>
               <rect width={size.w} height={size.h} fill="#fff" />
               <g ref={zoomRef}>
-                <text x={aX} y={cy} fontSize={fs} className="at-reveal__letters" fill="#000">
-                  {hero.revealLetters.charAt(0)}
-                </text>
-                <text x={tX} y={cy} fontSize={fs} className="at-reveal__letters" fill="#000">
-                  {hero.revealLetters.charAt(1)}
-                </text>
+                <g transform={`translate(${markX} ${markY}) scale(${k})`}>
+                  <LogoMarkMask />
+                </g>
               </g>
             </mask>
           </defs>
@@ -361,7 +437,7 @@ export function Team() {
       <p className="lead">{team.highlights.join(' · ')}</p>
       <p className="label">{team.note}</p>
       <div className="team-photo">
-        {team.photo ? <img src={team.photo} alt="Aneka Tours team with a group" /> : <span>{team.photoPlaceholder}</span>}
+        {team.photo ? <img src={team.photo} alt="Aneka Kartika Tours & Travel team with a group" /> : <span>{team.photoPlaceholder}</span>}
       </div>
     </Reveal>
   );

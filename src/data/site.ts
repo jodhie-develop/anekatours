@@ -2,7 +2,7 @@
 // Values in [SQUARE BRACKETS] are placeholders from the original draft — replace before publishing.
 
 export const company = {
-  name: 'aneka tours',
+  name: 'aneka kartika tours & travel',
   brandName: 'Aneka Kartika', // name shown in the header logo (public/images/logo-aneka-kartika.png)
   legalName: '[COMPANY LEGAL NAME]',
   address: '[OFFICE ADDRESS]',
@@ -31,9 +31,8 @@ export const hero = {
   // Video revealed through the "AT" letters on scroll. Put the file in public/videos/.
   // Until it exists, the image above is shown instead.
   video: '/videos/hero.mp4',
-  // Text on the cover layer, around the cut-out letters
-  revealLetters: 'AT',
-  revealEyebrow: 'Aneka Tours · Indonesia DMC',
+  // Text on the cover layer, around the cut-out logo mark
+  revealEyebrow: 'Aneka Kartika Tours & Travel · Indonesia DMC',
   revealTagline: 'Indonesia, crafted for your groups',
 };
 
@@ -122,7 +121,7 @@ export const team = {
   highlights: ['Fast quotes', 'Licensed multilingual guides', 'Reliable fleet', '24/7 on-tour support'],
   note: '[SERVICE CAPABILITIES — confirm before publication]',
   photo: '', // e.g. '/images/team.jpg' — leave empty to show the placeholder box
-  photoPlaceholder: '[APPROVED PHOTO OF AN ANEKA TOURS GROUP]',
+  photoPlaceholder: '[APPROVED PHOTO OF AN ANEKA KARTIKA TOURS & TRAVEL GROUP]',
 };
 
 export const testimonial = {
@@ -143,10 +142,10 @@ export const quote = {
 
 export const pages = {
   about: {
-    seoTitle: 'About Aneka Tours | Indonesia Inbound Tour Operator',
+    seoTitle: 'About Aneka Kartika Tours & Travel | Indonesia Inbound Tour Operator',
     title: 'Your people in Indonesia.',
     intro:
-      'Aneka Tours is an Indonesian inbound tour operator and destination management company for overseas tour operators and travel agents. We help you shape group journeys with local insight and careful coordination.',
+      'Aneka Kartika Tours & Travel is an Indonesian inbound tour operator and destination management company for overseas tour operators and travel agents. We help you shape group journeys with local insight and careful coordination.',
     story: '[COMPANY STORY] · Founded [YEAR] · [TEAM AND OFFICE DETAILS]',
     image: '/images/central-java-yogyakarta.jpg',
     ctaTitle: 'A partnership, not a transaction.',
@@ -154,23 +153,23 @@ export const pages = {
       'Clear communication, thoughtful route planning and a collaborative approach. Tell us what your clients need, and let’s build the right journey together.',
   },
   services: {
-    seoTitle: 'B2B Group Travel Services | Aneka Tours Indonesia',
+    seoTitle: 'B2B Group Travel Services | Aneka Kartika Tours & Travel Indonesia',
     title: 'Different groups. The same care.',
   },
   destinations: {
-    seoTitle: 'Indonesia Destinations | Aneka Tours DMC',
+    seoTitle: 'Indonesia Destinations | Aneka Kartika Tours & Travel DMC',
     title: 'Many islands. One trusted partner.',
     intro: 'From Java’s volcanic landscapes to Bali’s living traditions, shape the right Indonesia journey for your groups.',
     image: '/images/sulawesi.jpg',
   },
   programs: {
-    seoTitle: 'Indonesia Group Tour Programs | Aneka Tours',
+    seoTitle: 'Indonesia Group Tour Programs | Aneka Kartika Tours & Travel',
     title: 'A starting point for your next journey',
     intro: 'Sample concepts, ready to adapt around your clients. Every itinerary is confirmed through a tailored quotation.',
     filterLabel: 'Choose a group type',
   },
   contact: {
-    seoTitle: 'Request an Indonesia Group Quote | Aneka Tours',
+    seoTitle: 'Request an Indonesia Group Quote | Aneka Kartika Tours & Travel',
     title: 'Let’s plan something extraordinary.',
     intro: 'Tell us about your group. Our team will help shape the right Indonesia program for your agency.',
     note: '[FORM EMAIL DELIVERY — connect the sales inbox before publishing]',

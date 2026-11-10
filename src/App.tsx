@@ -6,7 +6,7 @@ import { pages } from './data/site';
 import { AboutPage, ContactPage, DestinationsPage, HomePage, NotFoundPage, ProgramsPage, ServicesPage } from './pages';
 
 const routes: Record<string, { component: ComponentType; title: string }> = {
-  '/': { component: HomePage, title: 'Aneka Tours | Indonesia DMC' },
+  '/': { component: HomePage, title: 'Aneka Kartika Tours & Travel | Indonesia DMC' },
   '/destinations': { component: DestinationsPage, title: pages.destinations.seoTitle },
   '/programs': { component: ProgramsPage, title: pages.programs.seoTitle },
   '/services': { component: ServicesPage, title: pages.services.seoTitle },
@@ -21,7 +21,7 @@ export default function App() {
   const Page = route?.component ?? NotFoundPage;
 
   useEffect(() => {
-    document.title = route?.title ?? 'Page not found | Aneka Tours';
+    document.title = route?.title ?? 'Page not found | Aneka Kartika Tours & Travel';
     window.scrollTo(0, 0);
   }, [clean, search, route]);
 

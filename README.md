@@ -1,4 +1,4 @@
-# Aneka Tours — Indonesia DMC (React + Vite)
+# Aneka Kartika Tours & Travel — Indonesia DMC (React + Vite)
 
 Website aneka-tours (6 halaman) dibangun ulang dari desain Framer (`handsome-writers-147194.framer.app`) jadi project React + Vite + TypeScript.
 

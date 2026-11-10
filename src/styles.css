@@ -371,7 +371,8 @@ p {
   --intro-o: 1;
   --cover-o: 1;
   --content-o: 0;
-  --video-scale: 1.15;
+  --video-scale: 1.12;
+  --cover-blue: #0d2f86; /* corporate blue of the Aneka Kartika logo */
   position: relative;
   height: 280vh;
   color: var(--cream);
@@ -420,15 +421,7 @@ p {
 }
 
 .at-reveal__fill {
-  fill: var(--cream);
-}
-
-.at-reveal__letters {
-  font-family: var(--font-display);
-  font-weight: 900;
-  letter-spacing: -0.04em;
-  text-anchor: middle;
-  dominant-baseline: central;
+  fill: var(--cover-blue);
 }
 
 .at-reveal__intro {
@@ -439,7 +432,7 @@ p {
   align-items: center;
   justify-content: space-between;
   padding: 5vh 24px 4vh;
-  color: var(--green);
+  color: var(--white);
   text-align: center;
   opacity: var(--intro-o);
   transform: translateY(calc((1 - var(--intro-o)) * -20px));
@@ -452,7 +445,7 @@ p {
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--orange);
+  color: rgba(255, 255, 255, 0.78);
 }
 
 .at-reveal__tagline {
@@ -473,7 +466,7 @@ p {
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  opacity: 0.7;
+  opacity: 0.8;
 }
 
 .at-reveal__cue-line {
@@ -482,7 +475,7 @@ p {
   height: 36px;
   overflow: hidden;
   border-radius: 2px;
-  background: rgba(10, 23, 99, 0.15);
+  background: rgba(255, 255, 255, 0.22);
 }
 
 .at-reveal__cue-line::after {
@@ -491,7 +484,7 @@ p {
   left: 0;
   width: 100%;
   height: 50%;
-  background: var(--orange);
+  background: #e8323c;
   animation: cueDrop 1.6s ease-in-out infinite;
   content: '';
 }
