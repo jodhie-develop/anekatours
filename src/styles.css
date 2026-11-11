@@ -687,7 +687,7 @@ p {
 }
 
 .intro__copy {
-  max-width: 840px;
+  max-width: 1120px;
 }
 
 .intro__copy .eyebrow {
@@ -695,9 +695,10 @@ p {
 }
 
 .intro__statement {
-  max-width: 840px;
+  max-width: 1120px;
   color: var(--white);
-  font-size: clamp(34px, 4vw, 52px);
+  font-size: clamp(28px, 2.9vw, 36px);
+  white-space: pre-line;
   text-wrap: balance;
 }
 
@@ -718,9 +719,11 @@ p {
 .stats li {
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
   gap: 8px;
   padding: 4px 28px;
+  text-align: center;
 }
 
 .stats li:not(:last-child) {
@@ -728,7 +731,8 @@ p {
 }
 
 .stats__value {
-  color: var(--green);
+  color: var(--orange);
+  font-family: var(--font-display);
   font-size: clamp(34px, 4vw, 46px);
   font-weight: 700;
   line-height: 1.1;

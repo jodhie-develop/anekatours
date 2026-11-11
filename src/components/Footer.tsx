@@ -28,7 +28,7 @@ export default function Footer() {
             {company.legalName} · {company.address} · Licence {company.licence}
           </p>
           <p>
-            {company.salesEmail} · {company.phone} · WhatsApp {company.whatsapp}
+            {company.salesEmail} · {company.phone} · WhatsApp {company.whatsappDisplay}
           </p>
           <Link to="/contact" className="footer__cta">
             Request a Quote

@@ -4,12 +4,13 @@
 export const company = {
   name: 'aneka kartika tours & travel',
   brandName: 'Aneka Kartika', // name shown in the header logo (public/images/logo-aneka-kartika.png)
-  legalName: '[COMPANY LEGAL NAME]',
-  address: '[OFFICE ADDRESS]',
-  licence: '[LICENCE NUMBER]',
-  salesEmail: '[SALES EMAIL]',
-  phone: '[PHONE]',
-  whatsapp: '[WHATSAPP NUMBER]', // international format without "+", e.g. 6281234567890
+  legalName: 'PT Aneka Kartika Tours & Travel',
+  address: 'Jl. Manyar Kertoarjo V-50, Surabaya 60285, Indonesia',
+  licence: 'ASITA/02/XII/DPP/1994',
+  salesEmail: 'info@aneka-tours.co.id',
+  phone: '+62 31 592 9000',
+  whatsapp: '6285811244818', // Jakarta office mobile, international format without "+"
+  whatsappDisplay: '+62 858 1124 4818',
   sinceYear: '1979',
 };
 
@@ -30,11 +31,10 @@ export const hero = {
 };
 
 export const intro = {
-  statement:
-    'We work exclusively with tour operators and travel agents. You bring the travellers. We bring Indonesia to life.',
+  statement: 'We work exclusively with tour operators and travel agents.\nYou bring the travellers. We bring Indonesia to life.',
   stats: [
     { value: 24, label: 'years of experience' },
-    { value: 2000, label: 'clients per year' },
+    { value: 2000, label: 'number of clients' },
     { value: 15, label: 'partner countries' },
   ],
 };
@@ -52,7 +52,7 @@ export const destinations: Destination[] = [
 
 export const services = [
   {
-    title: 'Group Series',
+    title: 'FIT-Individual',
     text: 'Thoughtfully coordinated departures, consistent delivery and practical planning for your recurring group business.',
   },
   {
@@ -102,7 +102,7 @@ export const programs: Program[] = [
     days: 4,
     title: 'East Java Discovery',
     route: ['Surabaya', 'Bromo', 'Malang'],
-    category: 'Group Series',
+    category: 'FIT-Individual',
     image: '/images/east-java.jpg',
     itineraryUrl: '#',
     pdfUrl: '#',
