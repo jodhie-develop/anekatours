@@ -366,182 +366,63 @@ p {
   display: none;
 }
 
-/* ---------- Home hero: "AT" scroll reveal ---------- */
-.at-reveal {
-  --intro-o: 1;
-  --cover-o: 1;
-  --content-o: 0;
-  --video-scale: 1.12;
-  --cover-blue: #0d2f86; /* corporate blue of the Aneka Kartika logo */
-  position: relative;
-  height: 280vh;
-  color: var(--cream);
+/* ---------- Home hero: image slideshow ---------- */
+.hero--slideshow {
+  isolation: isolate;
 }
 
-.at-reveal__stage {
-  position: sticky;
-  top: var(--header-h);
-  height: calc(100vh - var(--header-h));
-  height: calc(100svh - var(--header-h));
-  min-height: 520px;
+.hero__slides {
+  position: absolute;
+  inset: 0;
   overflow: hidden;
-  display: flex;
-  align-items: center;
   background: var(--green);
 }
 
-.at-reveal__media {
+.hero__slide {
   position: absolute;
   inset: 0;
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 70%;
-  transform: scale(var(--video-scale));
-  will-change: transform;
+  object-position: center 58%;
+  opacity: 0;
   backface-visibility: hidden;
+  will-change: opacity, transform;
 }
 
-.at-reveal__poster {
-  transition: opacity 0.9s ease-in-out;
+.hero__slides.is-ready .hero__slide--zoom-in {
+  animation-name: heroSlideZoomIn;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 }
 
-.at-reveal__media--video {
-  opacity: 0;
-  transition: opacity 0.9s ease-in-out;
+.hero__slides.is-ready .hero__slide--zoom-out {
+  animation-name: heroSlideZoomOut;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 }
 
-.at-reveal__stage.is-video-ready .at-reveal__poster {
-  opacity: 0;
-}
-
-.at-reveal__stage.is-video-ready .at-reveal__media--video {
+.hero__slides:not(.is-ready) .hero__slide:first-child {
   opacity: 1;
+  transform: scale(1);
 }
 
-.at-reveal__content {
-  opacity: var(--content-o);
-  transform: translateY(calc((1 - var(--content-o)) * 24px));
-  pointer-events: none;
+@keyframes heroSlideZoomIn {
+  0% { opacity: 0; transform: scale(1); }
+  4% { opacity: 1; transform: scale(1.04); }
+  31% { opacity: 1; transform: scale(1.14); }
+  38% { opacity: 0; transform: scale(1.18); }
+  100% { opacity: 0; transform: scale(1); }
 }
 
-.at-reveal__content .hero__ctas {
-  pointer-events: auto;
+@keyframes heroSlideZoomOut {
+  0% { opacity: 0; transform: scale(1.16); }
+  4% { opacity: 1; transform: scale(1.12); }
+  31% { opacity: 1; transform: scale(1.03); }
+  38% { opacity: 0; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.16); }
 }
-
-.at-reveal__cover {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: var(--cover-o);
-  pointer-events: none;
-}
-
-.at-reveal__fill {
-  fill: var(--cover-blue);
-}
-
-.at-reveal__intro {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 5vh 24px 4vh;
-  color: var(--white);
-  text-align: center;
-  opacity: var(--intro-o);
-  transform: translateY(calc((1 - var(--intro-o)) * -20px));
-  pointer-events: none;
-}
-
-.at-reveal__eyebrow {
-  margin: 0;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.78);
-}
-
-.at-reveal__tagline {
-  margin: auto 0 0;
-  font-family: var(--font-display);
-  font-size: clamp(22px, 3vw, 36px);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
-.at-reveal__cue {
-  margin-top: 20px;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  opacity: 0.8;
-}
-
-.at-reveal__cue-line {
-  position: relative;
-  width: 2px;
-  height: 36px;
-  overflow: hidden;
-  border-radius: 2px;
-  background: rgba(255, 255, 255, 0.22);
-}
-
-.at-reveal__cue-line::after {
-  position: absolute;
-  top: -50%;
-  left: 0;
-  width: 100%;
-  height: 50%;
-  background: #e8323c;
-  animation: cueDrop 1.6s ease-in-out infinite;
-  content: '';
-}
-
-@keyframes cueDrop {
-  0% {
-    top: -50%;
-  }
-  100% {
-    top: 100%;
-  }
-}
-
-@media (max-width: 760px) {
-  .at-reveal {
-    height: 240vh;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .at-reveal {
-    height: auto;
-  }
-  .at-reveal__cover,
-  .at-reveal__intro {
-    display: none;
-  }
-  .at-reveal__content {
-    opacity: 1;
-    transform: none;
-  }
-  .at-reveal__media--video {
-    display: none;
-  }
-  .at-reveal__stage.is-video-ready .at-reveal__poster {
-    opacity: 1;
-  }
-}
-
 /* ---------- Hero ---------- */
 .hero {
   position: relative;
@@ -568,6 +449,10 @@ p {
   position: absolute;
   inset: 0;
   background: linear-gradient(90deg, rgba(10, 23, 99, 0.45) 0%, rgba(10, 23, 99, 0.15) 55%, rgba(10, 23, 99, 0) 100%);
+}
+
+.hero--slideshow .hero__shade {
+  background: linear-gradient(90deg, rgba(10, 23, 99, 0.76) 0%, rgba(10, 23, 99, 0.48) 58%, rgba(10, 23, 99, 0.18) 100%);
 }
 
 .hero__content {
@@ -1255,6 +1140,10 @@ p {
     background: linear-gradient(180deg, rgba(10, 23, 99, 0.1) 0%, rgba(10, 23, 99, 0.6) 100%);
   }
 
+  .hero--slideshow .hero__shade {
+    background: linear-gradient(180deg, rgba(10, 23, 99, 0.08) 5%, rgba(10, 23, 99, 0.82) 100%);
+  }
+
   .stats {
     grid-template-columns: 1fr;
     padding: 12px 20px;
@@ -1511,5 +1400,13 @@ p {
   .reveal > * {
     opacity: 1;
     transform: none;
+  }
+  .hero__slide {
+    animation: none !important;
+    opacity: 0 !important;
+    transform: none !important;
+  }
+  .hero__slide:first-child {
+    opacity: 1 !important;
   }
 }

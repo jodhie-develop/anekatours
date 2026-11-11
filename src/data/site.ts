@@ -27,13 +27,6 @@ export const hero = {
   eyebrow: 'Indonesia, through local eyes',
   title: `Your ground partner in Indonesia since ${company.sinceYear}`,
   subtitle: 'Extraordinary places. Seamless group journeys. A local team on your side.',
-  image: '/images/east-java.jpg',
-  // Video revealed through the "AT" letters on scroll. Put the file in public/videos/.
-  // Until it exists, the image above is shown instead.
-  video: '/videos/hero.mp4',
-  // Text on the cover layer, around the cut-out logo mark
-  revealEyebrow: 'Aneka Kartika Tours & Travel · Indonesia DMC',
-  revealTagline: 'Indonesia, crafted for your groups',
 };
 
 export const intro = {
