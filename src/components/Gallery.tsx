@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import Reveal from './Reveal';
 import { galleryImages } from '../data/gallery';
 
 export default function Gallery() {
@@ -29,7 +28,7 @@ export default function Gallery() {
   };
 
   return (
-    <Reveal as="section" className="section container gallery">
+    <section className="section container gallery">
       <div className="gallery__heading">
         <p className="eyebrow">Photo collection</p>
         <h2 className="h2">A closer look at Sumatra.</h2>
@@ -86,6 +85,6 @@ export default function Gallery() {
           </section>
         </div>
       )}
-    </Reveal>
+    </section>
   );
 }
