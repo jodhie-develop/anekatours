@@ -4,13 +4,19 @@
 export const company = {
   name: 'aneka kartika tours & travel',
   brandName: 'Aneka Kartika', // name shown in the header logo (public/images/logo-aneka-kartika.png)
-  legalName: 'PT Aneka Kartika Tours & Travel',
+  legalName: 'ANEKA KARTIKA TOURS & TRAVEL SERVICES',
+  membership: 'Founding Member of Indonesia Specialists Consortium',
   address: 'Jl. Manyar Kertoarjo V-50, Surabaya 60285, Indonesia',
   licence: 'ASITA/02/XII/DPP/1994',
   salesEmail: 'info@aneka-tours.co.id',
-  phone: '+62 31 592 9000',
-  whatsapp: '6285811244818', // Jakarta office mobile, international format without "+"
-  whatsappDisplay: '+62 858 1124 4818',
+  phone: '(62-31) 592 9000',
+  fax: '(62-31) 592 8515',
+  whatsapp: '62811344980',
+  whatsappDisplay: '+62. 811344980',
+  footerEmails: [
+    { label: 'odjie@aneka-tours.co.id', href: 'accounting3@aneka-tours.co.id' },
+    { label: 'domestik@aneka-tours.co.id', href: 'domestik@aneka-tours.co.id' },
+  ],
   sinceYear: '1979',
 };
 

@@ -24,16 +24,26 @@ export default function Footer() {
               </Link>
             ))}
           </nav>
-          <p className="footer__company-details">
-            {company.legalName}
-            <br />
-            {company.address} ·
-            <br />
-            Licence {company.licence}
-          </p>
-          <p className="footer__contact-details">
-            {company.salesEmail} · {company.phone} · WhatsApp {company.whatsappDisplay}
-          </p>
+          <div className="footer__company-details">
+            <p>{company.membership}</p>
+            <p><strong>{company.legalName}</strong></p>
+            <p>
+              <a href="https://www.google.com/maps/search/?api=1&amp;query=Jl.+Manyar+Kertoarjo+V-50,+Surabaya+60285,+Indonesia" target="_blank" rel="noreferrer">
+                {company.address}
+              </a>
+            </p>
+            <p>Telp. {company.phone} &nbsp; Fax. {company.fax}</p>
+            <p>Mobile/WA. <a href={wa} target="_blank" rel="noreferrer">{company.whatsappDisplay}</a></p>
+            <p>
+              Email.{' '}
+              {company.footerEmails.map((email, index) => (
+                <span key={email.label}>
+                  {index > 0 && ' / '}
+                  <a href={`mailto:${email.href}`}>{email.label}</a>
+                </span>
+              ))}
+            </p>
+          </div>
           <Link to="/contact" className="footer__cta">
             Request a Quote
           </Link>

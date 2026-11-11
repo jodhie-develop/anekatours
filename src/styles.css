@@ -1122,8 +1122,7 @@ p {
   outline-offset: 4px;
 }
 
-.footer__company-details,
-.footer__contact-details {
+.footer__company-details p {
   margin: 0;
   line-height: 1.7;
 }
