@@ -5,180 +5,47 @@ import { company, destinations, hero, intro, programs, services, team, testimoni
 
 const heroSlides = [destinations[0], destinations[2], destinations[1]];
 
-const LEG_SLOPE = 0.316;
-const legLeft = (y: number) => 20 + LEG_SLOPE * (y - 83);
-const outerEdge = (y: number) => 18.4 - 0.353 * (y - 84.6);
-const pts = (list: [number, number][]) => list.map(([x, y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(' ');
-const BLUE_LEG = pts([
-  [20, 83], [30, 83], [30 + LEG_SLOPE * 23, 106], [46, 106], [46, 114.4],
-  [19.6, 114.4], [21, 111.3], [legLeft(111.3), 111.3],
-]);
-const RED_BAND = pts([
-  [outerEdge(84.6), 84.6], [legLeft(84.6) - 0.9, 84.6], [legLeft(111.3) - 1, 111.3],
-  [legLeft(111.3) - 1, 114.4], [5, 114.4], [5, 105.6], [outerEdge(105.6), 105.6],
-]);
-const STRIPE_PITCH = 2.1;
-const STRIPE_GAPS = Array.from({ length: 6 }, (_, i) => {
-  const c = (i + 0.83) * STRIPE_PITCH;
-  const xAt = (y: number) => outerEdge(y) + c / 0.943;
-  const cornerY = 105.6 + c;
-  return pts([[xAt(78), 78], [xAt(cornerY), cornerY], [0, cornerY]]);
-});
-const STAR = pts(Array.from({ length: 10 }, (_, i) => {
-  const a = ((-90 + i * 36) * Math.PI) / 180;
-  const r = i % 2 === 0 ? 8 : 3.2;
-  return [24.2 + r * Math.cos(a), 107.2 + r * Math.sin(a) * 0.76] as [number, number];
-}));
-
-function LogoMarkMask() {
-  return (
-    <>
-      <polygon points={RED_BAND} fill="#000" />
-      {STRIPE_GAPS.map((line) => (
-        <polyline key={line} points={line} fill="none" stroke="#fff" strokeWidth={STRIPE_PITCH * 0.34} strokeLinejoin="miter" />
-      ))}
-      <polygon points={BLUE_LEG} fill="#000" />
-      <polygon points={STAR} fill="#fff" />
-    </>
-  );
-}
-
 export function Hero() {
   const [loadedSlides, setLoadedSlides] = useState(0);
   const slidesReady = loadedSlides >= heroSlides.length;
   const cycleSeconds = heroSlides.length * 7;
-  const sectionRef = useRef<HTMLElement>(null);
-  const stageRef = useRef<HTMLDivElement>(null);
-  const zoomRef = useRef<SVGGElement>(null);
-  const [size, setSize] = useState({ w: 1200, h: 700 });
-  const maskId = 'at-reveal-mask';
-
-  const k = Math.min((size.h * 0.5) / 31.4, (size.w * (size.w < 600 ? 0.72 : 0.4)) / 41);
-  const cx = size.w / 2;
-  const cy = size.h / 2 - size.h * 0.04;
-  const markX = cx - 25.5 * k;
-  const markY = cy - 98.7 * k;
-  const originX = markX + 27.8 * k;
-  const originY = markY + 92 * k;
-  const maxScale = (4 * Math.hypot(size.w, size.h)) / (10 * k);
-
   const markSlideLoaded = () => setLoadedSlides((count) => Math.min(count + 1, heroSlides.length));
 
-  useEffect(() => {
-    const stage = stageRef.current;
-    if (!stage) return;
-    const measure = () => setSize({ w: stage.clientWidth, h: stage.clientHeight });
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(stage);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    const zoom = zoomRef.current;
-    if (!section || !zoom) return;
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const clamp = (value: number) => Math.min(1, Math.max(0, value));
-    const ease = (value: number) => 0.5 - 0.5 * Math.cos(Math.PI * value);
-    const logMax = Math.log(maxScale);
-    let frame = 0;
-    let current = -1;
-    let target = 0;
-    let previousTime = 0;
-
-    const readTarget = () => {
-      const rect = section.getBoundingClientRect();
-      const travel = section.offsetHeight - (stageRef.current?.offsetHeight ?? 0);
-      target = reduceMotion ? 1 : clamp(-rect.top / Math.max(1, travel));
-    };
-
-    const render = (progress: number) => {
-      const zoomProgress = ease(clamp(progress / 0.8));
-      const scale = Math.exp(logMax * zoomProgress);
-      zoom.setAttribute('transform', `translate(${originX} ${originY}) scale(${scale.toFixed(4)}) translate(${-originX} ${-originY})`);
-      section.style.setProperty('--intro-o', String(1 - ease(clamp(progress / 0.2))));
-      section.style.setProperty('--cover-o', String(1 - ease(clamp((progress - 0.62) / 0.18))));
-      // Start the headline fade while the logo curtain is opening, so it is fully visible when the reveal completes.
-      section.style.setProperty('--content-o', String(ease(clamp((progress - 0.42) / 0.34))));
-    };
-
-    const tick = (now: number) => {
-      frame = 0;
-      const elapsed = previousTime ? Math.min(now - previousTime, 48) : 16;
-      previousTime = now;
-      const blend = 1 - Math.exp(-elapsed / 90);
-      current = current < 0 ? target : current + (target - current) * blend;
-      if (Math.abs(target - current) < 0.0005) current = target;
-      render(current);
-      if (current !== target) frame = requestAnimationFrame(tick);
-    };
-
-    const onScroll = () => {
-      readTarget();
-      if (!frame) frame = requestAnimationFrame(tick);
-    };
-    readTarget();
-    tick(performance.now());
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-      if (frame) cancelAnimationFrame(frame);
-    };
-  }, [maxScale, originX, originY]);
-
   return (
-    <section className="at-reveal" ref={sectionRef}>
-      <div className="at-reveal__stage hero--slideshow" ref={stageRef}>
-        <div className={`hero__slides ${slidesReady ? 'is-ready' : ''}`} aria-hidden="true">
-          {heroSlides.map((destination, index) => (
-            <img
-              key={destination.slug}
-              className={`hero__slide ${index % 2 === 0 ? 'hero__slide--zoom-in' : 'hero__slide--zoom-out'}`}
-              src={destination.image}
-              alt=""
-              fetchPriority={index === 0 ? 'high' : 'auto'}
-              onLoad={markSlideLoaded}
-              onError={markSlideLoaded}
-              style={{ animationDelay: `${-((heroSlides.length - index) % heroSlides.length) * 7 - 1}s`, animationDuration: `${cycleSeconds}s` }}
-            />
-          ))}
-        </div>
-        <div className="hero__shade" aria-hidden="true" />
-        <div className="at-reveal__content hero__content">
-          <p className="eyebrow eyebrow--light">{hero.eyebrow}</p>
-          <h1 className="display">{hero.title}</h1>
-          <p className="hero__sub">{hero.subtitle}</p>
-          <div className="hero__ctas">
-            <Link to="/contact" className="btn btn--primary">Request a Quote</Link>
-            <Link to="/programs" className="btn btn--primary">View Sample Programs</Link>
-          </div>
-        </div>
-
-        <svg className="at-reveal__cover" width={size.w} height={size.h} aria-hidden="true">
-          <defs>
-            <mask id={maskId} maskUnits="userSpaceOnUse" x="0" y="0" width={size.w} height={size.h}>
-              <rect width={size.w} height={size.h} fill="#fff" />
-              <g ref={zoomRef}>
-                <g transform={`translate(${markX} ${markY}) scale(${k})`}><LogoMarkMask /></g>
-              </g>
-            </mask>
-          </defs>
-          <rect width={size.w} height={size.h} className="at-reveal__fill" mask={`url(#${maskId})`} />
-        </svg>
-
-        <div className="at-reveal__intro" aria-hidden="true">
-          <p className="at-reveal__eyebrow">Aneka Kartika Tours &amp; Travel · Indonesia DMC</p>
-          <p className="at-reveal__tagline">Indonesia, crafted for your groups</p>
-          <span className="at-reveal__cue">Scroll to explore<span className="at-reveal__cue-line" /></span>
+    <section className="hero hero--slideshow">
+      <div className={`hero__slides ${slidesReady ? 'is-ready' : ''}`} aria-hidden="true">
+        {heroSlides.map((destination, index) => (
+          <img
+            key={destination.slug}
+            className={`hero__slide ${index % 2 === 0 ? 'hero__slide--zoom-in' : 'hero__slide--zoom-out'}`}
+            src={destination.image}
+            alt=""
+            fetchPriority={index === 0 ? 'high' : 'auto'}
+            onLoad={markSlideLoaded}
+            onError={markSlideLoaded}
+            style={{ animationDelay: `${-((heroSlides.length - index) % heroSlides.length) * 7 - 1}s`, animationDuration: `${cycleSeconds}s` }}
+          />
+        ))}
+      </div>
+      <div className="hero__shade" aria-hidden="true" />
+      <div className="hero__content">
+        <p className="eyebrow eyebrow--light hero__anim" style={{ animationDelay: '0.1s' }}>
+          {hero.eyebrow}
+        </p>
+        <h1 className="display hero__anim" style={{ animationDelay: '0.2s' }}>
+          {hero.title}
+        </h1>
+        <p className="hero__sub hero__anim" style={{ animationDelay: '0.35s' }}>
+          {hero.subtitle}
+        </p>
+        <div className="hero__ctas hero__anim" style={{ animationDelay: '0.5s' }}>
+          <Link to="/contact" className="btn btn--primary">Request a Quote</Link>
+          <Link to="/programs" className="btn btn--primary">View Sample Programs</Link>
         </div>
       </div>
     </section>
   );
 }
-
 /** Heading block at the top of each subpage. Optional image turns it into a photo banner. */
 export function PageHero({ title, intro, image }: { title: string; intro?: string; image?: string }) {
   if (image) {
