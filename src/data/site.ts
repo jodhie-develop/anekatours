@@ -69,6 +69,10 @@ export const openingPhotos: Destination[] = [
   { name: 'Samosir', slug: 'samosir-tree-line', image: '/images/optimized/samosir-tree-line.webp' },
   { name: 'Tanjung Puting', slug: 'tanjung-puting-04', image: '/images/optimized/tanjung-puting-04.webp' },
   { name: 'Traditional Market', slug: 'traditional-market-pabean-01', image: '/images/optimized/traditional-market-pabean-01.webp' },
+  { name: 'Children of Candirejo', slug: 'children-of-candirejo', image: '/images/optimized/children-of-candirejo.webp' },
+  { name: 'Dagi Hill Picnic', slug: 'dagi-hill-picnic', image: '/images/optimized/dagi-hill-picnic.webp' },
+  { name: 'Sunset Sanur', slug: 'sunset-sanur', image: '/images/optimized/sunset-sanur.webp' },
+  { name: 'Watu Ulo Jember', slug: 'watu-ulo-jember', image: '/images/optimized/watu-ulo-jember.webp' },
 ];
 
 export const heroPhotos = openingPhotos.filter(({ slug }) =>
