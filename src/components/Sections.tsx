@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Reveal from './Reveal';
 import { Link } from '../router';
-import { destinations, hero, intro, programs, services, team, testimonial, pages } from '../data/site';
+import { company, destinations, hero, intro, programs, services, team, testimonial, pages } from '../data/site';
 
 const heroSlides = [destinations[0], destinations[2], destinations[1]];
 
@@ -212,6 +212,13 @@ export function PageHero({ title, intro, image }: { title: string; intro?: strin
 }
 
 export function Intro() {
+  const currentYear = new Date().getFullYear();
+  const stats = intro.stats.map((stat) =>
+    stat.label === 'years of experience'
+      ? { ...stat, value: currentYear - Number(company.sinceYear) }
+      : stat,
+  );
+
   return (
     <Reveal as="section" className="intro">
       <div className="intro__inner container">
@@ -220,7 +227,7 @@ export function Intro() {
           <h2 className="h2 intro__statement">{intro.statement}</h2>
         </div>
         <ul className="stats">
-          {intro.stats.map((s) => (
+          {stats.map((s) => (
             <li key={s.label}>
               <StatCounter value={s.value} />
               <span className="stats__label">{s.label}</span>
