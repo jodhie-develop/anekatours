@@ -10,7 +10,7 @@ export const company = {
   salesEmail: '[SALES EMAIL]',
   phone: '[PHONE]',
   whatsapp: '[WHATSAPP NUMBER]', // international format without "+", e.g. 6281234567890
-  sinceYear: '[YEAR]',
+  sinceYear: '1979',
 };
 
 export const navLinks = [
@@ -139,7 +139,8 @@ export const pages = {
     title: 'Your people in Indonesia.',
     intro:
       'Aneka Kartika Tours & Travel is an Indonesian inbound tour operator and destination management company for overseas tour operators and travel agents. We help you shape group journeys with local insight and careful coordination.',
-    story: '[COMPANY STORY] · Founded [YEAR] · [TEAM AND OFFICE DETAILS]',
+    story:
+      'Aneka Kartika Tours and Travels began in 1979 in a small office with just five staff members in Surabaya. Today, our 40-person team works from our own three-story building, supported by branch offices, sister companies, and qualified representatives in strategic locations across Indonesia. Experience, dedication, and open-mindedness are the core values that set us apart. Our passionate team crafts programs for individuals and groups from the ground up. With our simple 3E recipe—Explore, Experience, Enjoy—we aim to make every program a memorable experience. International wholesalers and tour operators from more than twelve countries have appointed us as their ground handler. We carefully design each program, handpick the right hotels and resorts, supply well-maintained vehicles and on-site logistics, and provide professional guides to create seamless, authentic travel experiences. For your peace of mind, we are proud to be active members of respected travel associations, including IATA, ASITA, ASTINDO, ASEANTA, and IINTOA.',
     image: '/images/central-java-yogyakarta.jpg',
     ctaTitle: 'A partnership, not a transaction.',
     ctaText:

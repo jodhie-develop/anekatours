@@ -99,7 +99,8 @@ export function Hero() {
       zoom.setAttribute('transform', `translate(${originX} ${originY}) scale(${scale.toFixed(4)}) translate(${-originX} ${-originY})`);
       section.style.setProperty('--intro-o', String(1 - ease(clamp(progress / 0.2))));
       section.style.setProperty('--cover-o', String(1 - ease(clamp((progress - 0.62) / 0.18))));
-      section.style.setProperty('--content-o', String(ease(clamp((progress - 0.74) / 0.2))));
+      // Start the headline fade while the logo curtain is opening, so it is fully visible when the reveal completes.
+      section.style.setProperty('--content-o', String(ease(clamp((progress - 0.42) / 0.34))));
     };
 
     const tick = (now: number) => {
