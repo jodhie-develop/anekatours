@@ -24,10 +24,14 @@ export default function Footer() {
               </Link>
             ))}
           </nav>
-          <p>
-            {company.legalName} · {company.address} · Licence {company.licence}
+          <p className="footer__company-details">
+            {company.legalName}
+            <br />
+            {company.address} ·
+            <br />
+            Licence {company.licence}
           </p>
-          <p>
+          <p className="footer__contact-details">
             {company.salesEmail} · {company.phone} · WhatsApp {company.whatsappDisplay}
           </p>
           <Link to="/contact" className="footer__cta">
