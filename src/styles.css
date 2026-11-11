@@ -399,6 +399,24 @@ p {
   object-position: center 70%;
   transform: scale(var(--video-scale));
   will-change: transform;
+  backface-visibility: hidden;
+}
+
+.at-reveal__poster {
+  transition: opacity 0.9s ease-in-out;
+}
+
+.at-reveal__media--video {
+  opacity: 0;
+  transition: opacity 0.9s ease-in-out;
+}
+
+.at-reveal__stage.is-video-ready .at-reveal__poster {
+  opacity: 0;
+}
+
+.at-reveal__stage.is-video-ready .at-reveal__media--video {
+  opacity: 1;
 }
 
 .at-reveal__content {
@@ -515,6 +533,12 @@ p {
   .at-reveal__content {
     opacity: 1;
     transform: none;
+  }
+  .at-reveal__media--video {
+    display: none;
+  }
+  .at-reveal__stage.is-video-ready .at-reveal__poster {
+    opacity: 1;
   }
 }
 

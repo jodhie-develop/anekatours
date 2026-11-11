@@ -73,6 +73,7 @@ export function Hero() {
   const zoomRef = useRef<SVGGElement>(null);
   const [size, setSize] = useState({ w: 1200, h: 700 });
   const [videoOk, setVideoOk] = useState(true);
+  const [videoReady, setVideoReady] = useState(false);
   const maskId = 'at-reveal-mask';
 
   // Logo mark geometry, in the logo's own units (bounding box x 5–46, y 83–114.4).
@@ -131,10 +132,14 @@ export function Hero() {
       section.style.setProperty('--video-scale', String(1.12 - 0.12 * z));
     };
 
-    // follow the scroll position with a little inertia, so wheel steps glide instead of jump
-    const tick = () => {
+    // Time-based smoothing keeps the zoom consistent across different frame rates.
+    let previousTime = 0;
+    const tick = (now: number) => {
       frame = 0;
-      current = current < 0 ? target : current + (target - current) * 0.14;
+      const elapsed = previousTime ? Math.min(now - previousTime, 48) : 16;
+      previousTime = now;
+      const blend = 1 - Math.exp(-elapsed / 90);
+      current = current < 0 ? target : current + (target - current) * blend;
       if (Math.abs(target - current) < 0.0005) current = target;
       render(current);
       if (current !== target) frame = requestAnimationFrame(tick);
@@ -144,7 +149,7 @@ export function Hero() {
       if (!frame) frame = requestAnimationFrame(tick);
     };
     readTarget();
-    tick();
+    tick(performance.now());
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
     return () => {
@@ -156,20 +161,24 @@ export function Hero() {
 
   return (
     <section className="at-reveal" ref={sectionRef}>
-      <div className="at-reveal__stage" ref={stageRef}>
+      <div className={`at-reveal__stage ${videoReady ? 'is-video-ready' : ''}`} ref={stageRef}>
         {videoOk && hero.video ? (
-          <video
-            className="at-reveal__media"
-            src={hero.video}
-            poster={hero.image}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            onError={() => setVideoOk(false)}
-            aria-hidden="true"
-          />
+          <>
+            <img className="at-reveal__media at-reveal__poster" src={hero.image} alt="" aria-hidden="true" />
+            <video
+              className="at-reveal__media at-reveal__media--video"
+              src={hero.video}
+              poster={hero.image}
+              autoPlay={!window.matchMedia('(prefers-reduced-motion: reduce)').matches}
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              onCanPlay={() => setVideoReady(true)}
+              onError={() => setVideoOk(false)}
+              aria-hidden="true"
+            />
+          </>
         ) : (
           <img className="at-reveal__media" src={hero.image} alt="Mount Bromo at sunrise, East Java" />
         )}
