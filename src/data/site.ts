@@ -187,7 +187,7 @@ export const pages = {
     seoTitle: 'Indonesia Destinations | Aneka Kartika Tours & Travel DMC',
     title: 'Many islands. One trusted partner.',
     intro: 'From Java’s volcanic landscapes to Bali’s living traditions, shape the right Indonesia journey for your groups.',
-    image: '/images/sulawesi.jpg',
+    image: '/images/optimized/daily-life-19.webp',
   },
   programs: {
     seoTitle: 'Indonesia Group Tour Programs | Aneka Kartika Tours & Travel',
