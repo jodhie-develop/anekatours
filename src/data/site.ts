@@ -14,7 +14,7 @@ export const company = {
   whatsapp: '62811344980',
   whatsappDisplay: '+62. 811344980',
   footerEmails: [
-    { label: 'odjie@aneka-tours.co.id', href: 'accounting3@aneka-tours.co.id' },
+    { label: 'odjie@aneka-tours.co.id', href: 'odjie@aneka-tours.co.id' },
     { label: 'domestik@aneka-tours.co.id', href: 'domestik@aneka-tours.co.id' },
   ],
   sinceYear: '1979',
