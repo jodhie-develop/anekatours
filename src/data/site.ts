@@ -142,6 +142,45 @@ export const programs: Program[] = [
   },
 ];
 
+export type FeaturedProgram = {
+  days: number;
+  title: string;
+  start: string;
+  finish: string;
+  image: string;
+  description: string;
+};
+
+export const featuredPrograms: FeaturedProgram[] = [
+  {
+    days: 4,
+    title: 'East Java discovery',
+    start: 'Surabaya Airport',
+    finish: 'Bali hotel',
+    image: '/images/optimized/bromo-023.webp',
+    description:
+      "From Surabaya, head east on a journey through East Java's striking volcanic landscapes and rural heartland. Your first encounter is Mount Bromo, where an early morning Jeep ride takes you across the vast Sea of Sand towards a panoramic viewpoint, just in time to witness the first light of day illuminating the surrounding volcanic peaks. Continue to Banyuwangi for a two-night stay, offering a closer look at the region's rural character and traditions. Spend a day wandering through a local village, discovering its coffee plantations and getting acquainted with the daily rhythm of farming life. The next day's adventure takes you into the highlands of Mount Ijen, where dramatic volcanic scenery unfolds around its remarkable turquoise crater lake. After exploring this remarkable landscape, make your way to Ketapang Harbour for a ferry crossing over the Bali Strait. Upon arrival, continue to your selected hotel in Bali, bringing this East Java discovery to a fitting close.",
+  },
+  {
+    days: 8,
+    title: 'Java to Bali, Culture & Volcano',
+    start: 'Yogyakarta airport',
+    finish: 'Bali hotel',
+    image: '/images/optimized/borobudur-7.webp',
+    description:
+      "A journey across Java reveals layers of culture, history and ever-changing landscapes, with Bali just across the strait. Begin in Yogyakarta, the cultural heartland of Java, where centuries-old traditions remain part of everyday life. Discover two of Indonesia's UNESCO World Heritage Sites, Borobudur and Prambanan, explore the Sultan's Palace and visit a local village to see traditional cottage industries still practised by its residents. Leaving Yogyakarta behind, board a scenic train for a memorable ride across Java's heartland to Malang, where you spend the night. Continue towards Mount Bromo, where an early morning Jeep ride takes you across the vast Sea of Sand to catch the first light over its remarkable volcanic landscape. The journey eastwards leads to Kalibaru, a quiet countryside settlement surrounded by plantations. Take a guided walk through a private plantation to discover local crops and produce, before continuing to Banyuwangi. Another early start takes you to Mount Ijen, where a striking turquoise crater lake sits within a vast volcanic caldera. After exploring the highlands, descend towards Ketapang Harbour for the ferry crossing to Bali, bringing your Java overland journey to a close.",
+  },
+  {
+    days: 6,
+    title: 'Bali, along the quiet roads',
+    start: 'Bali hotel (South)',
+    finish: 'Bali hotel (South)',
+    image: '/images/optimized/jatiluwih-kk.webp',
+    description:
+      "There is another side of Bali, found along its quieter roads, in its mountain villages, rice-growing countryside and little coastal hideaways. Leaving your hotel behind, head towards Tanah Lot and the former royal temple of Taman Ayun before continuing inland to Jatiluwih. Here, the landscape opens into magnificent rice terraces, and the night is spent in the peaceful surroundings of the countryside, far from the island's busier corners. The road north takes you through Bedugul and its lakeside temple of Ulun Danu Beratan, before winding through the cool highlands of Munduk, where a short walk brings you to a secluded waterfall. Further north, Pemuteran offers a welcome change of pace, with two nights to enjoy its laid-back coastal setting, perhaps venturing into Bali Barat National Park or simply taking in the tranquillity of the village. The journey back towards South Bali follows a different route, tracing the northern coastline through Singaraja, with time to visit its old Chinese temple and Brahma Vihara-Arama Buddhist monastery. Continue inland to Sidemen, where another two-night stay invites you to enjoy the quieter charms of Bali's eastern countryside, before eventually making your way back to South Bali.",
+  },
+];
+
 export const team = {
   title: 'Behind every great journey, a dependable local team.',
   highlights: ['Fast quotes', 'Licensed multilingual guides', 'Reliable fleet', '24/7 on-tour support'],

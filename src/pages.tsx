@@ -1,4 +1,4 @@
-import { CtaBand, Destinations, Hero, Intro, PageHero, Programs, Services, Team, Testimonial } from './components/Sections';
+import { CtaBand, Destinations, Hero, Intro, PageHero, ProgramShowcase, Programs, Services, Team, Testimonial } from './components/Sections';
 import QuoteForm from './components/QuoteForm';
 import Reveal from './components/Reveal';
 import { Link } from './router';
@@ -60,7 +60,7 @@ export function ProgramsPage() {
   return (
     <>
       <PageHero title={p.title} intro={p.intro} />
-      <Programs withFilter showHeading={false} />
+      <ProgramShowcase />
     </>
   );
 }

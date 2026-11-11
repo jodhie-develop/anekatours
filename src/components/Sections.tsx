@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Reveal from './Reveal';
 import { Link } from '../router';
-import { company, destinations, hero, heroPhotos, intro, programs, services, team, testimonial, pages } from '../data/site';
+import { company, destinations, featuredPrograms, hero, heroPhotos, intro, programs, services, team, testimonial, pages } from '../data/site';
 
 const heroSlides = heroPhotos;
 
@@ -261,6 +261,41 @@ export function Programs({ withFilter = false, showHeading = true }: { withFilte
           </article>
         ))}
         {list.length === 0 && <p className="empty">No sample programs for this group type yet — ask us for a tailored proposal.</p>}
+      </div>
+    </Reveal>
+  );
+}
+
+export function ProgramShowcase() {
+  return (
+    <Reveal as="section" className="section container program-showcase" aria-label="Sample tour programs">
+      <div className="program-showcase__intro">
+        <p className="eyebrow">Made for curious travellers</p>
+        <h2 className="h2">Three ways to discover Indonesia.</h2>
+        <p className="lead">Each sample can be tailored to your travellers, timing and preferred pace.</p>
+      </div>
+      <div className="program-showcase__list">
+        {featuredPrograms.map((program, index) => (
+          <article className="program-detail" key={program.title}>
+            <div className="program-detail__photo">
+              <img src={program.image} alt={program.title} loading="lazy" />
+              <span className="program-detail__duration">{program.days} days</span>
+            </div>
+            <div className="program-detail__body">
+              <span className="eyebrow">Sample program {String(index + 1).padStart(2, '0')}</span>
+              <h3 className="program-detail__title">{program.title}</h3>
+              <div className="program-detail__route">
+                <div><span>Start</span><strong>{program.start}</strong></div>
+                <span className="program-detail__arrow" aria-hidden="true">→</span>
+                <div><span>Finish</span><strong>{program.finish}</strong></div>
+              </div>
+              <p className="program-detail__description">{program.description}</p>
+              <Link to={`/contact?program=${encodeURIComponent(program.title)}`} className="btn btn--primary">
+                Enquire about this program
+              </Link>
+            </div>
+          </article>
+        ))}
       </div>
     </Reveal>
   );
