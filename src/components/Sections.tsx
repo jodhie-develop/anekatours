@@ -268,7 +268,7 @@ export function Programs({ withFilter = false, showHeading = true }: { withFilte
 
 export function ProgramShowcase() {
   return (
-    <Reveal as="section" className="section container program-showcase" aria-label="Sample tour programs">
+    <Reveal as="section" className="section container program-showcase">
       <div className="program-showcase__intro">
         <p className="eyebrow">Made for curious travellers</p>
         <h2 className="h2">Three ways to discover Indonesia.</h2>

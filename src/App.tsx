@@ -4,12 +4,13 @@ import Footer from './components/Footer';
 import IntroScreen from './components/IntroScreen';
 import { useLocation } from './router';
 import { pages } from './data/site';
-import { AboutPage, ContactPage, DestinationsPage, HomePage, NotFoundPage, ProgramsPage, ServicesPage } from './pages';
+import { AboutPage, ContactPage, DestinationsPage, GalleryPage, HomePage, NotFoundPage, ProgramsPage, ServicesPage } from './pages';
 
 const routes: Record<string, { component: ComponentType; title: string }> = {
   '/': { component: HomePage, title: 'Aneka Kartika Tours & Travel | Indonesia DMC' },
   '/destinations': { component: DestinationsPage, title: pages.destinations.seoTitle },
   '/programs': { component: ProgramsPage, title: pages.programs.seoTitle },
+  '/gallery': { component: GalleryPage, title: pages.gallery.seoTitle },
   '/services': { component: ServicesPage, title: pages.services.seoTitle },
   '/about': { component: AboutPage, title: pages.about.seoTitle },
   '/contact': { component: ContactPage, title: pages.contact.seoTitle },

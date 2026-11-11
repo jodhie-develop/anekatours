@@ -3,6 +3,7 @@ import QuoteForm from './components/QuoteForm';
 import Reveal from './components/Reveal';
 import { Link } from './router';
 import { pages } from './data/site';
+import Gallery from './components/Gallery';
 
 export function HomePage() {
   return (
@@ -61,6 +62,16 @@ export function ProgramsPage() {
     <>
       <PageHero title={p.title} intro={p.intro} />
       <ProgramShowcase />
+    </>
+  );
+}
+
+export function GalleryPage() {
+  const p = pages.gallery;
+  return (
+    <>
+      <PageHero title={p.title} intro={p.intro} />
+      <Gallery />
     </>
   );
 }

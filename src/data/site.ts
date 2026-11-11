@@ -23,6 +23,7 @@ export const company = {
 export const navLinks = [
   { label: 'Destinations', href: '/destinations' },
   { label: 'Tour Programs', href: '/programs' },
+  { label: 'Gallery', href: '/gallery' },
   { label: 'Services', href: '/services' },
   { label: 'About Us', href: '/about' },
   { label: 'Contact', href: '/contact' },
@@ -237,6 +238,11 @@ export const pages = {
     title: 'A starting point for your next journey',
     intro: 'Sample concepts, ready to adapt around your clients. Every itinerary is confirmed through a tailored quotation.',
     filterLabel: 'Choose a group type',
+  },
+  gallery: {
+    seoTitle: 'Sumatra Photo Gallery | Aneka Kartika Tours & Travel',
+    title: 'Sumatra, in pictures.',
+    intro: 'Explore the landscapes, wildlife and local life of Sumatra. Select a photo to view it in full size.',
   },
   contact: {
     seoTitle: 'Request an Indonesia Group Quote | Aneka Kartika Tours & Travel',
