@@ -1,12 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { destinations } from '../data/site';
+import { destinations, openingPhotos } from '../data/site';
 
-const photoColumns = [
-  destinations.slice(0, 4),
-  destinations.slice(2),
-  [destinations[1], destinations[3], destinations[5], destinations[0]],
-  [destinations[4], destinations[2], destinations[0], destinations[1]],
-];
+const allIntroPhotos = [...destinations, ...openingPhotos];
+const photoColumns = Array.from({ length: 4 }, (_, columnIndex) =>
+  allIntroPhotos.filter((_, photoIndex) => photoIndex % 4 === columnIndex),
+);
 
 export default function IntroScreen() {
   const [phase, setPhase] = useState<'intro' | 'exit' | 'done'>('intro');

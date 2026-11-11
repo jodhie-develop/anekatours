@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import Reveal from './Reveal';
 import { Link } from '../router';
-import { company, destinations, hero, intro, programs, services, team, testimonial, pages } from '../data/site';
+import { company, destinations, hero, heroPhotos, intro, programs, services, team, testimonial, pages } from '../data/site';
 
-const heroSlides = [destinations[0], destinations[2], destinations[1]];
+const heroSlides = heroPhotos;
 
 export function Hero() {
   const [loadedSlides, setLoadedSlides] = useState(0);

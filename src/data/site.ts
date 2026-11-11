@@ -47,6 +47,33 @@ export const intro = {
 
 export type Destination = { name: string; slug: string; image: string };
 
+export const openingPhotos: Destination[] = [
+  { name: 'Toba', slug: 'toba9', image: '/images/optimized/toba9.webp' },
+  { name: 'Blitar Dancers', slug: 'blitar-dancers', image: '/images/optimized/blitar-dancers.webp' },
+  { name: 'Bogor Presidential Palace', slug: 'bogor-presidential-palace', image: '/images/optimized/bogor-presidential-palace.webp' },
+  { name: 'Borobudur', slug: 'borobudur-3', image: '/images/optimized/borobudur-3.webp' },
+  { name: 'Borobudur', slug: 'borobudur-7', image: '/images/optimized/borobudur-7.webp' },
+  { name: 'Bromo', slug: 'bromo-023', image: '/images/optimized/bromo-023.webp' },
+  { name: 'Bromo', slug: 'bromo-d', image: '/images/optimized/bromo-d.webp' },
+  { name: 'Building', slug: 'building-02', image: '/images/optimized/building-02.webp' },
+  { name: 'Ceremony', slug: 'ceremony', image: '/images/optimized/ceremony.webp' },
+  { name: 'Cremation', slug: 'cremation', image: '/images/optimized/cremation.webp' },
+  { name: 'Daily Life', slug: 'daily-life-19', image: '/images/optimized/daily-life-19.webp' },
+  { name: 'Jatiluwih', slug: 'jatiluwih-kk', image: '/images/optimized/jatiluwih-kk.webp' },
+  { name: 'Jukung in Sanur', slug: 'jukung-in-sanur', image: '/images/optimized/jukung-in-sanur.webp' },
+  { name: 'Kaliandra', slug: 'kaliandra-02', image: '/images/optimized/kaliandra-02.webp' },
+  { name: 'Kaliandra', slug: 'kaliandra-04', image: '/images/optimized/kaliandra-04.webp' },
+  { name: 'Kid Dancers', slug: 'kid-dancers', image: '/images/optimized/kid-dancers.webp' },
+  { name: 'Prambanan', slug: 'prambanan-5', image: '/images/optimized/prambanan-5.webp' },
+  { name: 'Rice Fields', slug: 'rice-25', image: '/images/optimized/rice-25.webp' },
+  { name: 'Samosir', slug: 'samosir-tree-line', image: '/images/optimized/samosir-tree-line.webp' },
+  { name: 'Tanjung Puting', slug: 'tanjung-puting-04', image: '/images/optimized/tanjung-puting-04.webp' },
+  { name: 'Traditional Market', slug: 'traditional-market-pabean-01', image: '/images/optimized/traditional-market-pabean-01.webp' },
+];
+
+export const heroPhotos = openingPhotos.filter(({ slug }) =>
+  ['toba9', 'borobudur-7', 'bromo-023', 'bromo-d', 'jatiluwih-kk', 'prambanan-5', 'rice-25'].includes(slug),
+);
 export const destinations: Destination[] = [
   { name: 'East Java', slug: 'east-java', image: '/images/east-java.jpg' },
   { name: 'Central Java & Yogyakarta', slug: 'central-java-yogyakarta', image: '/images/central-java-yogyakarta.jpg' },
