@@ -34,7 +34,7 @@ export default function IntroScreen() {
 
     document.documentElement.classList.add('intro-playing');
     skipRef.current?.focus();
-    const startTimer = window.setTimeout(() => beginExitRef.current(), 2800);
+    const startTimer = window.setTimeout(() => beginExitRef.current(), 4550);
     return () => {
       window.clearTimeout(startTimer);
       if (endTimer.current !== null) window.clearTimeout(endTimer.current);
@@ -74,12 +74,12 @@ export default function IntroScreen() {
       <div className="intro-screen__shade" aria-hidden="true" />
       <div className="intro-screen__curtain intro-screen__curtain--left" aria-hidden="true" />
       <div className="intro-screen__curtain intro-screen__curtain--right" aria-hidden="true" />
-      <button className="intro-screen__skip" ref={skipRef} type="button" onClick={() => beginExitRef.current()}>
-        Skip intro <span aria-hidden="true">↗</span>
-      </button>
       <div className="intro-screen__brand">
         <img src="/images/logo-aneka-kartika.png" alt="Aneka Kartika Tours and Travel" />
         <p>Indonesia · Since 1979</p>
+        <button className="intro-screen__skip" ref={skipRef} type="button" onClick={() => beginExitRef.current()}>
+          Skip intro <span aria-hidden="true">↗</span>
+        </button>
       </div>
     </div>
   );
