@@ -1,6 +1,7 @@
 import { useEffect, type ComponentType } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import IntroScreen from './components/IntroScreen';
 import { useLocation } from './router';
 import { pages } from './data/site';
 import { AboutPage, ContactPage, DestinationsPage, HomePage, NotFoundPage, ProgramsPage, ServicesPage } from './pages';
@@ -27,6 +28,7 @@ export default function App() {
 
   return (
     <>
+      <IntroScreen />
       <Header current={clean} />
       {/* key re-mounts the page so scroll animations and pre-filled forms reset on navigation */}
       <main key={clean + search}>
