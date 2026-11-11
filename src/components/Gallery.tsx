@@ -77,7 +77,10 @@ export default function Gallery() {
               <button className="gallery-viewer__nav gallery-viewer__nav--previous" type="button" onClick={() => move(-1)} aria-label="Previous image">
                 ‹
               </button>
-              <img className="gallery-viewer__image" src={selected.source} alt={selected.title} />
+              <div className="gallery-viewer__photo">
+                <img className="gallery-viewer__image" src={selected.source} alt={selected.title} />
+                <img className="gallery-viewer__watermark" src="/images/logo-aneka-kartika.png" alt="" aria-hidden="true" />
+              </div>
               <button className="gallery-viewer__nav gallery-viewer__nav--next" type="button" onClick={() => move(1)} aria-label="Next image">
                 ›
               </button>
