@@ -12,6 +12,7 @@ type Props = {
 export default function Reveal({ children, as: Tag = 'div', className = '', id, delay = 0 }: Props) {
   const ref = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
+  const [observing, setObserving] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
@@ -20,6 +21,7 @@ export default function Reveal({ children, as: Tag = 'div', className = '', id, 
       setVisible(true);
       return;
     }
+    setObserving(true);
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -37,7 +39,7 @@ export default function Reveal({ children, as: Tag = 'div', className = '', id, 
     <Tag
       ref={ref}
       id={id}
-      className={`reveal ${visible ? 'is-visible' : ''} ${className}`}
+      className={`reveal ${observing ? 'is-observing' : ''} ${visible ? 'is-visible' : ''} ${className}`}
       style={delay ? { transitionDelay: `${delay}ms` } : undefined}
     >
       {children}

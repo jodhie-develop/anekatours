@@ -4,6 +4,12 @@ import { useEffect, useState, type AnchorHTMLAttributes, type MouseEvent } from 
 // Routes are clean URLs (/about, /destinations ...). vercel.json rewrites every path to index.html.
 
 const listeners = new Set<() => void>();
+let staticLocation = { path: '/', search: '', hash: '' };
+
+/** Used by the build prerenderer; normal browser navigation remains History API based. */
+export function setStaticLocation(path: string) {
+  staticLocation = { path: path.split('?')[0] || '/', search: path.includes('?') ? `?${path.split('?').slice(1).join('?')}` : '', hash: '' };
+}
 
 export function navigate(to: string) {
   if (to === window.location.pathname + window.location.search + window.location.hash) return;
@@ -12,7 +18,7 @@ export function navigate(to: string) {
 }
 
 export function useLocation() {
-  const [loc, setLoc] = useState(() => ({ path: window.location.pathname, search: window.location.search, hash: window.location.hash }));
+  const [loc, setLoc] = useState(() => typeof window === 'undefined' ? staticLocation : ({ path: window.location.pathname, search: window.location.search, hash: window.location.hash }));
   useEffect(() => {
     const update = () =>
       setLoc({ path: window.location.pathname, search: window.location.search, hash: window.location.hash });

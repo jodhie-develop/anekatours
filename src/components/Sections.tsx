@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Reveal from './Reveal';
 import { Link } from '../router';
-import { company, destinations, featuredPrograms, hero, heroPhotos, intro, programs, services, testimonial, pages } from '../data/site';
+import { company, destinations, featuredPrograms, hero, heroPhotos, intro, programs, services, pages } from '../data/site';
 
 const heroSlides = heroPhotos;
 
@@ -19,7 +19,7 @@ export function Hero() {
             key={destination.slug}
             className={`hero__slide ${index % 2 === 0 ? 'hero__slide--zoom-in' : 'hero__slide--zoom-out'}`}
             src={destination.image}
-            alt=""
+            alt={`${destination.name} in Indonesia`}
             fetchPriority={index === 0 ? 'high' : 'auto'}
             onLoad={markSlideLoaded}
             onError={markSlideLoaded}
@@ -51,7 +51,7 @@ export function PageHero({ title, intro, image }: { title: string; intro?: strin
   if (image) {
     return (
       <section className="hero hero--page">
-        <img className="hero__bg" src={image} alt="" />
+        <img className="hero__bg" src={image} alt={title} fetchPriority="high" />
         <div className="hero__shade hero__shade--page" />
         <div className="hero__content">
           <h1 className="display hero__anim" style={{ animationDelay: '0.1s' }}>
@@ -79,7 +79,7 @@ export function PageHero({ title, intro, image }: { title: string; intro?: strin
 }
 
 export function Intro() {
-  const currentYear = new Date().getFullYear();
+  const currentYear = __BUILD_YEAR__;
   const stats = intro.stats.map((stat) =>
     stat.label === 'years of experience'
       ? { ...stat, value: currentYear - Number(company.sinceYear) }
@@ -108,7 +108,7 @@ export function Intro() {
 
 function StatCounter({ value }: { value: number }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(value);
 
   useEffect(() => {
     const element = ref.current;
@@ -120,6 +120,7 @@ function StatCounter({ value }: { value: number }) {
         return;
       }
 
+      setCount(0);
       const duration = 1400;
       const start = performance.now();
       let frame = 0;
@@ -151,7 +152,7 @@ function StatCounter({ value }: { value: number }) {
     };
   }, [value]);
 
-  return <span className="stats__value" ref={ref}>{count.toLocaleString('id-ID')}</span>;
+  return <span className="stats__value" ref={ref}>{count.toLocaleString('en-US')}{value >= 2000 ? '+' : ''}</span>;
 }
 
 export function Destinations({ compactTop = false }: { compactTop?: boolean }) {
@@ -244,18 +245,17 @@ export function Programs({ withFilter = false, showHeading = true }: { withFilte
               <p className="program__route">{p.route.join(' · ')}</p>
               <span className="label">{p.category}</span>
               <div className="program__links">
-                <a href={p.itineraryUrl} className="link">
-                  View itinerary
-                </a>
+                {p.itineraryUrl !== '#' && p.itineraryUrl && (
+                  <a href={p.itineraryUrl} className="link">View itinerary</a>
+                )}
                 {withFilter ? (
                   <Link to={`/contact?program=${encodeURIComponent(p.title)}`} className="link">
                     Request this program
                   </Link>
                 ) : (
-                  <a href={p.pdfUrl} className="link">
-                    Download PDF
-                  </a>
+                  <Link to={`/contact?program=${encodeURIComponent(p.title)}`} className="link">Request this program</Link>
                 )}
+                {p.pdfUrl !== '#' && p.pdfUrl && <a href={p.pdfUrl} className="link">Download PDF</a>}
               </div>
             </div>
           </article>
@@ -274,7 +274,7 @@ export function ProgramShowcase() {
       <div className="program-card-grid">
         {featuredPrograms.map((program) => (
           <Link className="program-card" key={program.slug} to={`/programs/${program.slug}`}>
-            <img src={program.image} alt="" loading="lazy" />
+            <img src={program.image} alt={`${program.title}: ${program.start} to ${program.finish}`} loading="lazy" />
             <span className="program-card__shade" />
             <span className="program-card__duration">{program.days} days</span>
             <span className="program-card__content">
@@ -310,19 +310,6 @@ export function Team() {
             <img src={logo.src} alt={logo.name} loading="lazy" />
           </div>
         ))}
-      </div>
-    </Reveal>
-  );
-}
-
-export function Testimonial() {
-  return (
-    <Reveal as="section" className="testimonial">
-      <div className="testimonial__inner">
-        <h2 className="h2">{testimonial.title}</h2>
-        <blockquote>{testimonial.quote}</blockquote>
-        <p className="label">{testimonial.author}</p>
-        <p className="label">{testimonial.logosNote}</p>
       </div>
     </Reveal>
   );

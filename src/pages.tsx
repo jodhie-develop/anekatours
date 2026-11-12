@@ -1,4 +1,4 @@
-import { CtaBand, Destinations, Hero, Intro, PageHero, ProgramShowcase, Programs, Services, Team, Testimonial } from './components/Sections';
+import { CtaBand, Destinations, Hero, Intro, PageHero, ProgramShowcase, Programs, Services, Team } from './components/Sections';
 import QuoteForm from './components/QuoteForm';
 import Reveal from './components/Reveal';
 import { Link, useLocation } from './router';
@@ -14,7 +14,6 @@ export function HomePage() {
       <Services />
       <Programs />
       <Team />
-      <Testimonial />
       <QuoteForm />
     </>
   );
@@ -144,6 +143,8 @@ export function NotFoundPage() {
       <Link to="/" className="btn btn--primary">
         Back to home
       </Link>
+      {' '}
+      <Link to="/contact" className="btn btn--primary">Request a Quote</Link>
     </section>
   );
 }

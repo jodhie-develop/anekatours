@@ -1,5 +1,5 @@
 // All website content lives here. Edit text, images and contact details in this file.
-// Values in [SQUARE BRACKETS] are placeholders from the original draft — replace before publishing.
+// TODO: Keep unverified client-facing information out of public pages until confirmed.
 
 export const company = {
   name: 'aneka kartika tours & travel',
@@ -28,7 +28,7 @@ export const navLinks = [
   { label: 'Contact', href: '/contact' },
 ];
 
-export const languages = ['EN', 'ZH', 'JA'];
+// TODO: Add translated routes and hreflang metadata before restoring ZH/JA language controls.
 
 export const hero = {
   eyebrow: 'Indonesia, through local eyes',
@@ -40,7 +40,7 @@ export const intro = {
   statement: 'We work exclusively with tour operators and travel agents.\nYou bring the travellers. We bring Indonesia to life.',
   stats: [
     { value: 24, label: 'years of experience' },
-    { value: 2000, label: 'number of clients' },
+    { value: 2000, suffix: '+', label: 'number of clients' },
     { value: 15, label: 'partner countries' },
   ],
 };
@@ -79,18 +79,18 @@ export const heroPhotos = openingPhotos.filter(({ slug }) =>
   ['toba9', 'borobudur-7', 'bromo-023', 'bromo-d', 'jatiluwih-kk', 'prambanan-5', 'rice-25'].includes(slug),
 );
 export const destinations: Destination[] = [
-  { name: 'East Java', slug: 'east-java', image: '/images/east-java.jpg' },
-  { name: 'Central Java & Yogyakarta', slug: 'central-java-yogyakarta', image: '/images/central-java-yogyakarta.jpg' },
-  { name: 'Bali', slug: 'bali', image: '/images/bali.jpg' },
-  { name: 'Lombok & Komodo', slug: 'lombok-komodo', image: '/images/lombok-komodo.jpg' },
-  { name: 'Sumatra', slug: 'sumatra', image: '/images/sumatra.jpg' },
-  { name: 'Sulawesi', slug: 'sulawesi', image: '/images/sulawesi.jpg' },
+  { name: 'East Java', slug: 'east-java', image: '/images/optimized/east-java.webp' },
+  { name: 'Central Java & Yogyakarta', slug: 'central-java-yogyakarta', image: '/images/optimized/central-java-yogyakarta.webp' },
+  { name: 'Bali', slug: 'bali', image: '/images/optimized/bali.webp' },
+  { name: 'Lombok & Komodo', slug: 'lombok-komodo', image: '/images/optimized/lombok-komodo.webp' },
+  { name: 'Sumatra', slug: 'sumatra', image: '/images/optimized/sumatra-main.webp' },
+  { name: 'Sulawesi', slug: 'sulawesi', image: '/images/optimized/sulawesi.webp' },
 ];
 
 export const services = [
   {
     title: 'FIT-Individual',
-    text: 'Thoughtfully coordinated departures, consistent delivery and practical planning for your recurring group business.',
+    text: 'Independent journeys shaped around each traveller’s interests, preferred pace and priorities, with local coordination from arrival to departure.',
   },
   {
     title: 'Tailor-made Groups',
@@ -122,7 +122,7 @@ export const programs: Program[] = [
     title: 'Java to Bali: Culture & Volcanoes',
     route: ['Yogyakarta', 'Bromo', 'Ubud'],
     category: 'Tailor-made Groups',
-    image: '/images/east-java.jpg',
+    image: '/images/optimized/borobudur-7.webp',
     itineraryUrl: '#',
     pdfUrl: '#',
   },
@@ -131,7 +131,7 @@ export const programs: Program[] = [
     title: 'Bali: Beyond the Everyday',
     route: ['Ubud', 'Central Bali', 'South Bali'],
     category: 'MICE & Incentive',
-    image: '/images/bali.jpg',
+    image: '/images/optimized/bali.webp',
     itineraryUrl: '#',
     pdfUrl: '#',
   },
@@ -140,7 +140,7 @@ export const programs: Program[] = [
     title: 'East Java Discovery',
     route: ['Surabaya', 'Bromo', 'Malang'],
     category: 'FIT-Individual',
-    image: '/images/east-java.jpg',
+    image: '/images/optimized/east-java.webp',
     itineraryUrl: '#',
     pdfUrl: '#',
   },
@@ -168,7 +168,7 @@ export const featuredPrograms: FeaturedProgram[] = [
     supportingImages: [
       { image: '/images/optimized/bromo-023.webp', title: 'Mount Bromo at first light' },
       { image: '/images/optimized/bromo-d.webp', title: 'Bromo volcanic landscape' },
-      { image: '/images/east-java.jpg', title: 'East Java highlands' },
+      { image: '/images/optimized/east-java.webp', title: 'East Java highlands' },
       { image: '/images/optimized/rice-25.webp', title: 'Rural Java' },
     ],
     description:
@@ -201,33 +201,19 @@ export const featuredPrograms: FeaturedProgram[] = [
       { image: '/images/optimized/jatiluwih-kk.webp', title: 'Jatiluwih rice terraces' },
       { image: '/images/optimized/rice-25.webp', title: 'Bali countryside' },
       { image: '/images/optimized/jukung-in-sanur.webp', title: 'Sanur coast' },
-      { image: '/images/bali.jpg', title: 'Bali landscapes' },
+      { image: '/images/optimized/bali.webp', title: 'Bali landscapes' },
     ],
     description:
       "There is another side of Bali, found along its quieter roads, in its mountain villages, rice-growing countryside and little coastal hideaways. Leaving your hotel behind, head towards Tanah Lot and the former royal temple of Taman Ayun before continuing inland to Jatiluwih. Here, the landscape opens into magnificent rice terraces, and the night is spent in the peaceful surroundings of the countryside, far from the island's busier corners. The road north takes you through Bedugul and its lakeside temple of Ulun Danu Beratan, before winding through the cool highlands of Munduk, where a short walk brings you to a secluded waterfall. Further north, Pemuteran offers a welcome change of pace, with two nights to enjoy its laid-back coastal setting, perhaps venturing into Bali Barat National Park or simply taking in the tranquillity of the village. The journey back towards South Bali follows a different route, tracing the northern coastline through Singaraja, with time to visit its old Chinese temple and Brahma Vihara-Arama Buddhist monastery. Continue inland to Sidemen, where another two-night stay invites you to enjoy the quieter charms of Bali's eastern countryside, before eventually making your way back to South Bali.",
   },
 ];
 
-export const team = {
-  title: 'Behind every great journey, a dependable local team.',
-  highlights: ['Fast quotes', 'Licensed multilingual guides', 'Reliable fleet', '24/7 on-tour support'],
-  note: '[SERVICE CAPABILITIES — confirm before publication]',
-  photo: '', // e.g. '/images/team.jpg' — leave empty to show the placeholder box
-  photoPlaceholder: '[APPROVED PHOTO OF AN ANEKA KARTIKA TOURS & TRAVEL GROUP]',
-};
-
-export const testimonial = {
-  title: 'Good journeys begin with good partnerships.',
-  quote: '[TESTIMONIAL FROM A PARTNER AGENT]',
-  author: '[AGENT NAME] · [AGENCY] · [COUNTRY]',
-  logosNote: '[VERIFIED ASSOCIATION AND PARTNER LOGOS]',
-};
+// TODO: Add a partner testimonial and attribution after the client provides approved copy.
 
 export const quote = {
   title: 'Your next Indonesia journey starts here.',
   subtitle: 'Share your group brief with our team. We’ll work with you on an itinerary built around your clients.',
   hotelClasses: ['3 star', '4 star', '5 star'],
-  note: '[QUOTE FORM — submission and sales inbox setup required before publication]',
 };
 
 // ---------- Subpages ----------
@@ -263,7 +249,7 @@ export const pages = {
         ],
       },
     ],
-    image: '/images/central-java-yogyakarta.jpg',
+    image: '/images/optimized/central-java-yogyakarta.webp',
     ctaTitle: 'A partnership, not a transaction.',
     ctaText:
       'Clear communication, thoughtful route planning and a collaborative approach. Tell us what your clients need, and let’s build the right journey together.',
@@ -293,6 +279,5 @@ export const pages = {
     seoTitle: 'Request an Indonesia Group Quote | Aneka Kartika Tours & Travel',
     title: 'Let’s plan something extraordinary.',
     intro: 'Tell us about your group. Our team will help shape the right Indonesia program for your agency.',
-    note: '[FORM EMAIL DELIVERY — connect the sales inbox before publishing]',
   },
 };

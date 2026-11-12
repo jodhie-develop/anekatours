@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
-import { company, languages, navLinks } from '../data/site';
+import { company, navLinks } from '../data/site';
 import { Link } from '../router';
 
 export default function Header({ current }: { current: string }) {
   const [open, setOpen] = useState(false);
-  const [lang, setLang] = useState('EN');
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -45,24 +44,8 @@ export default function Header({ current }: { current: string }) {
         </nav>
 
         <div className="header__actions">
-          <div className="lang" role="group" aria-label="Language">
-            {languages.map((l, i) => (
-              <span key={l}>
-                <button
-                  type="button"
-                  className={lang === l ? 'is-active' : ''}
-                  onClick={() => setLang(l)}
-                  aria-pressed={lang === l}
-                >
-                  {l}
-                </button>
-                {i < languages.length - 1 && ' / '}
-              </span>
-            ))}
-          </div>
-          <a href="#" className="header__login">
-            Agent Login
-          </a>
+          {/* TODO: Restore language selector when translated /zh/ and /ja/ routes are ready. */}
+          {/* TODO: Add Agent Login only after its destination is available. */}
           <Link to="/contact" className="btn btn--primary">
             Request a Quote
           </Link>
@@ -89,10 +72,8 @@ export default function Header({ current }: { current: string }) {
           ))}
         </nav>
         <div className="mobile-menu__footer">
-          <a href="#" onClick={close}>
-            Agent Login
-          </a>
-          <span className="lang-static">{languages.join(' / ')}</span>
+          {/* TODO: Restore Agent Login when its destination is available. */}
+          {/* TODO: Restore EN/ZH/JA after translated routes are available. */}
           <Link to="/contact" className="btn btn--primary" onClick={close}>
             Request a Quote
           </Link>

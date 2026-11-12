@@ -691,19 +691,29 @@ p {
 }
 
 .reveal {
-  opacity: 0;
-  transform: translateY(24px);
+  opacity: 1;
+  transform: none;
   transition:
-    opacity 0.65s ease,
-    transform 0.65s cubic-bezier(0.2, 0.7, 0.2, 1);
+    opacity 0.36s ease,
+    transform 0.36s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.reveal.is-observing:not(.is-visible) {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.reveal.is-observing:not(.is-visible) > * {
+  opacity: 0;
+  transform: translateY(5px);
 }
 
 .reveal > * {
-  opacity: 0;
-  transform: translateY(12px);
+  opacity: 1;
+  transform: none;
   transition:
-    opacity 0.5s ease,
-    transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+    opacity 0.3s ease,
+    transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 .reveal.is-visible {
@@ -741,7 +751,7 @@ p {
 
 .intro::before {
   z-index: -2;
-  background: url('/images/bali.jpg') center 48% / cover no-repeat;
+  background: url('/images/optimized/bali.webp') center 48% / cover no-repeat;
 }
 
 .intro::after {
@@ -848,6 +858,8 @@ p {
 .dest-card--tall {
   grid-row: span 3;
 }
+
+.dest-card:last-child { grid-column: span 2; }
 
 .dest-card img {
   position: absolute;
@@ -1647,6 +1659,15 @@ p {
   gap: 8px;
 }
 
+.form__honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .form__submit .label {
   margin-top: 16px;
 }
@@ -2128,6 +2149,8 @@ p {
     grid-row: span 2;
   }
 
+  .dest-card:last-child { grid-column: span 2; }
+
   .programs {
     grid-template-columns: 1fr 1fr;
   }
@@ -2242,6 +2265,8 @@ p {
     grid-column: auto;
     grid-row: span 1;
   }
+
+  .dest-card:last-child { grid-column: auto; }
 
   .services__inner,
   .testimonial__inner {

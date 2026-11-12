@@ -101,7 +101,7 @@ export default function Chatbot() {
                   <div className="chatbot-message__links">
                     {message.links.map((link) => (
                       link.external ? (
-                        <a key={link.label} href={link.href} target={link.href.startsWith('https:') ? '_blank' : undefined} rel="noreferrer">{link.label}</a>
+                        <a key={link.label} href={link.href} target={link.href.startsWith('https:') ? '_blank' : undefined} rel="noopener noreferrer">{link.label}</a>
                       ) : (
                         <Link key={link.label} to={link.href} onClick={() => setOpen(false)}>{link.label}</Link>
                       )

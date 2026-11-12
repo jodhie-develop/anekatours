@@ -17,6 +17,30 @@ const routes: Record<string, { component: ComponentType; title: string }> = {
   '/contact': { component: ContactPage, title: pages.contact.seoTitle },
 };
 
+const descriptions: Record<string, string> = {
+  '/': 'Indonesia destination management for tour operators and travel agents. Build seamless group journeys with Aneka Kartika Tours, established in 1979.',
+  '/destinations': 'Explore Indonesia with a local DMC, from Java and Bali to Sumatra and Sulawesi. Plan distinctive journeys with Aneka Kartika Tours.',
+  '/programs': 'Browse sample Indonesia tour programs for travel trade partners. Adapt routes, timing and experiences with our Surabaya-based local team.',
+  '/services': 'Ground handling, FIT travel and tailored group services for overseas tour operators and travel agents across Indonesia.',
+  '/about': 'Meet Aneka Kartika Tours, an Indonesian destination management company serving travel trade partners since 1979.',
+  '/contact': 'Share your Indonesia group brief with Aneka Kartika Tours. Request a tailored proposal from our local destination team.',
+  '/gallery': 'View landscapes, wildlife and local life in Sumatra through the Aneka Kartika Tours photo gallery.',
+};
+const socialImages: Record<string, string> = {
+  '/': '/images/og/home.jpg', '/destinations': '/images/og/destinations.jpg', '/programs': '/images/og/programs.jpg',
+  '/services': '/images/og/services.jpg', '/about': '/images/og/about.jpg', '/contact': '/images/og/contact.jpg', '/gallery': '/images/og/gallery.jpg',
+};
+
+function setMeta(selector: string, attribute: string, value: string) {
+  let tag = document.head.querySelector<HTMLMetaElement>(selector);
+  if (!tag) {
+    tag = document.createElement('meta');
+    tag.setAttribute(selector.includes('property=') ? 'property' : 'name', selector.match(/(?:name|property)="([^"]+)"/)?.[1] ?? '');
+    document.head.appendChild(tag);
+  }
+  tag.setAttribute(attribute, value);
+}
+
 export default function App() {
   const { path, search } = useLocation();
   const clean = path.length > 1 ? path.replace(/\/+$/, '') : path;
@@ -28,8 +52,34 @@ export default function App() {
 
   useEffect(() => {
     document.title = pageTitle;
+    const program = featuredPrograms.find((item) => clean === `/programs/${item.slug}`);
+    const description = (program
+      ? `${program.days}-day Indonesia journey from ${program.start} to ${program.finish}, tailored by Aneka Kartika Tours for travel trade partners.`
+      : descriptions[clean] ?? 'Aneka Kartika Tours & Travel, your local destination management partner in Indonesia since 1979.').slice(0, 155);
+    const canonical = `https://www.aneka-tours.co.id${clean === '/' ? '/' : clean}`;
+    const image = `https://www.aneka-tours.co.id${socialImages[clean] ?? socialImages['/programs']}`;
+    setMeta('meta[name="description"]', 'content', description);
+    setMeta('meta[property="og:title"]', 'content', pageTitle);
+    setMeta('meta[property="og:description"]', 'content', description);
+    setMeta('meta[property="og:image"]', 'content', image);
+    setMeta('meta[property="og:url"]', 'content', canonical);
+    setMeta('meta[name="twitter:title"]', 'content', pageTitle);
+    setMeta('meta[name="twitter:description"]', 'content', description);
+    setMeta('meta[name="twitter:image"]', 'content', image);
+    let canonicalTag = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (!canonicalTag) {
+      canonicalTag = document.createElement('link');
+      canonicalTag.rel = 'canonical';
+      document.head.appendChild(canonicalTag);
+    }
+    canonicalTag.href = canonical;
+    let robotsTag = document.head.querySelector<HTMLMetaElement>('meta[name="robots"]');
+    if (clean === '/gallery' || !route && !program) {
+      if (!robotsTag) { robotsTag = document.createElement('meta'); robotsTag.name = 'robots'; document.head.appendChild(robotsTag); }
+      robotsTag.content = 'noindex, nofollow';
+    } else robotsTag?.remove();
     window.scrollTo(0, 0);
-  }, [clean, search, pageTitle]);
+  }, [clean, search, pageTitle, route, programSlug]);
 
   return (
     <>

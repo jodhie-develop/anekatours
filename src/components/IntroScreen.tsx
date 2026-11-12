@@ -7,7 +7,7 @@ const photoColumns = Array.from({ length: 4 }, (_, columnIndex) =>
 );
 
 export default function IntroScreen() {
-  const [phase, setPhase] = useState<'intro' | 'exit' | 'done'>('intro');
+  const [phase, setPhase] = useState<'intro' | 'exit' | 'done'>('done');
   const skipRef = useRef<HTMLButtonElement>(null);
   const exitStarted = useRef(false);
   const endTimer = useRef<number | null>(null);
@@ -26,10 +26,10 @@ export default function IntroScreen() {
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setPhase('done');
       return;
     }
 
+    setPhase('intro');
     document.documentElement.classList.add('intro-playing');
     skipRef.current?.focus();
     const startTimer = window.setTimeout(() => beginExitRef.current(), 4550);
