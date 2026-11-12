@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { destinations, openingPhotos } from '../data/site';
 
 const allIntroPhotos = [...destinations, ...openingPhotos];
+const INTRO_TOTAL_MS = 4000;
+const CURTAIN_EXIT_MS = 450;
 const photoColumns = Array.from({ length: 4 }, (_, columnIndex) =>
   allIntroPhotos.filter((_, photoIndex) => photoIndex % 4 === columnIndex),
 );
@@ -24,7 +26,7 @@ export default function IntroScreen() {
       setPhase('done');
       document.documentElement.classList.remove('intro-playing');
       previousFocusRef.current?.focus();
-    }, 450);
+    }, CURTAIN_EXIT_MS);
   };
   beginExitRef.current = beginExit;
 
@@ -40,7 +42,7 @@ export default function IntroScreen() {
     setPhase('intro');
     document.documentElement.classList.add('intro-playing');
     skipRef.current?.focus();
-    const startTimer = window.setTimeout(() => beginExitRef.current(), 650);
+    const startTimer = window.setTimeout(() => beginExitRef.current(), INTRO_TOTAL_MS - CURTAIN_EXIT_MS);
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') beginExitRef.current();
     };
