@@ -2,6 +2,7 @@ import { useEffect, type ComponentType } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import IntroScreen from './components/IntroScreen';
+import Chatbot from './components/Chatbot';
 import { useLocation } from './router';
 import { featuredPrograms, pages } from './data/site';
 import { AboutPage, ContactPage, DestinationsPage, GalleryPage, HomePage, NotFoundPage, ProgramDetailPage, ProgramsPage, ServicesPage } from './pages';
@@ -39,6 +40,7 @@ export default function App() {
         <Page />
       </main>
       <Footer />
+      <Chatbot />
     </>
   );
 }
