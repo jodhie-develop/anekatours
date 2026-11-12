@@ -8,7 +8,7 @@ const photoColumns = Array.from({ length: 4 }, (_, columnIndex) =>
   allIntroPhotos.filter((_, photoIndex) => photoIndex % 4 === columnIndex),
 );
 let introSeenInMemory = false;
-const INTRO_SESSION_KEY = 'aneka-home-intro-seen';
+const INTRO_SESSION_KEY = 'aneka-home-intro-seen-v2';
 
 export default function IntroScreen() {
   const [phase, setPhase] = useState<'intro' | 'exit' | 'done'>('done');
