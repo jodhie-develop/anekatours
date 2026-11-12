@@ -1,8 +1,8 @@
 import { CtaBand, Destinations, Hero, Intro, PageHero, ProgramShowcase, Programs, Services, Team, Testimonial } from './components/Sections';
 import QuoteForm from './components/QuoteForm';
 import Reveal from './components/Reveal';
-import { Link } from './router';
-import { pages } from './data/site';
+import { Link, useLocation } from './router';
+import { featuredPrograms, pages } from './data/site';
 import Gallery from './components/Gallery';
 
 export function HomePage() {
@@ -73,11 +73,34 @@ export function DestinationsPage() {
 }
 
 export function ProgramsPage() {
-  const p = pages.programs;
+  return <ProgramShowcase />;
+}
+
+export function ProgramDetailPage() {
+  const { path } = useLocation();
+  const segments = path.split('/').filter(Boolean);
+  const slug = segments[segments.length - 1];
+  const program = featuredPrograms.find((item) => item.slug === slug);
+
+  if (!program) return <NotFoundPage />;
+
   return (
     <>
-      <PageHero title={p.title} intro={p.intro} />
-      <ProgramShowcase />
+      <PageHero
+        title={program.title}
+        intro={`${program.days} days · Start: ${program.start} · Finish: ${program.finish}`}
+        image={program.image}
+      />
+      <section className="section container program-detail-page">
+        <Link to="/programs" className="link">← All sample programs</Link>
+        <div className="program-detail-page__content">
+          <p className="eyebrow">The journey</p>
+          <p className="program-detail-page__description">{program.description}</p>
+          <Link to={`/contact?program=${encodeURIComponent(program.title)}`} className="btn btn--primary">
+            Enquire about this program
+          </Link>
+        </div>
+      </section>
     </>
   );
 }

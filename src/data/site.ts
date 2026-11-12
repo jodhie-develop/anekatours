@@ -147,6 +147,7 @@ export const programs: Program[] = [
 ];
 
 export type FeaturedProgram = {
+  slug: string;
   days: number;
   title: string;
   start: string;
@@ -157,6 +158,7 @@ export type FeaturedProgram = {
 
 export const featuredPrograms: FeaturedProgram[] = [
   {
+    slug: 'east-java-discovery',
     days: 4,
     title: 'East Java discovery',
     start: 'Surabaya Airport',
@@ -166,6 +168,7 @@ export const featuredPrograms: FeaturedProgram[] = [
       "From Surabaya, head east on a journey through East Java's striking volcanic landscapes and rural heartland. Your first encounter is Mount Bromo, where an early morning Jeep ride takes you across the vast Sea of Sand towards a panoramic viewpoint, just in time to witness the first light of day illuminating the surrounding volcanic peaks. Continue to Banyuwangi for a two-night stay, offering a closer look at the region's rural character and traditions. Spend a day wandering through a local village, discovering its coffee plantations and getting acquainted with the daily rhythm of farming life. The next day's adventure takes you into the highlands of Mount Ijen, where dramatic volcanic scenery unfolds around its remarkable turquoise crater lake. After exploring this remarkable landscape, make your way to Ketapang Harbour for a ferry crossing over the Bali Strait. Upon arrival, continue to your selected hotel in Bali, bringing this East Java discovery to a fitting close.",
   },
   {
+    slug: 'java-to-bali-culture-volcano',
     days: 8,
     title: 'Java to Bali, Culture & Volcano',
     start: 'Yogyakarta airport',
@@ -175,6 +178,7 @@ export const featuredPrograms: FeaturedProgram[] = [
       "A journey across Java reveals layers of culture, history and ever-changing landscapes, with Bali just across the strait. Begin in Yogyakarta, the cultural heartland of Java, where centuries-old traditions remain part of everyday life. Discover two of Indonesia's UNESCO World Heritage Sites, Borobudur and Prambanan, explore the Sultan's Palace and visit a local village to see traditional cottage industries still practised by its residents. Leaving Yogyakarta behind, board a scenic train for a memorable ride across Java's heartland to Malang, where you spend the night. Continue towards Mount Bromo, where an early morning Jeep ride takes you across the vast Sea of Sand to catch the first light over its remarkable volcanic landscape. The journey eastwards leads to Kalibaru, a quiet countryside settlement surrounded by plantations. Take a guided walk through a private plantation to discover local crops and produce, before continuing to Banyuwangi. Another early start takes you to Mount Ijen, where a striking turquoise crater lake sits within a vast volcanic caldera. After exploring the highlands, descend towards Ketapang Harbour for the ferry crossing to Bali, bringing your Java overland journey to a close.",
   },
   {
+    slug: 'bali-quiet-roads',
     days: 6,
     title: 'Bali, along the quiet roads',
     start: 'Bali hotel (South)',

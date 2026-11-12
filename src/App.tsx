@@ -3,8 +3,8 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import IntroScreen from './components/IntroScreen';
 import { useLocation } from './router';
-import { pages } from './data/site';
-import { AboutPage, ContactPage, DestinationsPage, GalleryPage, HomePage, NotFoundPage, ProgramsPage, ServicesPage } from './pages';
+import { featuredPrograms, pages } from './data/site';
+import { AboutPage, ContactPage, DestinationsPage, GalleryPage, HomePage, NotFoundPage, ProgramDetailPage, ProgramsPage, ServicesPage } from './pages';
 
 const routes: Record<string, { component: ComponentType; title: string }> = {
   '/': { component: HomePage, title: 'Aneka Kartika Tours & Travel | Indonesia DMC' },
@@ -20,12 +20,15 @@ export default function App() {
   const { path, search } = useLocation();
   const clean = path.length > 1 ? path.replace(/\/+$/, '') : path;
   const route = routes[clean];
-  const Page = route?.component ?? NotFoundPage;
+  const programSlug = clean.startsWith('/programs/') ? clean.slice('/programs/'.length) : '';
+  const program = featuredPrograms.find((item) => item.slug === programSlug);
+  const Page = route?.component ?? (program ? ProgramDetailPage : NotFoundPage);
+  const pageTitle = route?.title ?? (program ? `${program.title} | Aneka Kartika Tours & Travel` : 'Page not found | Aneka Kartika Tours & Travel');
 
   useEffect(() => {
-    document.title = route?.title ?? 'Page not found | Aneka Kartika Tours & Travel';
+    document.title = pageTitle;
     window.scrollTo(0, 0);
-  }, [clean, search, route]);
+  }, [clean, search, pageTitle]);
 
   return (
     <>

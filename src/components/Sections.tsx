@@ -268,36 +268,28 @@ export function Programs({ withFilter = false, showHeading = true }: { withFilte
 
 export function ProgramShowcase() {
   return (
-    <Reveal as="section" className="section container program-showcase">
-      <div className="program-showcase__intro">
-        <p className="eyebrow">Made for curious travellers</p>
-        <h2 className="h2">Three ways to discover Indonesia.</h2>
-        <p className="lead">Each sample can be tailored to your travellers, timing and preferred pace.</p>
-      </div>
-      <div className="program-showcase__list">
-        {featuredPrograms.map((program, index) => (
-          <article className="program-detail" key={program.title}>
-            <div className="program-detail__photo">
-              <img src={program.image} alt={program.title} loading="lazy" />
-              <span className="program-detail__duration">{program.days} days</span>
-            </div>
-            <div className="program-detail__body">
-              <span className="eyebrow">Sample program {String(index + 1).padStart(2, '0')}</span>
-              <h3 className="program-detail__title">{program.title}</h3>
-              <div className="program-detail__route">
-                <div><span>Start</span><strong>{program.start}</strong></div>
-                <span className="program-detail__arrow" aria-hidden="true">→</span>
-                <div><span>Finish</span><strong>{program.finish}</strong></div>
-              </div>
-              <p className="program-detail__description">{program.description}</p>
-              <Link to={`/contact?program=${encodeURIComponent(program.title)}`} className="btn btn--primary">
-                Enquire about this program
-              </Link>
-            </div>
-          </article>
+    <section className="section container program-list-section">
+      <p className="eyebrow">Sample programs</p>
+      <h1 className="h2">Choose a journey to explore.</h1>
+      <div className="program-card-grid">
+        {featuredPrograms.map((program) => (
+          <Link className="program-card" key={program.slug} to={`/programs/${program.slug}`}>
+            <img src={program.image} alt="" loading="lazy" />
+            <span className="program-card__shade" />
+            <span className="program-card__duration">{program.days} days</span>
+            <span className="program-card__content">
+              <strong className="program-card__title">{program.title}</strong>
+              <span className="program-card__route">
+                <span><small>Start</small>{program.start}</span>
+                <span className="program-card__arrow" aria-hidden="true">→</span>
+                <span><small>Finish</small>{program.finish}</span>
+              </span>
+            </span>
+            <span className="program-card__open">View program <span aria-hidden="true">↗</span></span>
+          </Link>
         ))}
       </div>
-    </Reveal>
+    </section>
   );
 }
 

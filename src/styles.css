@@ -971,52 +971,40 @@ p {
   margin-top: 4px;
 }
 
-.program-showcase__intro {
-  max-width: 720px;
-  margin-bottom: 40px;
+.program-list-section {
+  padding-top: 56px;
 }
 
-.program-showcase__intro .eyebrow {
+.program-list-section > .eyebrow {
+  margin-bottom: 8px;
   color: var(--orange-dark);
-  margin-bottom: 10px;
 }
 
-.program-showcase__intro .lead {
-  margin-top: 12px;
-}
-
-.program-showcase__list {
+.program-card-grid {
+  margin-top: 28px;
   display: grid;
-  gap: 28px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
 }
 
-.program-detail {
-  display: grid;
-  grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.15fr);
+.program-card {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 4.6;
+  min-height: 350px;
   overflow: hidden;
   border: 1px solid rgba(10, 23, 99, 0.1);
-  border-radius: var(--radius);
-  background: var(--white);
-  box-shadow: 0 12px 36px rgba(10, 23, 99, 0.06);
+  border-radius: 20px;
+  background: var(--green);
+  color: var(--white);
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgba(10, 23, 99, 0.12);
+  isolation: isolate;
 }
 
-.program-detail:nth-child(even) {
-  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
-}
-
-.program-detail:nth-child(even) .program-detail__photo {
-  order: 2;
-}
-
-.program-detail__photo {
-  min-height: 100%;
-  position: relative;
-  overflow: hidden;
-  background: var(--sage);
-}
-
-.program-detail__photo img {
+.program-card > img {
   position: absolute;
+  z-index: -2;
   inset: 0;
   width: 100%;
   height: 100%;
@@ -1024,107 +1012,156 @@ p {
   transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-.program-detail:hover .program-detail__photo img {
-  transform: scale(1.04);
+.program-card:hover > img {
+  transform: scale(1.055);
 }
 
-.program-detail__duration {
+.program-card__shade {
   position: absolute;
-  left: 20px;
-  bottom: 20px;
-  padding: 8px 14px;
-  border: 1px solid rgba(255, 255, 255, 0.55);
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(5, 12, 48, 0.04) 15%, rgba(5, 12, 48, 0.18) 40%, rgba(5, 12, 48, 0.91) 100%);
+}
+
+.program-card__duration {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  padding: 8px 13px;
+  border: 1px solid rgba(255, 255, 255, 0.58);
   border-radius: 999px;
-  background: rgba(10, 23, 99, 0.84);
+  background: rgba(10, 23, 99, 0.78);
   color: var(--white);
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.program-detail__body {
-  padding: clamp(26px, 4vw, 48px);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 18px;
-}
-
-.program-detail__body > .eyebrow {
-  color: var(--orange-dark);
   font-size: 12px;
   font-weight: 800;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
+  backdrop-filter: blur(8px);
 }
 
-.program-detail__title {
+.program-card__content {
+  position: absolute;
+  right: 22px;
+  bottom: 25px;
+  left: 22px;
+  display: grid;
+  gap: 16px;
+}
+
+.program-card__title {
   font-family: var(--font-display);
-  color: var(--green);
-  font-size: clamp(28px, 3vw, 38px);
-  font-weight: 700;
+  font-size: clamp(23px, 2.4vw, 30px);
+  font-weight: 800;
   line-height: 1.12;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.025em;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
 }
 
-.program-detail__route {
-  width: 100%;
+.program-card__route {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  gap: 12px;
-  padding: 15px 18px;
-  border-radius: 12px;
-  background: #f3f4fc;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.38);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.3;
 }
 
-.program-detail__route div {
+.program-card__route > span {
   display: grid;
-  gap: 3px;
+  gap: 4px;
 }
 
-.program-detail__route div span {
-  color: #68709c;
-  font-size: 11px;
+.program-card__route small {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
-.program-detail__route div strong {
-  color: var(--green);
-  font-size: 14px;
-  line-height: 1.35;
+.program-card__arrow {
+  color: #ff9aaa;
+  font-size: 20px;
 }
 
-.program-detail__arrow {
-  color: var(--orange);
-  font-size: 22px;
+.program-card__open {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-.program-detail__description {
+.program-card:hover .program-card__open,
+.program-card:focus-visible .program-card__open {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.program-card:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 4px;
+}
+
+.program-detail-page {
+  padding-top: 44px;
+}
+
+.program-detail-page__content {
+  max-width: 900px;
+  margin-top: 28px;
+  display: grid;
+  justify-items: start;
+  gap: 18px;
+}
+
+.program-detail-page__content .eyebrow {
+  color: var(--orange-dark);
+}
+
+.program-detail-page__description {
   color: #4f567b;
-  font-size: 15px;
-  line-height: 1.75;
+  font-size: 18px;
+  line-height: 1.8;
 }
 
-.program-detail__body .btn {
-  margin-top: 2px;
+@media (max-width: 1000px) {
+  .program-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
-@media (max-width: 760px) {
-  .program-detail,
-  .program-detail:nth-child(even) {
+@media (max-width: 620px) {
+  .program-list-section {
+    padding-top: 38px;
+  }
+
+  .program-card-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
 
-  .program-detail:nth-child(even) .program-detail__photo {
-    order: initial;
+  .program-card {
+    aspect-ratio: 4 / 3.8;
+    min-height: 320px;
   }
 
-  .program-detail__photo {
-    min-height: 250px;
+  .program-card__open {
+    opacity: 1;
+    transform: none;
+  }
+
+  .program-detail-page__description {
+    font-size: 16px;
   }
 }
 
