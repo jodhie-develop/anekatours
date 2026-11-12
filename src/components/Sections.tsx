@@ -56,12 +56,48 @@ export function Hero() {
           <Link to="/programs" className="btn btn--primary">View Sample Programs</Link>
         </div>
       </div>
-      <a className="hero__scroll" href="#intro" aria-label="Scroll to the next section">
-        <svg viewBox="0 0 24 24" width="23" height="23" aria-hidden="true">
-          <path d="M12 4v15m-7-7 7 7 7-7" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </a>
     </section>
+  );
+}
+
+export function ScrollArrow() {
+  const [atBottom, setAtBottom] = useState(false);
+
+  useEffect(() => {
+    const updatePosition = () => {
+      const pageHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+      setAtBottom(window.scrollY + window.innerHeight >= pageHeight - 8);
+    };
+    updatePosition();
+    window.addEventListener('scroll', updatePosition, { passive: true });
+    window.addEventListener('resize', updatePosition);
+    return () => {
+      window.removeEventListener('scroll', updatePosition);
+      window.removeEventListener('resize', updatePosition);
+    };
+  }, []);
+
+  const scroll = () => {
+    const behavior: ScrollBehavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+    if (atBottom) {
+      window.scrollTo({ top: 0, behavior });
+      return;
+    }
+    const headerOffset = document.querySelector('.header')?.getBoundingClientRect().height ?? 0;
+    const nextSection = [...document.querySelectorAll<HTMLElement>('main > section')]
+      .find((section) => section.getBoundingClientRect().top > headerOffset + 8);
+    if (nextSection) nextSection.scrollIntoView({ behavior, block: 'start' });
+    else window.scrollTo({ top: document.documentElement.scrollHeight, behavior });
+  };
+
+  return (
+    <button className="hero__scroll" type="button" onClick={scroll} aria-label={atBottom ? 'Scroll to the top' : 'Scroll to the next section'}>
+      <svg viewBox="0 0 24 24" width="23" height="23" aria-hidden="true">
+        {atBottom
+          ? <path d="M12 20V5m7 7-7-7-7 7" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+          : <path d="M12 4v15m-7-7 7 7 7-7" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />}
+      </svg>
+    </button>
   );
 }
 /** Heading block at the top of each subpage. Optional image turns it into a photo banner. */

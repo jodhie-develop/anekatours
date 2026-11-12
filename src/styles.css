@@ -656,8 +656,8 @@ p {
 }
 
 .hero__scroll {
-  position: absolute;
-  z-index: 2;
+  position: fixed;
+  z-index: 35;
   bottom: 24px;
   left: 50%;
   width: 48px;
@@ -669,6 +669,7 @@ p {
   background: rgba(10, 23, 99, 0.36);
   color: var(--white);
   text-decoration: none;
+  cursor: pointer;
   transform: translateX(-50%);
   animation: heroScrollHint 1.6s ease-in-out infinite;
   transition: background 0.2s ease;
@@ -2567,6 +2568,9 @@ p {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   *,
   *::before,
   *::after {

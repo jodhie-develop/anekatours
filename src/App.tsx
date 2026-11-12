@@ -6,6 +6,7 @@ import Chatbot from './components/Chatbot';
 import { useLocation } from './router';
 import { featuredPrograms, pages } from './data/site';
 import { AboutPage, ContactPage, DestinationsPage, GalleryPage, HomePage, NotFoundPage, ProgramDetailPage, ProgramsPage, ServicesPage } from './pages';
+import { ScrollArrow } from './components/Sections';
 
 const routes: Record<string, { component: ComponentType; title: string }> = {
   '/': { component: HomePage, title: 'Aneka Kartika Tours & Travel | Indonesia DMC' },
@@ -91,6 +92,7 @@ export default function App() {
       </main>
       <Footer />
       <Chatbot />
+      {clean === '/' && <ScrollArrow />}
     </>
   );
 }
