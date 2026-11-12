@@ -27,11 +27,12 @@ export default function Footer() {
           <div className="footer__company-details">
             <p className="footer__address">
               <a href="https://www.google.com/maps/search/?api=1&amp;query=Jl.+Manyar+Kertoarjo+V-50,+Surabaya+60285,+Indonesia" target="_blank" rel="noreferrer">
-                Jl. Manyar Kertoarjo V-50<br />Surabaya 60285, Indonesia
+                Jl. Manyar Kertoarjo V-50, Surabaya 60285, Indonesia
               </a>
             </p>
             <p>Telp : <a href="tel:+62315929000">+.62.31.5929000</a></p>
-            <p>E.mail : <a href="mailto:info@aneka-tours.co.id">info@aneka-tours.co.id</a></p>
+            <p>E-mail : <a href="mailto:info@aneka-tours.co.id">info@aneka-tours.co.id</a></p>
+            <p>Licence ASITA/02/XII/DPP/1994</p>
             <p>Facebook: Aneka Kartika Tours and Travel Services</p>
             <p>Instagam: <a href="https://www.instagram.com/AnekaKartikaTours" target="_blank" rel="noreferrer">AnekaKartikaTours</a></p>
             <p>URL : <a href="http://www.aneka-tours.co.id" target="_blank" rel="noreferrer">http://www.aneka-tours.co.id</a></p>
