@@ -29,7 +29,23 @@ export function AboutPage() {
         <div className="about__photo">
           <img src={p.image} alt="Borobudur, Central Java" loading="lazy" />
         </div>
-        <p className="lead about__story">{p.story}</p>
+        <div className="about__story">
+          {p.story.map((section) => (
+            <section className="about__story-section" key={section.heading}>
+              <h2>{section.heading}</h2>
+              {section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+              {section.points && (
+                <ul>
+                  {section.points.map((point) => (
+                    <li key={point.lead}>
+                      <strong>{point.lead}</strong>{point.text}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          ))}
+        </div>
       </Reveal>
       <div className="section">
         <CtaBand title={p.ctaTitle} text={p.ctaText} />

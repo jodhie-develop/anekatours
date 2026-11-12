@@ -1583,13 +1583,6 @@ p {
   letter-spacing: 0.035em;
 }
 
-.footer__company-details p:first-child {
-  color: #f0a4b0;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.045em;
-}
-
 .footer__company-details a {
   text-decoration-color: rgba(250, 250, 255, 0.38);
   text-underline-offset: 3px;
@@ -1974,6 +1967,42 @@ p {
 
 .about__story {
   margin-top: 32px;
+  max-width: 1000px;
+  display: grid;
+  gap: 34px;
+}
+
+.about__story-section {
+  display: grid;
+  gap: 12px;
+}
+
+.about__story-section h2 {
+  color: var(--green);
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.about__story-section p,
+.about__story-section li {
+  color: #4f567b;
+  font-size: 17px;
+  line-height: 1.75;
+}
+
+.about__story-section ul {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+  list-style: none;
+}
+
+.about__story-section li strong {
+  color: var(--green);
+  font-weight: 800;
 }
 
 .cta-band__text {
