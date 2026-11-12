@@ -96,6 +96,17 @@ export function ProgramDetailPage() {
         <div className="program-detail-page__content">
           <p className="eyebrow">The journey</p>
           <p className="program-detail-page__description">{program.description}</p>
+          <div className="program-detail-page__supporting">
+            <p className="eyebrow">Along the way</p>
+            <div className="program-detail-page__gallery">
+              {program.supportingImages.map((photo) => (
+                <figure className="program-detail-page__photo-card" key={photo.image}>
+                  <img src={photo.image} alt={photo.title} loading="lazy" />
+                  <figcaption>{photo.title}</figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
           <Link to={`/contact?program=${encodeURIComponent(program.title)}`} className="btn btn--primary">
             Enquire about this program
           </Link>
