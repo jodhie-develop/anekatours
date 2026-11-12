@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Reveal from './Reveal';
 import { Link } from '../router';
-import { company, destinations, featuredPrograms, hero, heroPhotos, intro, programs, services, team, testimonial, pages } from '../data/site';
+import { company, destinations, featuredPrograms, hero, heroPhotos, intro, programs, services, testimonial, pages } from '../data/site';
 
 const heroSlides = heroPhotos;
 
@@ -294,13 +294,22 @@ export function ProgramShowcase() {
 }
 
 export function Team() {
+  const memberLogos = [
+    { name: 'IATA', src: '/images/logo/Iata.png' },
+    { name: 'ASITA', src: '/images/logo/asita.png' },
+    { name: 'ASTINDO', src: '/images/logo/astindo.png' },
+    { name: 'IINTOA', src: '/images/logo/iintoa.jpeg' },
+  ];
+
   return (
-    <Reveal as="section" className="section container">
-      <h2 className="h2">{team.title}</h2>
-      <p className="lead">{team.highlights.join(' · ')}</p>
-      <p className="label">{team.note}</p>
-      <div className="team-photo">
-        {team.photo ? <img src={team.photo} alt="Aneka Kartika Tours & Travel team with a group" /> : <span>{team.photoPlaceholder}</span>}
+    <Reveal as="section" className="section container team-members">
+      <h2 className="h2">We are member of:</h2>
+      <div className="team-members__logos">
+        {memberLogos.map((logo) => (
+          <div className="team-members__logo" key={logo.name}>
+            <img src={logo.src} alt={logo.name} loading="lazy" />
+          </div>
+        ))}
       </div>
     </Reveal>
   );
