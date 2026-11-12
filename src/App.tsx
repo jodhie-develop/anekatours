@@ -83,7 +83,7 @@ export default function App() {
 
   return (
     <>
-      <IntroScreen />
+      {clean === '/' && <IntroScreen />}
       <Header current={clean} />
       {/* key re-mounts the page so scroll animations and pre-filled forms reset on navigation */}
       <main key={clean + search}>

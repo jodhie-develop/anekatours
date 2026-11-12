@@ -1,6 +1,9 @@
 // All website content lives here. Edit text, images and contact details in this file.
 // TODO: Keep unverified client-facing information out of public pages until confirmed.
 
+// TODO: Menunggu URL profil Facebook resmi dari klien; when supplied, update the JSON-LD SHA-256 source in vercel.json too.
+export const FACEBOOK_URL = '';
+
 export const company = {
   name: 'aneka kartika tours & travel',
   brandName: 'Aneka Kartika', // name shown in the header logo (public/images/logo-aneka-kartika.png)
@@ -161,7 +164,7 @@ export const featuredPrograms: FeaturedProgram[] = [
   {
     slug: 'east-java-discovery',
     days: 4,
-    title: 'East Java discovery',
+    title: 'East Java Discovery',
     start: 'Surabaya Airport',
     finish: 'Bali hotel',
     image: '/images/optimized/bromo-023.webp',
@@ -193,7 +196,7 @@ export const featuredPrograms: FeaturedProgram[] = [
   {
     slug: 'bali-quiet-roads',
     days: 6,
-    title: 'Bali, along the quiet roads',
+    title: 'Bali, Along the Quiet Roads',
     start: 'Bali hotel (South)',
     finish: 'Bali hotel (South)',
     image: '/images/optimized/jatiluwih-kk.webp',
@@ -207,6 +210,8 @@ export const featuredPrograms: FeaturedProgram[] = [
       "There is another side of Bali, found along its quieter roads, in its mountain villages, rice-growing countryside and little coastal hideaways. Leaving your hotel behind, head towards Tanah Lot and the former royal temple of Taman Ayun before continuing inland to Jatiluwih. Here, the landscape opens into magnificent rice terraces, and the night is spent in the peaceful surroundings of the countryside, far from the island's busier corners. The road north takes you through Bedugul and its lakeside temple of Ulun Danu Beratan, before winding through the cool highlands of Munduk, where a short walk brings you to a secluded waterfall. Further north, Pemuteran offers a welcome change of pace, with two nights to enjoy its laid-back coastal setting, perhaps venturing into Bali Barat National Park or simply taking in the tranquillity of the village. The journey back towards South Bali follows a different route, tracing the northern coastline through Singaraja, with time to visit its old Chinese temple and Brahma Vihara-Arama Buddhist monastery. Continue inland to Sidemen, where another two-night stay invites you to enjoy the quieter charms of Bali's eastern countryside, before eventually making your way back to South Bali.",
   },
 ];
+
+// TODO: Confirm that the East Java Discovery route should end at a Bali hotel; its current route metadata is retained.
 
 // TODO: Add a partner testimonial and attribution after the client provides approved copy.
 

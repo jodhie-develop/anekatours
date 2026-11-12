@@ -141,7 +141,7 @@ export default function Chatbot() {
         type="button"
         onClick={() => setOpen((value) => !value)}
         aria-expanded={open}
-        aria-label={open ? 'Close chat assistant' : 'Open chat assistant'}
+        aria-label={open ? 'Close chat' : 'Chat with us'}
       >
         {open ? (
           <span aria-hidden="true">×</span>

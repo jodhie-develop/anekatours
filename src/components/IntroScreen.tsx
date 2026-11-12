@@ -5,10 +5,13 @@ const allIntroPhotos = [...destinations, ...openingPhotos];
 const photoColumns = Array.from({ length: 4 }, (_, columnIndex) =>
   allIntroPhotos.filter((_, photoIndex) => photoIndex % 4 === columnIndex),
 );
+let introSeenInMemory = false;
+const INTRO_SESSION_KEY = 'aneka-home-intro-seen';
 
 export default function IntroScreen() {
   const [phase, setPhase] = useState<'intro' | 'exit' | 'done'>('done');
   const skipRef = useRef<HTMLButtonElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
   const exitStarted = useRef(false);
   const endTimer = useRef<number | null>(null);
   const beginExitRef = useRef<() => void>(() => {});
@@ -20,22 +23,32 @@ export default function IntroScreen() {
     endTimer.current = window.setTimeout(() => {
       setPhase('done');
       document.documentElement.classList.remove('intro-playing');
-    }, 950);
+      previousFocusRef.current?.focus();
+    }, 450);
   };
   beginExitRef.current = beginExit;
 
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      return;
-    }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let seen = introSeenInMemory;
+    try { seen = window.sessionStorage.getItem(INTRO_SESSION_KEY) === '1'; } catch { /* use memory for this page session */ }
+    if (seen) return;
+    introSeenInMemory = true;
+    try { window.sessionStorage.setItem(INTRO_SESSION_KEY, '1'); } catch { /* session storage may be unavailable */ }
 
+    previousFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     setPhase('intro');
     document.documentElement.classList.add('intro-playing');
     skipRef.current?.focus();
-    const startTimer = window.setTimeout(() => beginExitRef.current(), 4550);
+    const startTimer = window.setTimeout(() => beginExitRef.current(), 650);
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') beginExitRef.current();
+    };
+    document.addEventListener('keydown', onKeyDown);
     return () => {
       window.clearTimeout(startTimer);
       if (endTimer.current !== null) window.clearTimeout(endTimer.current);
+      document.removeEventListener('keydown', onKeyDown);
       document.documentElement.classList.remove('intro-playing');
     };
   }, []);
@@ -48,9 +61,7 @@ export default function IntroScreen() {
       role="dialog"
       aria-modal="true"
       aria-label="Aneka Kartika Tours and Travel"
-      onKeyDown={(event) => {
-        if (event.key === 'Escape') beginExitRef.current();
-      }}
+      onClick={() => beginExitRef.current()}
     >
       <div className="intro-screen__collage" aria-hidden="true">
         {photoColumns.map((photos, columnIndex) => (

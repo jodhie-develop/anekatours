@@ -8,9 +8,21 @@ const highImagePriority = { fetchpriority: 'high' };
 
 export function Hero() {
   const [loadedSlides, setLoadedSlides] = useState(0);
+  const loadedSlideIndexes = useRef(new Set<number>());
   const slidesReady = loadedSlides >= heroSlides.length;
   const cycleSeconds = heroSlides.length * 7;
-  const markSlideLoaded = () => setLoadedSlides((count) => Math.min(count + 1, heroSlides.length));
+  const markSlideLoaded = (index: number) => {
+    if (loadedSlideIndexes.current.has(index)) return;
+    loadedSlideIndexes.current.add(index);
+    setLoadedSlides(loadedSlideIndexes.current.size);
+  };
+
+  useEffect(() => {
+    const images = document.querySelectorAll<HTMLImageElement>('.hero__slide');
+    images.forEach((image, index) => {
+      if (image.complete) markSlideLoaded(index);
+    });
+  }, []);
 
   return (
     <section className="hero hero--slideshow">
@@ -22,8 +34,8 @@ export function Hero() {
             src={destination.image}
             alt={`${destination.name} in Indonesia`}
             {...(index === 0 ? highImagePriority : {})}
-            onLoad={markSlideLoaded}
-            onError={markSlideLoaded}
+            onLoad={() => markSlideLoaded(index)}
+            onError={() => markSlideLoaded(index)}
             style={{ animationDelay: `${-((heroSlides.length - index) % heroSlides.length) * 7 - 1}s`, animationDuration: `${cycleSeconds}s` }}
           />
         ))}
@@ -304,7 +316,7 @@ export function Team() {
 
   return (
     <Reveal as="section" className="section container team-members">
-      <h2 className="h2">We are member of:</h2>
+      <h2 className="h2">Member of</h2>
       <div className="team-members__logos">
         {memberLogos.map((logo) => (
           <div className="team-members__logo" key={logo.name}>

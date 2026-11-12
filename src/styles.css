@@ -165,7 +165,7 @@ p {
   place-items: center;
   background: var(--green);
   color: var(--white);
-  transition: opacity 0.95s ease;
+  transition: opacity 0.42s ease;
 }
 
 .intro-screen.is-leaving {
@@ -236,7 +236,7 @@ p {
   bottom: 0;
   width: 50%;
   background: rgba(255, 255, 255, 0.48);
-  transition: transform 0.95s cubic-bezier(0.76, 0, 0.24, 1);
+  transition: transform 0.42s cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 .intro-screen__curtain--left {
@@ -1536,12 +1536,14 @@ p {
 
 .team-members__logos {
   margin-top: 28px;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
 }
 
 .team-members__logo {
+  flex: 0 1 220px;
   min-height: 156px;
   padding: 20px;
   display: grid;
@@ -1567,6 +1569,8 @@ p {
   height: auto;
   object-fit: contain;
 }
+
+/* TODO: Add a fifth association logo when the client supplies the ASEANTA asset. */
 
 .section .label {
   margin-top: 24px;
@@ -1786,10 +1790,6 @@ p {
 
 .footer__cta {
   text-decoration: none;
-}
-
-.footer__cta:hover {
-  color: var(--orange);
 }
 
 .chatbot {
@@ -2156,7 +2156,11 @@ p {
   }
 
   .team-members__logos {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-content: center;
+  }
+
+  .team-members__logo {
+    flex-basis: calc(50% - 10px);
   }
 }
 
@@ -2554,5 +2558,100 @@ p {
   }
   .intro-screen {
     display: none;
+  }
+}
+
+/* Mobile refinements requested for compact layouts and comfortable touch targets. */
+@media (max-width: 768px) {
+  .bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: auto;
+    gap: 12px;
+  }
+
+  .dest-card,
+  .dest-card--tall,
+  .dest-card:last-child {
+    grid-column: auto;
+    grid-row: auto;
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+  }
+
+  .chatbot {
+    right: max(12px, env(safe-area-inset-right));
+    bottom: calc(12px + env(safe-area-inset-bottom));
+  }
+
+  .chatbot-launcher {
+    width: 48px;
+    height: 48px;
+  }
+
+  .footer__inner {
+    padding-bottom: calc(112px + env(safe-area-inset-bottom));
+  }
+
+  .service .link,
+  .program__links .link,
+  .footer__nav a,
+  .footer__company-details a {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .footer__nav {
+    row-gap: 10px;
+  }
+
+  .footer__nav a {
+    padding: 4px 8px 4px 0;
+  }
+
+  .footer__company-details a {
+    max-width: 100%;
+  }
+
+  .footer__cta {
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .program__img {
+    aspect-ratio: 16 / 9;
+  }
+
+  .program-card {
+    aspect-ratio: 16 / 9;
+    min-height: 0;
+  }
+
+  .form__submit {
+    align-items: stretch;
+  }
+
+  .form__submit .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero__ctas {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero__ctas .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 360px) {
+  .dest-card__name {
+    font-size: 13px;
   }
 }

@@ -80,7 +80,8 @@ try {
         '@context': 'https://schema.org', '@type': 'TravelAgency', name: 'Aneka Kartika Tours & Travel', foundingDate: '1979',
         address: { '@type': 'PostalAddress', streetAddress: 'Jl. Manyar Kertoarjo V-50', addressLocality: 'Surabaya', postalCode: '60285', addressRegion: 'East Java', addressCountry: 'ID' },
         telephone: '+62 31 5929000', email: 'info@aneka-tours.co.id', url: origin,
-        logo: `${origin}/images/logo-aneka-kartika.png`, sameAs: ['https://www.instagram.com/AnekaKartikaTours'],
+        logo: `${origin}/images/logo-aneka-kartika.png`,
+        sameAs: ['https://www.instagram.com/AnekaKartikaTours', ...(site.FACEBOOK_URL ? [site.FACEBOOK_URL] : [])],
       };
       html = html.replace('</head>', `  <script type="application/ld+json">${JSON.stringify(jsonLd).replaceAll('<', '\\u003c')}</script>\n  </head>`);
     }
