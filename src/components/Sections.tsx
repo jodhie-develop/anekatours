@@ -4,6 +4,7 @@ import { Link } from '../router';
 import { company, destinations, featuredPrograms, hero, heroPhotos, intro, programs, services, pages } from '../data/site';
 
 const heroSlides = heroPhotos;
+const highImagePriority = { fetchpriority: 'high' };
 
 export function Hero() {
   const [loadedSlides, setLoadedSlides] = useState(0);
@@ -20,7 +21,7 @@ export function Hero() {
             className={`hero__slide ${index % 2 === 0 ? 'hero__slide--zoom-in' : 'hero__slide--zoom-out'}`}
             src={destination.image}
             alt={`${destination.name} in Indonesia`}
-            fetchPriority={index === 0 ? 'high' : 'auto'}
+            {...(index === 0 ? highImagePriority : {})}
             onLoad={markSlideLoaded}
             onError={markSlideLoaded}
             style={{ animationDelay: `${-((heroSlides.length - index) % heroSlides.length) * 7 - 1}s`, animationDuration: `${cycleSeconds}s` }}
@@ -51,7 +52,7 @@ export function PageHero({ title, intro, image }: { title: string; intro?: strin
   if (image) {
     return (
       <section className="hero hero--page">
-        <img className="hero__bg" src={image} alt={title} fetchPriority="high" />
+        <img {...highImagePriority} className="hero__bg" src={image} alt={title} />
         <div className="hero__shade hero__shade--page" />
         <div className="hero__content">
           <h1 className="display hero__anim" style={{ animationDelay: '0.1s' }}>
