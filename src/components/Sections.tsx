@@ -56,6 +56,11 @@ export function Hero() {
           <Link to="/programs" className="btn btn--primary">View Sample Programs</Link>
         </div>
       </div>
+      <a className="hero__scroll" href="#intro" aria-label="Scroll to the next section">
+        <svg viewBox="0 0 24 24" width="23" height="23" aria-hidden="true">
+          <path d="M12 4v15m-7-7 7 7 7-7" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </a>
     </section>
   );
 }
@@ -100,7 +105,7 @@ export function Intro() {
   );
 
   return (
-    <Reveal as="section" className="intro">
+    <Reveal as="section" id="intro" className="intro">
       <div className="intro__inner container">
         <div className="intro__copy">
           <p className="eyebrow eyebrow--light">Your local partner for Indonesia</p>
