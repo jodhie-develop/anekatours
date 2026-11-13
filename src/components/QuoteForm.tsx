@@ -14,11 +14,16 @@ const baseFields: Field[] = [
   { name: 'agency', label: 'Agency name', type: 'text', required: true },
   { name: 'email', label: 'Work email', type: 'email', required: true },
   { name: 'country', label: 'Country', type: 'text', required: true },
-  { name: 'destinations', label: 'Destinations', type: 'text' },
+  { name: 'destinations', label: 'Destination / region', type: 'text' },
   { name: 'dates', label: 'Travel dates', type: 'text' },
   { name: 'groupSize', label: 'Group size', type: 'text' },
   { name: 'language', label: 'Guide language', type: 'text' },
 ];
+
+const destinationSuggestions = [
+  ...mainDestinations.map((destination) => ({ name: destination.name, region: 'Region' })),
+  ...publishedDestinationAttractions.map((attraction) => ({ name: attraction.h1.split(':')[0], region: attraction.region })),
+].filter((option, index, options) => options.findIndex((candidate) => candidate.name === option.name) === index);
 
 export default function QuoteForm({ full = false }: { full?: boolean }) {
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
@@ -98,9 +103,12 @@ export default function QuoteForm({ full = false }: { full?: boolean }) {
       {fields.map((field) => (
         <label key={field.name} className="field">
           <span>{field.label}</span>
-          <input name={field.name} type={field.type} placeholder={field.label} required={field.required} maxLength={field.name === 'email' ? 254 : 300} />
+          <input name={field.name} type={field.type} placeholder={field.label} required={field.required} maxLength={field.name === 'email' ? 254 : 300} list={field.name === 'destinations' ? 'quote-destination-options' : undefined} />
         </label>
       ))}
+      <datalist id="quote-destination-options">
+        {destinationSuggestions.map((option) => <option key={option.name} value={option.name} label={option.region} />)}
+      </datalist>
       <label className={`field ${full ? '' : 'field--notes'}`}>
         <span>Notes</span>
         <textarea name="notes" placeholder="Notes" rows={4} maxLength={3000} />
