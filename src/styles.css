@@ -1921,14 +1921,12 @@ p {
   width: 42px;
   height: 42px;
   flex: 0 0 auto;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.42);
+  display: block;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.12);
-  font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 900;
+  background: var(--white);
+  object-fit: contain;
 }
 
 .chatbot-panel__header > div {

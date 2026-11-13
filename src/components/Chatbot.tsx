@@ -55,7 +55,7 @@ export default function Chatbot() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<ChatMessage[]>([
-    { id: 0, from: 'assistant', text: 'Hello! I’m Aneka’s travel assistant. How can I help with your Indonesia plans?' },
+    { id: 0, from: 'assistant', text: 'Hello! I’m Aneka Kartika Smart Assistant. How can I help with your Indonesia plans?' },
   ]);
   const nextId = useRef(1);
   const endRef = useRef<HTMLDivElement>(null);
@@ -81,11 +81,11 @@ export default function Chatbot() {
   return (
     <div className="chatbot">
       {open && (
-        <section className="chatbot-panel" aria-label="Aneka Tours travel assistant">
+        <section className="chatbot-panel" aria-label="Aneka Kartika Smart Assistant">
           <header className="chatbot-panel__header">
-            <span className="chatbot-panel__mark" aria-hidden="true">A</span>
+            <img className="chatbot-panel__mark" src="/favicon-32x32.png" alt="Aneka Kartika logo" />
             <div>
-              <strong>Aneka Tours Assistant</strong>
+              <strong>Aneka Kartika Smart Assistant</strong>
               <small>Indonesia travel planning</small>
             </div>
             <button className="chatbot-panel__close" type="button" onClick={() => setOpen(false)} aria-label="Close chat">
