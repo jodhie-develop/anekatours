@@ -215,11 +215,11 @@ export function Destinations({ compactTop = false }: { compactTop?: boolean }) {
       <p className="eyebrow">One country. Endless possibilities.</p>
       <h2 className="h2">Where will your next group go?</h2>
       <div className="bento bento--destinations">
-        {destinations.map((d, i) => (
+        {destinations.map((d) => (
           <Link
             key={d.slug}
             to={`/destinations/${d.slug}`}
-            className={`dest-card ${i === 0 ? 'dest-card--tall' : ''}`}
+            className="dest-card"
           >
             <img src={d.image} alt={d.name} loading="lazy" />
             <span className="dest-card__shade" />
