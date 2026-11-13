@@ -4,6 +4,7 @@ import Reveal from './components/Reveal';
 import { Link, useLocation } from './router';
 import { featuredPrograms, pages } from './data/site';
 import Gallery from './components/Gallery';
+import AdminChatLeads from './components/AdminChatLeads';
 import { BaliAttractionPage, BaliRegionPage, JavaAttractionPage, JavaRegionPage, OtherAttractionPage, OtherDestinationRegionPage } from './components/DestinationContent';
 import { baliAttractions, getDestinationAttraction, javaAttractions } from './data/destinations';
 
@@ -159,6 +160,10 @@ export function ContactPage() {
       <QuoteForm full />
     </>
   );
+}
+
+export function AdminChatLeadsPage() {
+  return <AdminChatLeads />;
 }
 
 export function NotFoundPage() {

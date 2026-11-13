@@ -1,3 +1,6 @@
+import { adminCredentialsConfigured } from '../lib/admin-auth.js';
+import { isLeadStorageConfigured, readLead, updateLead } from '../lib/chat-lead-csv.js';
+
 const MODEL = process.env.OPENAI_MODEL || 'gpt-6-luna';
 const MAX_MESSAGES = 12;
 const MAX_MESSAGE_LENGTH = 1200;
@@ -115,7 +118,20 @@ export default async function handler(req, res) {
     }
     const reply = extractOutputText(result);
     if (!reply) return fail(res, 502, 'I could not prepare a reply just now. Please try again or contact our team.');
-    return res.status(200).json({ text: reply, links: linksFor(messages.at(-1).content) });
+    if (typeof body.leadId === 'string' && /^[0-9a-f-]{36}$/i.test(body.leadId) && isLeadStorageConfigured()) {
+      try {
+        const record = await readLead(body.leadId);
+        const latestQuestion = messages.at(-1).content.replace(/\s+/g, ' ').trim();
+        if (record?.lead && latestQuestion) {
+          const summary = `${record.lead.summary} Follow-up question: ${latestQuestion}`.slice(0, 2000);
+          await updateLead({ ...record.lead, summary, updatedAt: new Date().toISOString() });
+        }
+      } catch (error) {
+        console.error('Chat lead summary update failed:', error?.name || 'unknown error');
+      }
+    }
+    const leadCaptureEnabled = process.env.CHAT_LEADS_ENABLED === 'true' && adminCredentialsConfigured() && isLeadStorageConfigured();
+    return res.status(200).json({ text: reply, links: linksFor(messages.at(-1).content), leadCaptureEnabled });
   } catch (error) {
     console.error('OpenAI chat connection failed:', error?.name || 'unknown error');
     return fail(res, 502, 'I could not connect just now. Please try again or contact our team.');

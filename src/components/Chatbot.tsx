@@ -20,6 +20,13 @@ export default function Chatbot() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
+  const [contactRequired, setContactRequired] = useState(false);
+  const [contactSaved, setContactSaved] = useState(false);
+  const [leadId, setLeadId] = useState('');
+  const [contactEmail, setContactEmail] = useState('');
+  const [contactWhatsapp, setContactWhatsapp] = useState('');
+  const [contactConsent, setContactConsent] = useState(false);
+  const [contactError, setContactError] = useState('');
   const [messages, setMessages] = useState<ChatMessage[]>([
     { id: 0, from: 'assistant', text: 'Hello! I’m Aneka Kartika Smart Assistant. How can I help with your Indonesia plans?' },
   ]);
@@ -35,6 +42,7 @@ export default function Chatbot() {
     if (!query || sending) return;
     const visitor: ChatMessage = { id: nextId.current++, from: 'visitor', text: query };
     const conversation = [...messages, visitor];
+    const visitorQuestionCount = conversation.filter((message) => message.from === 'visitor').length;
     setMessages(conversation);
     setInput('');
     setSending(true);
@@ -43,6 +51,7 @@ export default function Chatbot() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
+          ...(leadId ? { leadId } : {}),
           messages: conversation.slice(-12).map((message) => ({
             role: message.from === 'visitor' ? 'user' : 'assistant',
             content: message.text,
@@ -52,7 +61,16 @@ export default function Chatbot() {
       const result = await response.json();
       if (!response.ok || typeof result.text !== 'string') throw new Error('Chat request failed');
       const reply: ChatMessage = { id: nextId.current++, from: 'assistant', text: result.text, links: result.links };
-      setMessages((current) => [...current, reply]);
+      const nextMessages = [...conversation, reply];
+      if (visitorQuestionCount === 2 && result.leadCaptureEnabled === true && !contactSaved) {
+        nextMessages.push({
+          id: nextId.current++,
+          from: 'assistant',
+          text: 'Before we continue, may I kindly ask you to provide your email address and WhatsApp number? We will use these details, together with a brief summary of this conversation, solely to follow up on your enquiry. Please submit the details below and confirm your consent.',
+        });
+        setContactRequired(true);
+      }
+      setMessages(nextMessages);
     } catch {
       const reply: ChatMessage = {
         id: nextId.current++,
@@ -71,7 +89,46 @@ export default function Chatbot() {
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    send(input);
+    if (!contactRequired) void send(input);
+  };
+
+  const submitContact = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setContactError('');
+    if (!contactConsent) {
+      setContactError('Please confirm your consent before continuing.');
+      return;
+    }
+    setSending(true);
+    try {
+      const response = await fetch('/api/chat-leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          email: contactEmail,
+          whatsapp: contactWhatsapp,
+          consent: contactConsent,
+          messages: messages.slice(-12).map((message) => ({
+            role: message.from === 'visitor' ? 'user' : 'assistant',
+            content: message.text,
+          })),
+        }),
+      });
+      const result = await response.json();
+      if (!response.ok || result.ok !== true) throw new Error(result.error || 'Could not save details.');
+      setLeadId(result.leadId);
+      setContactSaved(true);
+      setContactRequired(false);
+      setMessages((current) => [...current, {
+        id: nextId.current++,
+        from: 'assistant',
+        text: 'Thank you. Your contact details and a brief summary of this conversation have been recorded securely. We can continue with your travel questions.',
+      }]);
+    } catch (error) {
+      setContactError(error instanceof Error ? error.message : 'We could not save your details. Please try again shortly.');
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -117,21 +174,42 @@ export default function Chatbot() {
             <div ref={endRef} />
           </div>
 
-          <form className="chatbot-panel__form" onSubmit={submit}>
-            <input
-              value={input}
-              onChange={(event) => setInput(event.target.value)}
-              placeholder={sending ? 'Please wait…' : 'Ask about travelling in Indonesia'}
-              aria-label="Type your question"
-              maxLength={1200}
-              disabled={sending}
-            />
-            <button type="submit" aria-label="Send message" disabled={!input.trim() || sending}>
-              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-                <path d="M3 11.5 21 3l-5.6 18-3.1-7.3L3 11.5Zm9.3 2.2L21 3" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-          </form>
+          {contactRequired ? (
+            <form className="chatbot-lead-form" onSubmit={submitContact}>
+              <label>
+                <span>Email address</span>
+                <input type="email" value={contactEmail} onChange={(event) => setContactEmail(event.target.value)} maxLength={254} autoComplete="email" required disabled={sending} />
+              </label>
+              <label>
+                <span>WhatsApp number</span>
+                <input type="tel" value={contactWhatsapp} onChange={(event) => setContactWhatsapp(event.target.value)} maxLength={40} autoComplete="tel" placeholder="+62 …" required disabled={sending} />
+              </label>
+              <label className="chatbot-lead-form__consent">
+                <input type="checkbox" checked={contactConsent} onChange={(event) => setContactConsent(event.target.checked)} required disabled={sending} />
+                <span>I consent to Aneka Kartika Tours storing my contact details and a brief summary of this conversation to respond to my enquiry.</span>
+              </label>
+              {contactError && <p className="chatbot-lead-form__error" role="alert">{contactError}</p>}
+              <button type="submit" disabled={sending || !contactEmail.trim() || !contactWhatsapp.trim() || !contactConsent}>
+                {sending ? 'Saving securely…' : 'Share details and continue'}
+              </button>
+            </form>
+          ) : (
+            <form className="chatbot-panel__form" onSubmit={submit}>
+              <input
+                value={input}
+                onChange={(event) => setInput(event.target.value)}
+                placeholder={sending ? 'Please wait…' : 'Ask about travelling in Indonesia'}
+                aria-label="Type your question"
+                maxLength={1200}
+                disabled={sending}
+              />
+              <button type="submit" aria-label="Send message" disabled={!input.trim() || sending}>
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                  <path d="M3 11.5 21 3l-5.6 18-3.1-7.3L3 11.5Zm9.3 2.2L21 3" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            </form>
+          )}
         </section>
       )}
 

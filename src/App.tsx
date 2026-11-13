@@ -6,7 +6,7 @@ import Chatbot from './components/Chatbot';
 import { useLocation } from './router';
 import { destinations, featuredPrograms, pages } from './data/site';
 import { baliRegion, destinationPagesWithoutContent, getDestinationAttraction, javaRegion } from './data/destinations';
-import { AboutPage, ContactPage, DestinationDetailPage, DestinationsPage, GalleryPage, HomePage, NotFoundPage, ProgramDetailPage, ProgramsPage, ServicesPage } from './pages';
+import { AboutPage, AdminChatLeadsPage, ContactPage, DestinationDetailPage, DestinationsPage, GalleryPage, HomePage, NotFoundPage, ProgramDetailPage, ProgramsPage, ServicesPage } from './pages';
 import { ScrollArrow } from './components/Sections';
 
 const routes: Record<string, { component: ComponentType; title: string }> = {
@@ -14,6 +14,7 @@ const routes: Record<string, { component: ComponentType; title: string }> = {
   '/destinations': { component: DestinationsPage, title: pages.destinations.seoTitle },
   '/programs': { component: ProgramsPage, title: pages.programs.seoTitle },
   '/gallery': { component: GalleryPage, title: pages.gallery.seoTitle },
+  '/admin/chat-leads': { component: AdminChatLeadsPage, title: 'Chat Enquiries | Aneka Kartika Admin' },
   '/services': { component: ServicesPage, title: pages.services.seoTitle },
   '/about': { component: AboutPage, title: pages.about.seoTitle },
   '/contact': { component: ContactPage, title: pages.contact.seoTitle },
@@ -47,6 +48,7 @@ export default function App() {
   const { path, search } = useLocation();
   const clean = path.length > 1 ? path.replace(/\/+$/, '') : path;
   const route = routes[clean];
+  const isAdminPage = clean === '/admin/chat-leads';
   const programSlug = clean.startsWith('/programs/') ? clean.slice('/programs/'.length) : '';
   const program = featuredPrograms.find((item) => item.slug === programSlug);
   const destinationSegments = clean.startsWith('/destinations/') ? clean.slice('/destinations/'.length).split('/') : [];
@@ -95,12 +97,14 @@ export default function App() {
     }
     canonicalTag.href = canonical;
     let robotsTag = document.head.querySelector<HTMLMetaElement>('meta[name="robots"]');
-    if (clean === '/gallery' || !route && !program && !validDestinationPath) {
+    if (clean === '/gallery' || isAdminPage || !route && !program && !validDestinationPath) {
       if (!robotsTag) { robotsTag = document.createElement('meta'); robotsTag.name = 'robots'; document.head.appendChild(robotsTag); }
       robotsTag.content = 'noindex, nofollow';
     } else robotsTag?.remove();
     window.scrollTo(0, 0);
   }, [clean, search, pageTitle, route, programSlug]);
+
+  if (isAdminPage) return <Page />;
 
   return (
     <>
