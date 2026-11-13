@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import Reveal from './Reveal';
-import { quote } from '../data/site';
+import { destinations as mainDestinations, quote } from '../data/site';
+import { destinationPagesWithoutContent, javaAttractions } from '../data/destinations';
 
 declare global {
   interface Window {
@@ -53,8 +54,12 @@ export default function QuoteForm({ full = false }: { full?: boolean }) {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+    const destinationParam = params.get('destination') ?? '';
+    const selectedAttraction = javaAttractions.find((item) => item.slug === destinationParam);
+    const selectedDestination = mainDestinations.find((item) => item.slug === destinationParam)
+      ?? destinationPagesWithoutContent.find((item) => item.slug === destinationParam);
     const values: Record<string, string> = {
-      destinations: params.get('destination') ?? '',
+      destinations: selectedAttraction?.h1.split(':')[0] ?? selectedDestination?.name ?? destinationParam,
       program: params.get('program') ?? '',
       notes: params.get('group') ? `Group type: ${params.get('group')}` : '',
     };

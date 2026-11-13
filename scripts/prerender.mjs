@@ -39,6 +39,7 @@ try {
   const { default: App } = await vite.ssrLoadModule('/src/App.tsx');
   const router = await vite.ssrLoadModule('/src/router.tsx');
   const site = await vite.ssrLoadModule('/src/data/site.ts');
+  const destinationsData = await vite.ssrLoadModule('/src/data/destinations.ts');
   const template = await readFile('dist/index.html', 'utf8');
   const esc = (value) => String(value).replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;');
   const setMeta = (html, attr, key, value) => {
@@ -51,21 +52,25 @@ try {
     const tag = `<link rel="canonical" href="${href}" />`;
     return /<link\s+rel=["']canonical["'][^>]*>/i.test(html) ? html.replace(/<link\s+rel=["']canonical["'][^>]*>/i, tag) : html.replace('</head>', `  ${tag}\n  </head>`);
   };
-  const routeTitle = (route, program, destination, region) => program ? `${program.title} | Aneka Kartika Tours & Travel` : region && destination ? `${region.name} | ${destination.name} | Aneka Kartika Tours & Travel` : destination ? `${destination.name} | Indonesia Destinations | Aneka Kartika Tours & Travel` : titles[route] ?? 'Page not found | Aneka Kartika Tours & Travel';
-  const routeDescription = (route, program, destination, region) => program ? `${program.days}-day Indonesia journey from ${program.start} to ${program.finish}, tailored by Aneka Kartika Tours for travel trade partners.` : region && destination ? `${region.description} Plan a tailored ${destination.name} journey with Aneka Kartika Tours.` : destination ? `Explore ${destination.name} with Aneka Kartika Tours. Discover distinctive regions and plan a seamless Indonesia journey with our local team.` : descriptions[route] ?? 'Aneka Kartika Tours & Travel, your local destination management partner in Indonesia since 1979.';
+  const routeTitle = (route, program, attraction, destinationPage) => program ? `${program.title} | Aneka Kartika Tours & Travel` : attraction?.metaTitle ?? destinationPage?.metaTitle ?? titles[route] ?? 'Page not found | Aneka Kartika Tours & Travel';
+  const routeDescription = (route, program, attraction, destinationPage) => program ? `${program.days}-day Indonesia journey from ${program.start} to ${program.finish}, tailored by Aneka Kartika Tours for travel trade partners.` : attraction?.metaDescription ?? destinationPage?.metaDescription ?? descriptions[route] ?? 'Aneka Kartika Tours & Travel, your local destination management partner in Indonesia since 1979.';
   const destinationPaths = site.destinations.map((item) => `/destinations/${item.slug}`);
-  const destinationRegionPaths = site.destinations.flatMap((destination) => (site.destinationRegions[destination.slug] ?? []).map((region) => `/destinations/${destination.slug}/${region.slug}`));
-  const paths = [...routeInfo.map(([url]) => url), ...destinationPaths, ...destinationRegionPaths, ...site.featuredPrograms.map((p) => `/programs/${p.slug}`)];
+  const attractionPaths = destinationsData.javaAttractions.map((item) => `/destinations/java/${item.slug}`);
+  const paths = [...routeInfo.map(([url]) => url), ...destinationPaths, ...attractionPaths, ...site.featuredPrograms.map((p) => `/programs/${p.slug}`)];
   for (const route of paths) {
     router.setStaticLocation(route);
     const program = site.featuredPrograms.find((item) => route === `/programs/${item.slug}`);
     const destinationSegments = route.startsWith('/destinations/') ? route.slice('/destinations/'.length).split('/') : [];
-    const destination = site.destinations.find((item) => item.slug === destinationSegments[0]);
-    const region = destination ? (site.destinationRegions[destination.slug] ?? []).find((item) => item.slug === destinationSegments[1]) : undefined;
+    const attraction = destinationSegments[0] === 'java' ? destinationsData.javaAttractions.find((item) => item.slug === destinationSegments[1]) : undefined;
+    const destinationPage = destinationSegments.length === 1 && destinationSegments[0] === 'java'
+      ? destinationsData.javaRegion
+      : destinationSegments.length === 1
+        ? destinationsData.destinationPagesWithoutContent.find((item) => item.slug === destinationSegments[0])
+        : undefined;
     let html = template.replace('<div id="root"></div>', `<div id="root">${renderToString(React.createElement(App))}</div>`);
-    const title = routeTitle(route, program, destination, region);
-    const desc = routeDescription(route, program, destination, region).slice(0, 155);
-    const image = `${origin}${region?.image ?? destination?.image ?? ogImages[route] ?? ogImages['/programs']}`;
+    const title = routeTitle(route, program, attraction, destinationPage);
+    const desc = routeDescription(route, program, attraction, destinationPage);
+    const image = `${origin}${attraction?.heroImage.src ?? destinationPage?.heroImage.src ?? ogImages[route] ?? ogImages['/programs']}`;
     html = html.replace(/<title>.*?<\/title>/i, `<title>${esc(title)}</title>`);
     html = setMeta(html, 'name', 'description', desc);
     html = setCanonical(html, `${origin}${route === '/' ? '/' : route}`);
@@ -80,6 +85,34 @@ try {
     html = setMeta(html, 'name', 'twitter:description', desc);
     html = setMeta(html, 'name', 'twitter:image', image);
     if (route === '/gallery') html = setMeta(html, 'name', 'robots', 'noindex, nofollow');
+    if (attraction || destinationPage) {
+      const breadcrumbs = attraction
+        ? ['Home', 'Destinations', 'Java', attraction.h1.split(':')[0]]
+        : ['Home', 'Destinations', destinationPage.h1 ?? destinationPage.name];
+      const breadcrumbPaths = attraction
+        ? ['/', '/destinations', '/destinations/java', route]
+        : ['/', '/destinations', route];
+      const breadcrumbJson = {
+        '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: breadcrumbs.map((name, index) => ({
+          '@type': 'ListItem', position: index + 1, name, item: `${origin}${breadcrumbPaths[index]}`,
+        })),
+      };
+      const schemas = [breadcrumbJson];
+      if (attraction) {
+        schemas.push({
+          '@context': 'https://schema.org', '@type': 'TouristAttraction', name: attraction.h1.split(':')[0],
+          description: attraction.metaDescription, image: `${origin}${attraction.heroImage.src}`,
+          address: { '@type': 'PostalAddress', addressRegion: 'Java', addressCountry: 'ID' },
+          containedInPlace: { '@type': 'AdministrativeArea', name: 'Java' },
+        });
+        schemas.push({
+          '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: attraction.faq.map((item) => ({
+            '@type': 'Question', name: item.question, acceptedAnswer: { '@type': 'Answer', text: item.answer },
+          })),
+        });
+      }
+      html = html.replace('</head>', `  ${schemas.map((schema) => `<script type="application/ld+json">${JSON.stringify(schema).replaceAll('<', '\\u003c')}</script>`).join('\n  ')}\n  </head>`);
+    }
     if (route === '/') {
       // TODO: Add the verified Facebook profile URL to sameAs when supplied by the client.
       const jsonLd = {
@@ -105,7 +138,7 @@ try {
   notFound = setCanonical(notFound, `${origin}/404`);
   await writeFile('dist/404.html', notFound);
 
-  const sitemap = [...routeInfo.filter(([url]) => url !== '/gallery').map(([url]) => url), ...destinationPaths, ...destinationRegionPaths, ...site.featuredPrograms.map((p) => `/programs/${p.slug}`)];
+  const sitemap = [...routeInfo.filter(([url]) => url !== '/gallery').map(([url]) => url), ...destinationPaths, ...attractionPaths, ...site.featuredPrograms.map((p) => `/programs/${p.slug}`)];
   await writeFile('dist/sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${sitemap.map((url) => `<url><loc>${origin}${url === '/' ? '/' : url}</loc></url>`).join('')}</urlset>`);
 } finally {
   await vite.close();

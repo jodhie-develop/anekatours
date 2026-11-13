@@ -2,8 +2,10 @@ import { CtaBand, Destinations, Hero, Intro, PageHero, ProgramShowcase, Programs
 import QuoteForm from './components/QuoteForm';
 import Reveal from './components/Reveal';
 import { Link, useLocation } from './router';
-import { destinationRegions, destinations, featuredPrograms, pages } from './data/site';
+import { featuredPrograms, pages } from './data/site';
 import Gallery from './components/Gallery';
+import { JavaAttractionPage, JavaRegionPage, OtherDestinationRegionPage } from './components/DestinationContent';
+import { javaAttractions } from './data/destinations';
 
 export function HomePage() {
   return (
@@ -77,55 +79,13 @@ export function DestinationsPage() {
 export function DestinationDetailPage() {
   const { path } = useLocation();
   const segments = path.replace(/\/+$/, '').split('/').filter(Boolean).slice(1);
-  const destination = destinations.find((item) => item.slug === segments[0]);
-  const regions = destination ? destinationRegions[destination.slug] : undefined;
-  if (!destination || !regions) return <NotFoundPage />;
-
-  const region = regions.find((item) => item.slug === segments[1]);
-  if (segments.length > 1) {
-    if (!region) return <NotFoundPage />;
-    return (
-      <>
-        <PageHero title={region.name} intro={region.description} image={region.image} />
-        <section className="section container destination-story">
-          <p className="eyebrow">{destination.name}, Indonesia</p>
-          <h2 className="h2">Explore {region.name}</h2>
-          <p className="lead">Discover this part of {destination.name} with a journey shaped around your travellers. Our local team can tailor the route, pace and experiences to suit your programme.</p>
-          <div className="destination-story__links">
-            <Link to={`/contact?destination=${encodeURIComponent(`${destination.name} — ${region.name}`)}`} className="btn btn--primary">Plan this destination</Link>
-            <Link to={`/destinations/${destination.slug}`} className="link">← Back to {destination.name}</Link>
-          </div>
-        </section>
-      </>
-    );
+  if (segments.length === 1 && segments[0] === 'java') return <JavaRegionPage />;
+  if (segments.length === 1) return <OtherDestinationRegionPage slug={segments[0]} />;
+  if (segments.length === 2 && segments[0] === 'java') {
+    const attraction = javaAttractions.find((item) => item.slug === segments[1]);
+    return attraction ? <JavaAttractionPage attraction={attraction} /> : <NotFoundPage />;
   }
-
-  return (
-    <>
-      <PageHero title={destination.name} intro={`Explore the regions and island experiences that make ${destination.name} distinctive.`} image={destination.image} />
-      <section className="section container">
-        <p className="eyebrow">Explore the region</p>
-        <h2 className="h2">Discover {destination.name}</h2>
-        <div className="bento destination-regions">
-          {regions.map((region) => (
-            <Link
-              key={region.slug}
-              to={`/destinations/${destination.slug}/${region.slug}`}
-              className="dest-card destination-regions__card"
-            >
-              <img src={region.image} alt={region.name} loading="lazy" />
-              <span className="dest-card__shade" />
-              <span className="destination-regions__copy">
-                <span className="dest-card__name">{region.name}</span>
-                <span className="destination-regions__description">{region.description}</span>
-              </span>
-            </Link>
-          ))}
-        </div>
-        <Link to="/destinations" className="link destination-regions__back">← All destinations</Link>
-      </section>
-    </>
-  );
+  return <NotFoundPage />;
 }
 
 export function ProgramsPage() {

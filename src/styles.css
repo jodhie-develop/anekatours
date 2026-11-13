@@ -897,6 +897,51 @@ p {
 .destination-regions__back { display: inline-flex; margin-top: 2rem; }
 .destinations-back { margin-top: -1.5rem; margin-bottom: 3rem; }
 .destination-story__links { display: flex; align-items: center; flex-wrap: wrap; gap: 1.25rem; margin-top: 2rem; }
+.destination-breadcrumb { margin-bottom: 1.2rem; color: rgba(255,255,255,.88); font-size: .9rem; }
+.destination-breadcrumb ol { display: flex; flex-wrap: wrap; gap: .55rem; list-style: none; margin: 0; padding: 0; }
+.destination-breadcrumb li { display: flex; align-items: center; gap: .55rem; }
+.destination-breadcrumb a { color: inherit; text-decoration-color: rgba(255,255,255,.6); text-underline-offset: .2em; }
+.destination-breadcrumb a:hover { color: #fff; }
+.destination-region-content, .destination-region-cta { padding-top: 4rem; padding-bottom: 5rem; }
+.destination-region-content > .eyebrow { margin-bottom: .6rem; }
+.destination-place-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; margin-top: 2rem; }
+.destination-place-grid--other { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.destination-place-card { position: relative; display: block; min-height: 17rem; overflow: hidden; border-radius: var(--radius); color: var(--cream); text-decoration: none; transition: transform .25s ease, box-shadow .25s ease; }
+.destination-place-card:hover, .destination-place-card:focus-visible { transform: translateY(-5px); box-shadow: 0 18px 36px rgba(10,23,99,.2), 0 0 0 2px var(--orange); }
+.destination-place-card:focus-visible { outline: 3px solid var(--white); outline-offset: 4px; }
+.destination-place-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+.destination-place-card:hover img, .destination-place-card:focus-visible img { transform: scale(1.04); }
+.destination-place-card__shade { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 35%, rgba(10,23,99,.84)); }
+.destination-place-card__title { position: absolute; right: 1.1rem; bottom: 1.1rem; left: 1.1rem; font-family: var(--font-display); font-size: 1.35rem; line-height: 1.2; }
+.destination-detail { max-width: 900px; padding-top: 4rem; }
+.destination-detail__section { margin-bottom: 4rem; }
+.destination-detail__section > .h2, .destination-other-places > .h2 { margin-bottom: 1.25rem; }
+.destination-detail__section > p + p { margin-top: 1rem; }
+.destination-highlight-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1rem; }
+.destination-highlight { padding: 1.25rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); }
+.destination-highlight h3, .destination-logistics-card h3 { margin: 0 0 .5rem; color: var(--green); font-family: var(--font-display); font-size: 1.05rem; }
+.destination-highlight p, .destination-logistics-card p { margin: 0; line-height: 1.65; }
+.destination-check-list { display: grid; gap: 1rem; margin: 0; padding: 0; list-style: none; }
+.destination-check-list li { display: grid; grid-template-columns: 1.5rem 1fr; gap: .7rem; line-height: 1.65; }
+.destination-check-list li > span { color: var(--orange); font-weight: 800; }
+.destination-logistics-table { width: 100%; border-collapse: collapse; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.destination-logistics-table th, .destination-logistics-table td { padding: 1rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; line-height: 1.6; }
+.destination-logistics-table thead th { background: var(--green); color: var(--white); }
+.destination-logistics-table tbody th { width: 32%; color: var(--green); font-weight: 700; }
+.destination-logistics-table tbody tr:last-child th, .destination-logistics-table tbody tr:last-child td { border-bottom: 0; }
+.destination-logistics-cards { display: none; }
+.destination-pairings p { margin: .8rem 0; line-height: 1.65; }
+.destination-pairings a { color: var(--green); font-weight: 700; text-underline-offset: .2em; }
+.destination-faq__item { border-bottom: 1px solid var(--line); }
+.destination-faq__item:first-of-type { border-top: 1px solid var(--line); }
+.destination-faq__item summary { position: relative; padding: 1.15rem 2.5rem 1.15rem 0; color: var(--green); cursor: pointer; font-weight: 700; list-style: none; }
+.destination-faq__item summary::-webkit-details-marker { display: none; }
+.destination-faq__item summary::after { position: absolute; right: .25rem; content: '+'; color: var(--orange); font-size: 1.5rem; line-height: 1; }
+.destination-faq__item[open] summary::after { content: '−'; }
+.destination-faq__item p { margin: 0 0 1.15rem; line-height: 1.65; }
+.destination-cta { margin: 4rem 0; padding: clamp(1.5rem, 4vw, 3rem); border-radius: var(--radius); background: var(--cream); text-align: center; }
+.destination-cta h2, .destination-cta .lead { max-width: 760px; margin: 0 auto 1.5rem; font-size: clamp(1.1rem, 2.5vw, 1.4rem); line-height: 1.5; }
+.destination-other-places { margin: 4rem 0 2rem; }
 
 .dest-card img {
   position: absolute;
@@ -2660,6 +2705,28 @@ p {
     width: 100%;
     justify-content: center;
   }
+}
+
+@media (max-width: 1100px) {
+  .destination-place-grid,
+  .destination-place-grid--other { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 768px) {
+  .destination-detail { padding-top: 2.5rem; }
+  .destination-detail__section { margin-bottom: 2.75rem; }
+  .destination-highlight-grid,
+  .destination-place-grid,
+  .destination-place-grid--other { grid-template-columns: minmax(0, 1fr); }
+  .destination-place-card { min-height: 15rem; }
+  .destination-logistics-table { display: none; }
+  .destination-logistics-cards { display: grid; gap: .85rem; }
+  .destination-logistics-card { padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); }
+  .destination-cta { margin: 3rem 0; }
+  .destination-region-content,
+  .destination-region-cta { padding-top: 2.5rem; padding-bottom: 3rem; }
+  .destination-region-cta { display: flex; align-items: flex-start; flex-direction: column; gap: 1rem; }
+  .destination-breadcrumb { font-size: .82rem; }
 }
 
 @media (max-width: 380px) {

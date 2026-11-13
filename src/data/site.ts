@@ -90,41 +90,6 @@ export const destinations: Destination[] = [
   { name: 'Kalimantan', slug: 'kalimantan', image: '/images/optimized/tanjung-puting-04.webp' },
 ];
 
-export type DestinationRegion = Destination & { description: string };
-export const destinationRegions: Record<string, DestinationRegion[]> = {
-  java: [
-    { name: 'East Java', slug: 'east-java', image: '/images/optimized/bromo-d.webp', description: 'Volcanic landscapes, coastal journeys and village life.' },
-    { name: 'Central Java', slug: 'central-java', image: '/images/optimized/borobudur-7.webp', description: 'Ancient temples and the cultural heartland around Borobudur.' },
-    { name: 'Yogyakarta', slug: 'yogyakarta', image: '/images/optimized/prambanan-5.webp', description: 'Living traditions, local crafts and the temples of Prambanan.' },
-    { name: 'West Java', slug: 'west-java', image: '/images/optimized/bogor-presidential-palace.webp', description: 'Highland scenery, tea country and green escapes near Jakarta.' },
-  ],
-  bali: [
-    { name: 'Ubud & Central Bali', slug: 'ubud-central-bali', image: '/images/optimized/jatiluwih-kk.webp', description: 'Rice terraces, village paths and the island’s artistic centre.' },
-    { name: 'South Bali', slug: 'south-bali', image: '/images/optimized/jukung-in-sanur.webp', description: 'Coastal stays, seaside mornings and easy access to the island.' },
-    { name: 'North & East Bali', slug: 'north-east-bali', image: '/images/optimized/bali.webp', description: 'Quiet coastlines, mountain scenery and traditional communities.' },
-  ],
-  'lombok-komodo': [
-    { name: 'Lombok', slug: 'lombok', image: '/images/optimized/lombok-komodo.webp', description: 'Island landscapes, Sasak culture and routes around Mount Rinjani.' },
-    { name: 'Komodo National Park', slug: 'komodo-national-park', image: '/images/optimized/lombok-komodo.webp', description: 'A signature island and marine journey through eastern Indonesia.' },
-    { name: 'Flores', slug: 'flores', image: '/images/optimized/lombok-komodo.webp', description: 'A dramatic overland route through highlands and coastal villages.' },
-  ],
-  sumatra: [
-    { name: 'Lake Toba & Samosir', slug: 'lake-toba-samosir', image: '/images/optimized/toba9.webp', description: 'A vast volcanic lake and the heritage of the Batak people.' },
-    { name: 'Aceh', slug: 'aceh', image: '/images/optimized/sumatra-main.webp', description: 'Northern landscapes, strong traditions and warm hospitality.' },
-    { name: 'West Sumatra', slug: 'west-sumatra', image: '/images/optimized/sumatra-main.webp', description: 'Highland scenery and Minangkabau culture.' },
-  ],
-  sulawesi: [
-    { name: 'South Sulawesi', slug: 'south-sulawesi', image: '/images/optimized/sulawesi.webp', description: 'Coastal journeys and the cultural heritage of the south.' },
-    { name: 'Tana Toraja', slug: 'tana-toraja', image: '/images/optimized/ceremony.webp', description: 'Mountain villages and distinctive Torajan traditions.' },
-    { name: 'North Sulawesi', slug: 'north-sulawesi', image: '/images/optimized/sulawesi.webp', description: 'Volcanic scenery, island life and rich marine experiences.' },
-  ],
-  kalimantan: [
-    { name: 'Tanjung Puting', slug: 'tanjung-puting', image: '/images/optimized/tanjung-puting-04.webp', description: 'River journeys through rainforest habitat and orangutan conservation areas.' },
-    { name: 'Heart of Borneo', slug: 'heart-of-borneo', image: '/images/optimized/tanjung-puting-04.webp', description: 'A remote interior of rainforest, rivers and Indigenous communities.' },
-    { name: 'Mahakam River', slug: 'mahakam-river', image: '/images/optimized/tanjung-puting-04.webp', description: 'A river route connecting forest landscapes and riverside communities.' },
-  ],
-};
-
 export const services = [
   {
     title: 'FIT-Individual',

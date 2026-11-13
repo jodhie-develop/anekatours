@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import Reveal from './Reveal';
 import { Link } from '../router';
 import { company, destinations, featuredPrograms, hero, heroPhotos, intro, programs, services, pages } from '../data/site';
+import { destinationPagesWithoutContent, javaRegion } from '../data/destinations';
 
 const heroSlides = heroPhotos;
 const highImagePriority = { fetchpriority: 'high' };
@@ -215,17 +216,21 @@ export function Destinations({ compactTop = false }: { compactTop?: boolean }) {
       <p className="eyebrow">One country. Endless possibilities.</p>
       <h2 className="h2">Where will your next group go?</h2>
       <div className="bento bento--destinations">
-        {destinations.map((d) => (
+        {destinations.map((d) => {
+          const destinationPage = d.slug === 'java' ? javaRegion : destinationPagesWithoutContent.find((item) => item.slug === d.slug);
+          if (!destinationPage) return null;
+          return (
           <Link
             key={d.slug}
             to={`/destinations/${d.slug}`}
             className="dest-card"
           >
-            <img src={d.image} alt={d.name} loading="lazy" />
+            <img src={destinationPage.heroImage.src} srcSet={destinationPage.heroImage.srcSet} sizes="(max-width: 768px) 90vw, 33vw" alt={destinationPage.heroImage.alt} loading="lazy" />
             <span className="dest-card__shade" />
             <span className="dest-card__name">{d.name}</span>
           </Link>
-        ))}
+          );
+        })}
       </div>
     </Reveal>
   );
