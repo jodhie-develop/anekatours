@@ -7,6 +7,15 @@ type ChatMessage = { id: number; from: 'assistant' | 'visitor'; text: string; li
 
 const quickPrompts = ['Sample programs', 'Destinations', 'Request a quote', 'Contact us'];
 
+function renderMessageText(text: string) {
+  return text.split(/(\*\*[^*]+\*\*)/g).map((part, index) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return <strong key={index}>{part.slice(2, -2)}</strong>;
+    }
+    return part;
+  });
+}
+
 export default function Chatbot() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
@@ -83,7 +92,7 @@ export default function Chatbot() {
           <div className="chatbot-panel__messages" role="log" aria-live="polite" aria-relevant="additions text">
             {messages.map((message) => (
               <div className={`chatbot-message chatbot-message--${message.from}`} key={message.id}>
-                <p>{message.text}</p>
+                <p>{renderMessageText(message.text)}</p>
                 {message.links && (
                   <div className="chatbot-message__links">
                     {message.links.map((link) => (
