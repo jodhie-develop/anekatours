@@ -82,13 +82,42 @@ export const heroPhotos = openingPhotos.filter(({ slug }) =>
   ['toba9', 'borobudur-7', 'bromo-023', 'bromo-d', 'jatiluwih-kk', 'prambanan-5', 'rice-25'].includes(slug),
 );
 export const destinations: Destination[] = [
-  { name: 'East Java', slug: 'east-java', image: '/images/optimized/east-java.webp' },
-  { name: 'Central Java & Yogyakarta', slug: 'central-java-yogyakarta', image: '/images/optimized/central-java-yogyakarta.webp' },
+  { name: 'Java', slug: 'java', image: '/images/optimized/bromo-023.webp' },
   { name: 'Bali', slug: 'bali', image: '/images/optimized/bali.webp' },
   { name: 'Lombok & Komodo', slug: 'lombok-komodo', image: '/images/optimized/lombok-komodo.webp' },
   { name: 'Sumatra', slug: 'sumatra', image: '/images/optimized/sumatra-main.webp' },
   { name: 'Sulawesi', slug: 'sulawesi', image: '/images/optimized/sulawesi.webp' },
 ];
+
+export type DestinationRegion = Destination & { description: string };
+export const destinationRegions: Record<string, DestinationRegion[]> = {
+  java: [
+    { name: 'East Java', slug: 'east-java', image: '/images/optimized/bromo-d.webp', description: 'Volcanic landscapes, coastal journeys and village life.' },
+    { name: 'Central Java', slug: 'central-java', image: '/images/optimized/borobudur-7.webp', description: 'Ancient temples and the cultural heartland around Borobudur.' },
+    { name: 'Yogyakarta', slug: 'yogyakarta', image: '/images/optimized/prambanan-5.webp', description: 'Living traditions, local crafts and the temples of Prambanan.' },
+    { name: 'West Java', slug: 'west-java', image: '/images/optimized/bogor-presidential-palace.webp', description: 'Highland scenery, tea country and green escapes near Jakarta.' },
+  ],
+  bali: [
+    { name: 'Ubud & Central Bali', slug: 'ubud-central-bali', image: '/images/optimized/jatiluwih-kk.webp', description: 'Rice terraces, village paths and the island’s artistic centre.' },
+    { name: 'South Bali', slug: 'south-bali', image: '/images/optimized/jukung-in-sanur.webp', description: 'Coastal stays, seaside mornings and easy access to the island.' },
+    { name: 'North & East Bali', slug: 'north-east-bali', image: '/images/optimized/bali.webp', description: 'Quiet coastlines, mountain scenery and traditional communities.' },
+  ],
+  'lombok-komodo': [
+    { name: 'Lombok', slug: 'lombok', image: '/images/optimized/lombok-komodo.webp', description: 'Island landscapes, Sasak culture and routes around Mount Rinjani.' },
+    { name: 'Komodo National Park', slug: 'komodo-national-park', image: '/images/optimized/lombok-komodo.webp', description: 'A signature island and marine journey through eastern Indonesia.' },
+    { name: 'Flores', slug: 'flores', image: '/images/optimized/lombok-komodo.webp', description: 'A dramatic overland route through highlands and coastal villages.' },
+  ],
+  sumatra: [
+    { name: 'Lake Toba & Samosir', slug: 'lake-toba-samosir', image: '/images/optimized/toba9.webp', description: 'A vast volcanic lake and the heritage of the Batak people.' },
+    { name: 'Aceh', slug: 'aceh', image: '/images/optimized/sumatra-main.webp', description: 'Northern landscapes, strong traditions and warm hospitality.' },
+    { name: 'West Sumatra', slug: 'west-sumatra', image: '/images/optimized/sumatra-main.webp', description: 'Highland scenery and Minangkabau culture.' },
+  ],
+  sulawesi: [
+    { name: 'South Sulawesi', slug: 'south-sulawesi', image: '/images/optimized/sulawesi.webp', description: 'Coastal journeys and the cultural heritage of the south.' },
+    { name: 'Tana Toraja', slug: 'tana-toraja', image: '/images/optimized/ceremony.webp', description: 'Mountain villages and distinctive Torajan traditions.' },
+    { name: 'North Sulawesi', slug: 'north-sulawesi', image: '/images/optimized/sulawesi.webp', description: 'Volcanic scenery, island life and rich marine experiences.' },
+  ],
+};
 
 export const services = [
   {

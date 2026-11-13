@@ -214,11 +214,11 @@ export function Destinations({ compactTop = false }: { compactTop?: boolean }) {
     <Reveal as="section" className={`section container ${compactTop ? 'section--tight-top' : ''}`}>
       <p className="eyebrow">One country. Endless possibilities.</p>
       <h2 className="h2">Where will your next group go?</h2>
-      <div className="bento">
+      <div className="bento bento--destinations">
         {destinations.map((d, i) => (
           <Link
             key={d.slug}
-            to={`/contact?destination=${encodeURIComponent(d.name)}`}
+            to={`/destinations/${d.slug}`}
             className={`dest-card ${i === 0 ? 'dest-card--tall' : ''}`}
           >
             <img src={d.image} alt={d.name} loading="lazy" />

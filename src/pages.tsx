@@ -2,7 +2,7 @@ import { CtaBand, Destinations, Hero, Intro, PageHero, ProgramShowcase, Programs
 import QuoteForm from './components/QuoteForm';
 import Reveal from './components/Reveal';
 import { Link, useLocation } from './router';
-import { featuredPrograms, pages } from './data/site';
+import { destinationRegions, destinations, featuredPrograms, pages } from './data/site';
 import Gallery from './components/Gallery';
 
 export function HomePage() {
@@ -67,6 +67,41 @@ export function DestinationsPage() {
     <>
       <PageHero title={p.title} intro={p.intro} image={p.image} />
       <Destinations />
+    </>
+  );
+}
+
+export function DestinationDetailPage() {
+  const { path } = useLocation();
+  const slug = path.replace(/\/+$/, '').split('/').pop() ?? '';
+  const destination = destinations.find((item) => item.slug === slug);
+  const regions = destinationRegions[slug];
+  if (!destination || !regions) return <NotFoundPage />;
+
+  return (
+    <>
+      <PageHero title={destination.name} intro={`Explore the regions and island experiences that make ${destination.name} distinctive.`} image={destination.image} />
+      <section className="section container">
+        <p className="eyebrow">Explore the region</p>
+        <h2 className="h2">Discover {destination.name}</h2>
+        <div className="bento destination-regions">
+          {regions.map((region) => (
+            <Link
+              key={region.slug}
+              to={`/contact?destination=${encodeURIComponent(`${destination.name} — ${region.name}`)}`}
+              className="dest-card destination-regions__card"
+            >
+              <img src={region.image} alt={region.name} loading="lazy" />
+              <span className="dest-card__shade" />
+              <span className="destination-regions__copy">
+                <span className="dest-card__name">{region.name}</span>
+                <span className="destination-regions__description">{region.description}</span>
+              </span>
+            </Link>
+          ))}
+        </div>
+        <Link to="/destinations" className="link destination-regions__back">← All destinations</Link>
+      </section>
     </>
   );
 }

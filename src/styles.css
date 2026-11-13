@@ -866,6 +866,7 @@ p {
   grid-auto-rows: 250px;
   gap: 24px;
 }
+.bento--destinations .dest-card:last-child { grid-column: auto; }
 
 .dest-card {
   position: relative;
@@ -894,6 +895,13 @@ p {
 }
 
 .dest-card:last-child { grid-column: span 2; }
+
+.destination-regions { margin-top: 2rem; }
+.destination-regions__card { min-height: 19rem; }
+.destination-regions__copy { position: absolute; z-index: 1; right: 1.5rem; bottom: 1.35rem; left: 1.5rem; display: grid; gap: .5rem; }
+.destination-regions__copy .dest-card__name { position: static; }
+.destination-regions__description { max-width: 30rem; color: rgba(255,255,255,.9); font-size: .96rem; line-height: 1.5; }
+.destination-regions__back { display: inline-flex; margin-top: 2rem; }
 
 .dest-card img {
   position: absolute;

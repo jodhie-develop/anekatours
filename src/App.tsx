@@ -4,8 +4,8 @@ import Footer from './components/Footer';
 import IntroScreen from './components/IntroScreen';
 import Chatbot from './components/Chatbot';
 import { useLocation } from './router';
-import { featuredPrograms, pages } from './data/site';
-import { AboutPage, ContactPage, DestinationsPage, GalleryPage, HomePage, NotFoundPage, ProgramDetailPage, ProgramsPage, ServicesPage } from './pages';
+import { destinations, featuredPrograms, pages } from './data/site';
+import { AboutPage, ContactPage, DestinationDetailPage, DestinationsPage, GalleryPage, HomePage, NotFoundPage, ProgramDetailPage, ProgramsPage, ServicesPage } from './pages';
 import { ScrollArrow } from './components/Sections';
 
 const routes: Record<string, { component: ComponentType; title: string }> = {
@@ -48,17 +48,20 @@ export default function App() {
   const route = routes[clean];
   const programSlug = clean.startsWith('/programs/') ? clean.slice('/programs/'.length) : '';
   const program = featuredPrograms.find((item) => item.slug === programSlug);
-  const Page = route?.component ?? (program ? ProgramDetailPage : NotFoundPage);
-  const pageTitle = route?.title ?? (program ? `${program.title} | Aneka Kartika Tours & Travel` : 'Page not found | Aneka Kartika Tours & Travel');
+  const destinationSlug = clean.startsWith('/destinations/') ? clean.slice('/destinations/'.length) : '';
+  const destination = destinations.find((item) => item.slug === destinationSlug);
+  const Page = route?.component ?? (program ? ProgramDetailPage : destination ? DestinationDetailPage : NotFoundPage);
+  const pageTitle = route?.title ?? (program ? `${program.title} | Aneka Kartika Tours & Travel` : destination ? `${destination.name} | Indonesia Destinations | Aneka Kartika Tours & Travel` : 'Page not found | Aneka Kartika Tours & Travel');
 
   useEffect(() => {
     document.title = pageTitle;
     const program = featuredPrograms.find((item) => clean === `/programs/${item.slug}`);
+    const destination = destinations.find((item) => clean === `/destinations/${item.slug}`);
     const description = (program
       ? `${program.days}-day Indonesia journey from ${program.start} to ${program.finish}, tailored by Aneka Kartika Tours for travel trade partners.`
-      : descriptions[clean] ?? 'Aneka Kartika Tours & Travel, your local destination management partner in Indonesia since 1979.').slice(0, 155);
+      : destination ? `Explore ${destination.name} with Aneka Kartika Tours. Discover distinctive regions and plan a seamless Indonesia journey with our local team.` : descriptions[clean] ?? 'Aneka Kartika Tours & Travel, your local destination management partner in Indonesia since 1979.').slice(0, 155);
     const canonical = `https://www.aneka-tours.co.id${clean === '/' ? '/' : clean}`;
-    const image = `https://www.aneka-tours.co.id${socialImages[clean] ?? socialImages['/programs']}`;
+    const image = `https://www.aneka-tours.co.id${destination?.image ?? socialImages[clean] ?? socialImages['/programs']}`;
     setMeta('meta[name="description"]', 'content', description);
     setMeta('meta[property="og:title"]', 'content', pageTitle);
     setMeta('meta[property="og:description"]', 'content', description);
