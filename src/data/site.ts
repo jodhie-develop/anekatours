@@ -87,6 +87,7 @@ export const destinations: Destination[] = [
   { name: 'Lombok & Komodo', slug: 'lombok-komodo', image: '/images/optimized/lombok-komodo.webp' },
   { name: 'Sumatra', slug: 'sumatra', image: '/images/optimized/sumatra-main.webp' },
   { name: 'Sulawesi', slug: 'sulawesi', image: '/images/optimized/sulawesi.webp' },
+  { name: 'Kalimantan', slug: 'kalimantan', image: '/images/optimized/tanjung-puting-04.webp' },
 ];
 
 export type DestinationRegion = Destination & { description: string };
@@ -116,6 +117,11 @@ export const destinationRegions: Record<string, DestinationRegion[]> = {
     { name: 'South Sulawesi', slug: 'south-sulawesi', image: '/images/optimized/sulawesi.webp', description: 'Coastal journeys and the cultural heritage of the south.' },
     { name: 'Tana Toraja', slug: 'tana-toraja', image: '/images/optimized/ceremony.webp', description: 'Mountain villages and distinctive Torajan traditions.' },
     { name: 'North Sulawesi', slug: 'north-sulawesi', image: '/images/optimized/sulawesi.webp', description: 'Volcanic scenery, island life and rich marine experiences.' },
+  ],
+  kalimantan: [
+    { name: 'Tanjung Puting', slug: 'tanjung-puting', image: '/images/optimized/tanjung-puting-04.webp', description: 'River journeys through rainforest habitat and orangutan conservation areas.' },
+    { name: 'Heart of Borneo', slug: 'heart-of-borneo', image: '/images/optimized/tanjung-puting-04.webp', description: 'A remote interior of rainforest, rivers and Indigenous communities.' },
+    { name: 'Mahakam River', slug: 'mahakam-river', image: '/images/optimized/tanjung-puting-04.webp', description: 'A river route connecting forest landscapes and riverside communities.' },
   ],
 };
 

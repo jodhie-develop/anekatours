@@ -67,16 +67,38 @@ export function DestinationsPage() {
     <>
       <PageHero title={p.title} intro={p.intro} image={p.image} />
       <Destinations />
+      <div className="container destinations-back">
+        <Link to="/" className="link">← Back to home</Link>
+      </div>
     </>
   );
 }
 
 export function DestinationDetailPage() {
   const { path } = useLocation();
-  const slug = path.replace(/\/+$/, '').split('/').pop() ?? '';
-  const destination = destinations.find((item) => item.slug === slug);
-  const regions = destinationRegions[slug];
+  const segments = path.replace(/\/+$/, '').split('/').filter(Boolean).slice(1);
+  const destination = destinations.find((item) => item.slug === segments[0]);
+  const regions = destination ? destinationRegions[destination.slug] : undefined;
   if (!destination || !regions) return <NotFoundPage />;
+
+  const region = regions.find((item) => item.slug === segments[1]);
+  if (segments.length > 1) {
+    if (!region) return <NotFoundPage />;
+    return (
+      <>
+        <PageHero title={region.name} intro={region.description} image={region.image} />
+        <section className="section container destination-story">
+          <p className="eyebrow">{destination.name}, Indonesia</p>
+          <h2 className="h2">Explore {region.name}</h2>
+          <p className="lead">Discover this part of {destination.name} with a journey shaped around your travellers. Our local team can tailor the route, pace and experiences to suit your programme.</p>
+          <div className="destination-story__links">
+            <Link to={`/contact?destination=${encodeURIComponent(`${destination.name} — ${region.name}`)}`} className="btn btn--primary">Plan this destination</Link>
+            <Link to={`/destinations/${destination.slug}`} className="link">← Back to {destination.name}</Link>
+          </div>
+        </section>
+      </>
+    );
+  }
 
   return (
     <>
@@ -88,7 +110,7 @@ export function DestinationDetailPage() {
           {regions.map((region) => (
             <Link
               key={region.slug}
-              to={`/contact?destination=${encodeURIComponent(`${destination.name} — ${region.name}`)}`}
+              to={`/destinations/${destination.slug}/${region.slug}`}
               className="dest-card destination-regions__card"
             >
               <img src={region.image} alt={region.name} loading="lazy" />

@@ -7,7 +7,7 @@ import path from 'node:path';
 const origin = 'https://www.aneka-tours.co.id';
 const descriptions = {
   '/': 'Indonesia destination management for tour operators and travel agents. Build seamless group journeys with Aneka Kartika Tours, established in 1979.',
-  '/destinations': 'Explore Indonesia with a local DMC, from Java and Bali to Sumatra and Sulawesi. Plan distinctive journeys with Aneka Kartika Tours.',
+  '/destinations': 'Explore Indonesia with a local DMC, from Java and Bali to Sumatra, Kalimantan and Sulawesi. Plan distinctive journeys with Aneka Kartika Tours.',
   '/programs': 'Browse sample Indonesia tour programs for travel trade partners. Adapt routes, timing and experiences with our Surabaya-based local team.',
   '/services': 'Ground handling, FIT travel and tailored group services for overseas tour operators and travel agents across Indonesia.',
   '/about': 'Meet Aneka Kartika Tours, an Indonesian destination management company serving travel trade partners since 1979.',
@@ -51,18 +51,21 @@ try {
     const tag = `<link rel="canonical" href="${href}" />`;
     return /<link\s+rel=["']canonical["'][^>]*>/i.test(html) ? html.replace(/<link\s+rel=["']canonical["'][^>]*>/i, tag) : html.replace('</head>', `  ${tag}\n  </head>`);
   };
-  const routeTitle = (route, program, destination) => program ? `${program.title} | Aneka Kartika Tours & Travel` : destination ? `${destination.name} | Indonesia Destinations | Aneka Kartika Tours & Travel` : titles[route] ?? 'Page not found | Aneka Kartika Tours & Travel';
-  const routeDescription = (route, program, destination) => program ? `${program.days}-day Indonesia journey from ${program.start} to ${program.finish}, tailored by Aneka Kartika Tours for travel trade partners.` : destination ? `Explore ${destination.name} with Aneka Kartika Tours. Discover distinctive regions and plan a seamless Indonesia journey with our local team.` : descriptions[route] ?? 'Aneka Kartika Tours & Travel, your local destination management partner in Indonesia since 1979.';
+  const routeTitle = (route, program, destination, region) => program ? `${program.title} | Aneka Kartika Tours & Travel` : region && destination ? `${region.name} | ${destination.name} | Aneka Kartika Tours & Travel` : destination ? `${destination.name} | Indonesia Destinations | Aneka Kartika Tours & Travel` : titles[route] ?? 'Page not found | Aneka Kartika Tours & Travel';
+  const routeDescription = (route, program, destination, region) => program ? `${program.days}-day Indonesia journey from ${program.start} to ${program.finish}, tailored by Aneka Kartika Tours for travel trade partners.` : region && destination ? `${region.description} Plan a tailored ${destination.name} journey with Aneka Kartika Tours.` : destination ? `Explore ${destination.name} with Aneka Kartika Tours. Discover distinctive regions and plan a seamless Indonesia journey with our local team.` : descriptions[route] ?? 'Aneka Kartika Tours & Travel, your local destination management partner in Indonesia since 1979.';
   const destinationPaths = site.destinations.map((item) => `/destinations/${item.slug}`);
-  const paths = [...routeInfo.map(([url]) => url), ...destinationPaths, ...site.featuredPrograms.map((p) => `/programs/${p.slug}`)];
+  const destinationRegionPaths = site.destinations.flatMap((destination) => (site.destinationRegions[destination.slug] ?? []).map((region) => `/destinations/${destination.slug}/${region.slug}`));
+  const paths = [...routeInfo.map(([url]) => url), ...destinationPaths, ...destinationRegionPaths, ...site.featuredPrograms.map((p) => `/programs/${p.slug}`)];
   for (const route of paths) {
     router.setStaticLocation(route);
     const program = site.featuredPrograms.find((item) => route === `/programs/${item.slug}`);
-    const destination = site.destinations.find((item) => route === `/destinations/${item.slug}`);
+    const destinationSegments = route.startsWith('/destinations/') ? route.slice('/destinations/'.length).split('/') : [];
+    const destination = site.destinations.find((item) => item.slug === destinationSegments[0]);
+    const region = destination ? (site.destinationRegions[destination.slug] ?? []).find((item) => item.slug === destinationSegments[1]) : undefined;
     let html = template.replace('<div id="root"></div>', `<div id="root">${renderToString(React.createElement(App))}</div>`);
-    const title = routeTitle(route, program, destination);
-    const desc = routeDescription(route, program, destination).slice(0, 155);
-    const image = `${origin}${destination?.image ?? ogImages[route] ?? ogImages['/programs']}`;
+    const title = routeTitle(route, program, destination, region);
+    const desc = routeDescription(route, program, destination, region).slice(0, 155);
+    const image = `${origin}${region?.image ?? destination?.image ?? ogImages[route] ?? ogImages['/programs']}`;
     html = html.replace(/<title>.*?<\/title>/i, `<title>${esc(title)}</title>`);
     html = setMeta(html, 'name', 'description', desc);
     html = setCanonical(html, `${origin}${route === '/' ? '/' : route}`);
@@ -102,7 +105,7 @@ try {
   notFound = setCanonical(notFound, `${origin}/404`);
   await writeFile('dist/404.html', notFound);
 
-  const sitemap = [...routeInfo.filter(([url]) => url !== '/gallery').map(([url]) => url), ...destinationPaths, ...site.featuredPrograms.map((p) => `/programs/${p.slug}`)];
+  const sitemap = [...routeInfo.filter(([url]) => url !== '/gallery').map(([url]) => url), ...destinationPaths, ...destinationRegionPaths, ...site.featuredPrograms.map((p) => `/programs/${p.slug}`)];
   await writeFile('dist/sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${sitemap.map((url) => `<url><loc>${origin}${url === '/' ? '/' : url}</loc></url>`).join('')}</urlset>`);
 } finally {
   await vite.close();
