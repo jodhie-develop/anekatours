@@ -62,7 +62,7 @@ export default function Chatbot() {
       if (!response.ok || typeof result.text !== 'string') throw new Error('Chat request failed');
       const reply: ChatMessage = { id: nextId.current++, from: 'assistant', text: result.text, links: result.links };
       const nextMessages = [...conversation, reply];
-      if (visitorQuestionCount === 2 && result.leadCaptureEnabled === true && !contactSaved) {
+      if (visitorQuestionCount >= 2 && result.leadCaptureEnabled === true && !contactSaved) {
         nextMessages.push({
           id: nextId.current++,
           from: 'assistant',
