@@ -4,8 +4,8 @@ import Reveal from './components/Reveal';
 import { Link, useLocation } from './router';
 import { featuredPrograms, pages } from './data/site';
 import Gallery from './components/Gallery';
-import { BaliAttractionPage, BaliRegionPage, JavaAttractionPage, JavaRegionPage, OtherDestinationRegionPage } from './components/DestinationContent';
-import { baliAttractions, javaAttractions } from './data/destinations';
+import { BaliAttractionPage, BaliRegionPage, JavaAttractionPage, JavaRegionPage, OtherAttractionPage, OtherDestinationRegionPage } from './components/DestinationContent';
+import { baliAttractions, getDestinationAttraction, javaAttractions } from './data/destinations';
 
 export function HomePage() {
   return (
@@ -89,6 +89,10 @@ export function DestinationDetailPage() {
   if (segments.length === 2 && segments[0] === 'bali') {
     const attraction = baliAttractions.find((item) => item.slug === segments[1]);
     return attraction ? <BaliAttractionPage attraction={attraction} /> : <NotFoundPage />;
+  }
+  if (segments.length === 2) {
+    const attraction = getDestinationAttraction(segments[0], segments[1]);
+    return attraction ? <OtherAttractionPage regionSlug={segments[0]} slug={segments[1]} /> : <NotFoundPage />;
   }
   return <NotFoundPage />;
 }

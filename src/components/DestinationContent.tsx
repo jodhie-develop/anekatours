@@ -1,4 +1,4 @@
-import { baliAttractions, baliRegion, destinationPagesWithoutContent, javaAttractions, javaRegion, type AttractionPageContent, type DestinationImage } from '../data/destinations';
+import { baliAttractions, baliRegion, destinationPagesWithoutContent, getDestinationAttraction, javaAttractions, javaRegion, type AttractionPageContent, type DestinationImage } from '../data/destinations';
 import { destinations } from '../data/site';
 import { Link } from '../router';
 
@@ -79,23 +79,33 @@ export function JavaRegionPage() {
 export function OtherDestinationRegionPage({ slug }: { slug: string }) {
   const region = destinationPagesWithoutContent.find((item) => item.slug === slug);
   if (!region) return null;
-  // TODO: content pending next stage.
+  const places = region.attractions.filter((attraction) => attraction.published !== false);
   return (
     <>
       <DestinationHero
         image={region.heroImage}
         title={region.name}
-        intro={[`Plan a tailored ${region.name} programme with our team.`]}
+        intro={region.intro}
         breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Destinations', href: '/destinations' }, { label: region.name }]}
       />
-      <section className="section container destination-region-cta">
-        <Link to={`/contact?destination=${region.slug}`} className="btn btn--primary">Request a Quote</Link>
+      <section className="section container destination-region-content">
+        <p className="eyebrow">Explore {region.name}</p>
+        <h2 className="h2">Places to discover</h2>
+        <div className="destination-place-grid">
+          {places.map((attraction) => <JavaAttractionCard key={attraction.slug} attraction={attraction} regionSlug={region.slug} />)}
+        </div>
+        <Link to="/destinations" className="link destination-regions__back">← All destinations</Link>
       </section>
     </>
   );
 }
 
 function PairingLine({ pair }: { pair: AttractionPageContent['pairsWith'][number] }) {
+  if (pair.segments) return <p>{pair.segments.map((segment, index) => {
+    const match = segment.href?.match(/^\/destinations\/([^/]+)\/([^/]+)$/);
+    const validHref = match && getDestinationAttraction(match[1], match[2]) ? segment.href : undefined;
+    return validHref ? <Link key={`${segment.text}-${index}`} to={validHref}>{segment.text}</Link> : <span key={`${segment.text}-${index}`}>{segment.text}</span>;
+  })}</p>;
   if (!pair.href) return <p>{pair.text}</p>;
   return <p>{pair.before}{pair.title && <Link to={pair.href}>{pair.title}</Link>}{pair.text}</p>;
 }
@@ -108,8 +118,15 @@ export function BaliAttractionPage({ attraction }: { attraction: AttractionPageC
   return <AttractionDetailPage attraction={attraction} regionSlug="bali" regionName="Bali" others={baliAttractions} />;
 }
 
+export function OtherAttractionPage({ regionSlug, slug }: { regionSlug: string; slug: string }) {
+  const attraction = getDestinationAttraction(regionSlug, slug);
+  const region = destinationPagesWithoutContent.find((item) => item.slug === regionSlug);
+  if (!attraction || !region) return null;
+  return <AttractionDetailPage attraction={attraction} regionSlug={region.slug} regionName={region.name} others={region.attractions.filter((item) => item.published !== false)} />;
+}
+
 function AttractionDetailPage({ attraction, regionSlug, regionName, others }: { attraction: AttractionPageContent; regionSlug: string; regionName: string; others: AttractionPageContent[] }) {
-  const otherPlaces = others.filter((item) => item.slug !== attraction.slug);
+  const otherPlaces = others.filter((item) => item.slug !== attraction.slug && item.published !== false);
   return (
     <>
       <DestinationHero

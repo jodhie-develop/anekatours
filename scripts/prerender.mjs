@@ -58,17 +58,21 @@ try {
   const destinationPaths = site.destinations.map((item) => `/destinations/${item.slug}`);
   const javaAttractionPaths = destinationsData.javaAttractions.map((item) => `/destinations/java/${item.slug}`);
   const baliAttractionPaths = destinationsData.baliAttractions.map((item) => `/destinations/bali/${item.slug}`);
-  const attractionPaths = [...javaAttractionPaths, ...baliAttractionPaths];
+  const otherAttractionPaths = destinationsData.otherDestinationRegions.flatMap((region) => region.attractions.filter((item) => item.published !== false).map((item) => `/destinations/${region.slug}/${item.slug}`));
+  const attractionPaths = [...javaAttractionPaths, ...baliAttractionPaths, ...otherAttractionPaths];
   const paths = [...routeInfo.map(([url]) => url), ...destinationPaths, ...attractionPaths, ...site.featuredPrograms.map((p) => `/programs/${p.slug}`)];
   for (const route of paths) {
     router.setStaticLocation(route);
     const program = site.featuredPrograms.find((item) => route === `/programs/${item.slug}`);
     const destinationSegments = route.startsWith('/destinations/') ? route.slice('/destinations/'.length).split('/') : [];
-    const attraction = destinationSegments[0] === 'java' ? destinationsData.javaAttractions.find((item) => item.slug === destinationSegments[1]) : destinationSegments[0] === 'bali' ? destinationsData.baliAttractions.find((item) => item.slug === destinationSegments[1]) : undefined;
+    const otherRegion = destinationsData.otherDestinationRegions.find((item) => item.slug === destinationSegments[0]);
+    const attraction = destinationSegments.length === 2
+      ? (destinationSegments[0] === 'java' ? destinationsData.javaAttractions : destinationSegments[0] === 'bali' ? destinationsData.baliAttractions : otherRegion?.attractions ?? []).find((item) => item.slug === destinationSegments[1] && item.published !== false)
+      : undefined;
     const destinationPage = destinationSegments.length === 1 && destinationSegments[0] === 'java'
       ? destinationsData.javaRegion
       : destinationSegments.length === 1
-        ? destinationSegments[0] === 'bali' ? destinationsData.baliRegion : destinationsData.destinationPagesWithoutContent.find((item) => item.slug === destinationSegments[0])
+        ? destinationSegments[0] === 'bali' ? destinationsData.baliRegion : otherRegion
         : undefined;
     let html = template.replace('<div id="root"></div>', `<div id="root">${renderToString(React.createElement(App))}</div>`);
     const title = routeTitle(route, program, attraction, destinationPage);
@@ -94,7 +98,7 @@ try {
         ? ['Home', 'Destinations', attraction.region, attraction.h1.split(':')[0]]
         : ['Home', 'Destinations', destinationPage.h1 ?? destinationPage.name];
       const breadcrumbPaths = attraction
-        ? ['/', '/destinations', `/destinations/${attraction.region.toLowerCase()}`, route]
+        ? ['/', '/destinations', `/destinations/${attraction.regionSlug ?? (attraction.region === 'Java' ? 'java' : attraction.region === 'Bali' ? 'bali' : destinationSegments[0])}`, route]
         : ['/', '/destinations', route];
       const breadcrumbJson = {
         '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: breadcrumbs.map((name, index) => ({

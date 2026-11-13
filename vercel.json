@@ -39,17 +39,17 @@
     {"source": "/destinations/java/east-java", "destination": "/destinations/java", "statusCode": 301},
     {"source": "/destinations/java/central-java", "destination": "/destinations/java", "statusCode": 301},
     {"source": "/destinations/java/west-java", "destination": "/destinations/java", "statusCode": 301},
-    {"source": "/destinations/lombok-komodo/:oldRegion", "destination": "/destinations/lombok-komodo", "statusCode": 301},
-    {"source": "/destinations/sumatra/:oldRegion", "destination": "/destinations/sumatra", "statusCode": 301},
-    {"source": "/destinations/sulawesi/:oldRegion", "destination": "/destinations/sulawesi", "statusCode": 301},
-    {"source": "/destinations/kalimantan/:oldRegion", "destination": "/destinations/kalimantan", "statusCode": 301},
     {"source": "/demo/:path*", "destination": "/programs", "statusCode": 301}
   ],
   "rewrites": [
     {"source": "/destinations", "destination": "/destinations/index.html"},
     {"source": "/destinations/:region", "destination": "/destinations/:region/index.html"},
     {"source": "/destinations/java/:attraction", "destination": "/destinations/java/:attraction/index.html"},
-    {"source": "/destinations/bali/:attraction", "destination": "/destinations/bali/:attraction/index.html"}
+    {"source": "/destinations/bali/:attraction", "destination": "/destinations/bali/:attraction/index.html"},
+    {"source": "/destinations/lombok-komodo/:attraction", "destination": "/destinations/lombok-komodo/:attraction/index.html"},
+    {"source": "/destinations/sumatra/:attraction", "destination": "/destinations/sumatra/:attraction/index.html"},
+    {"source": "/destinations/sulawesi/:attraction", "destination": "/destinations/sulawesi/:attraction/index.html"},
+    {"source": "/destinations/kalimantan/:attraction", "destination": "/destinations/kalimantan/:attraction/index.html"}
   ],
   "headers": [
     {"source": "/(.*)", "headers": [{"key": "Content-Security-Policy", "value": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: blob:; font-src 'self' https://fonts.gstatic.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'sha256-XcDM0cNrdGeTa4NU4sV7+Kmv4WVyUd/7WJBVQ2wRr8w=' https://challenges.cloudflare.com; connect-src 'self' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; upgrade-insecure-requests"}, {"key": "X-Frame-Options", "value": "DENY"}, {"key": "X-Content-Type-Options", "value": "nosniff"}, {"key": "Referrer-Policy", "value": "strict-origin-when-cross-origin"}, {"key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()"}]},

@@ -5,7 +5,7 @@ import IntroScreen from './components/IntroScreen';
 import Chatbot from './components/Chatbot';
 import { useLocation } from './router';
 import { destinations, featuredPrograms, pages } from './data/site';
-import { baliAttractions, baliRegion, destinationPagesWithoutContent, javaAttractions, javaRegion } from './data/destinations';
+import { baliRegion, destinationPagesWithoutContent, getDestinationAttraction, javaRegion } from './data/destinations';
 import { AboutPage, ContactPage, DestinationDetailPage, DestinationsPage, GalleryPage, HomePage, NotFoundPage, ProgramDetailPage, ProgramsPage, ServicesPage } from './pages';
 import { ScrollArrow } from './components/Sections';
 
@@ -51,7 +51,7 @@ export default function App() {
   const program = featuredPrograms.find((item) => item.slug === programSlug);
   const destinationSegments = clean.startsWith('/destinations/') ? clean.slice('/destinations/'.length).split('/') : [];
   const destination = destinations.find((item) => item.slug === destinationSegments[0]);
-  const attraction = destinationSegments[0] === 'java' ? javaAttractions.find((item) => item.slug === destinationSegments[1]) : destinationSegments[0] === 'bali' ? baliAttractions.find((item) => item.slug === destinationSegments[1]) : undefined;
+  const attraction = destinationSegments.length === 2 ? getDestinationAttraction(destinationSegments[0], destinationSegments[1]) : undefined;
   const destinationRegion = destinationSegments.length === 1 && destinationSegments[0] === 'java'
     ? javaRegion
     : destinationSegments.length === 1
@@ -65,7 +65,7 @@ export default function App() {
     document.title = pageTitle;
     const program = featuredPrograms.find((item) => clean === `/programs/${item.slug}`);
     const destinationSegments = clean.startsWith('/destinations/') ? clean.slice('/destinations/'.length).split('/') : [];
-    const attraction = destinationSegments[0] === 'java' ? javaAttractions.find((item) => item.slug === destinationSegments[1]) : destinationSegments[0] === 'bali' ? baliAttractions.find((item) => item.slug === destinationSegments[1]) : undefined;
+    const attraction = destinationSegments.length === 2 ? getDestinationAttraction(destinationSegments[0], destinationSegments[1]) : undefined;
     const destinationRegion = destinationSegments.length === 1 && destinationSegments[0] === 'java'
       ? javaRegion
       : destinationSegments.length === 1

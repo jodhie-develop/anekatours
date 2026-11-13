@@ -5,15 +5,18 @@ export type DestinationImage = {
 };
 
 export type DestinationPairing = {
-  title: string;
-  text: string;
+  segments?: { text: string; href?: string }[];
+  title?: string;
+  text?: string;
   href?: string;
   before?: string;
 };
 
 export type AttractionPageContent = {
   region: string;
+  regionSlug?: string;
   slug: string;
+  published?: boolean;
   metaTitle: string;
   metaDescription: string;
   h1: string;
@@ -26,6 +29,18 @@ export type AttractionPageContent = {
   pairsWith: DestinationPairing[];
   faq: { question: string; answer: string }[];
   cta: string;
+};
+
+export type DestinationRegionContent = {
+  region: string;
+  slug: string;
+  name: string;
+  metaTitle: string;
+  metaDescription: string;
+  h1: string;
+  heroImage: DestinationImage;
+  intro: string[];
+  attractions: AttractionPageContent[];
 };
 
 export const javaRegion = {
@@ -304,12 +319,9 @@ export const javaAttractions: AttractionPageContent[] = [
   },
 ];
 
-export const destinationPagesWithoutContent = [
-  { slug: 'lombok-komodo', name: 'Lombok & Komodo', metaTitle: 'Lombok & Komodo | Indonesia Destinations | Aneka Kartika', metaDescription: 'Request a tailored Lombok and Komodo travel programme from Aneka Kartika Tours.', heroImage: { src: '/images/destinations/lombok-komodo-1280.webp', srcSet: '/images/destinations/lombok-komodo-640.webp 640w, /images/destinations/lombok-komodo-1280.webp 1280w', alt: 'Lombok and Komodo island landscape' } },
-  { slug: 'sumatra', name: 'Sumatra', metaTitle: 'Sumatra | Indonesia Destinations | Aneka Kartika', metaDescription: 'Request a tailored Sumatra travel programme from Aneka Kartika Tours.', heroImage: { src: '/images/destinations/sumatra-1280.webp', srcSet: '/images/destinations/sumatra-640.webp 640w, /images/destinations/sumatra-1280.webp 1280w', alt: 'Landscape in Sumatra' } },
-  { slug: 'sulawesi', name: 'Sulawesi', metaTitle: 'Sulawesi | Indonesia Destinations | Aneka Kartika', metaDescription: 'Request a tailored Sulawesi travel programme from Aneka Kartika Tours.', heroImage: { src: '/images/destinations/sulawesi-1280.webp', srcSet: '/images/destinations/sulawesi-640.webp 640w, /images/destinations/sulawesi-1280.webp 1280w', alt: 'Landscape in Sulawesi' } },
-  { slug: 'kalimantan', name: 'Kalimantan', metaTitle: 'Kalimantan | Indonesia Destinations | Aneka Kartika', metaDescription: 'Request a tailored Kalimantan travel programme from Aneka Kartika Tours.', heroImage: { src: '/images/destinations/kalimantan-1280.webp', srcSet: '/images/destinations/kalimantan-640.webp 640w, /images/destinations/kalimantan-1280.webp 1280w', alt: 'Tanjung Puting landscape in Kalimantan' } },
-];
+import { otherDestinationRegions } from './other-destinations';
+export { otherDestinationRegions };
+export const destinationPagesWithoutContent = otherDestinationRegions;
 
 
 export const baliRegion = {
@@ -931,3 +943,11 @@ export const baliAttractions: AttractionPageContent[] = [
     "cta": "Want to add Nusa Penida to your Bali programme? Send us your dates and group profile, and we will plan the crossing and the island day for you."
   }
 ];
+
+export const allDestinationAttractions = [...javaAttractions, ...baliAttractions, ...otherDestinationRegions.flatMap((region) => region.attractions)];
+export const publishedDestinationAttractions = allDestinationAttractions.filter((attraction) => attraction.published !== false);
+export function getDestinationAttraction(regionSlug: string, slug: string) {
+  const region = otherDestinationRegions.find((item) => item.slug === regionSlug);
+  const attractions = region?.attractions ?? (regionSlug === 'java' ? javaAttractions : regionSlug === 'bali' ? baliAttractions : []);
+  return attractions.find((attraction) => attraction.slug === slug && attraction.published !== false);
+}
