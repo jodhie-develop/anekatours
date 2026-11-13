@@ -22,6 +22,18 @@ function parseBody(req) {
   try { return JSON.parse(req.body); } catch { return null; }
 }
 
+function extractOutputText(response) {
+  if (typeof response.output_text === 'string') return response.output_text.trim();
+  if (!Array.isArray(response.output)) return '';
+  return response.output
+    .filter((item) => item?.type === 'message' && item.role === 'assistant' && Array.isArray(item.content))
+    .flatMap((item) => item.content)
+    .filter((item) => item?.type === 'output_text' && typeof item.text === 'string')
+    .map((item) => item.text)
+    .join('')
+    .trim();
+}
+
 function linksFor(query) {
   const text = query.toLowerCase();
   if (/quote|price|cost|book|booking|request|proposal/.test(text)) {
@@ -98,10 +110,10 @@ export default async function handler(req, res) {
     });
     const result = await response.json();
     if (!response.ok) {
-      console.error('OpenAI chat request failed:', response.status, result.error?.code || result.error?.type || 'unknown');
+      console.error('OpenAI chat request failed:', response.status, result.error?.code || result.error?.type || 'unknown', result.error?.message?.slice(0, 300) || '');
       return fail(res, response.status === 429 ? 429 : 502, 'I could not answer just now. Please try again or contact our team.');
     }
-    const reply = typeof result.output_text === 'string' ? result.output_text.trim() : '';
+    const reply = extractOutputText(result);
     if (!reply) return fail(res, 502, 'I could not prepare a reply just now. Please try again or contact our team.');
     return res.status(200).json({ text: reply, links: linksFor(messages.at(-1).content) });
   } catch (error) {
