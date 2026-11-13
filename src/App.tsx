@@ -5,7 +5,7 @@ import IntroScreen from './components/IntroScreen';
 import Chatbot from './components/Chatbot';
 import { useLocation } from './router';
 import { destinations, featuredPrograms, pages } from './data/site';
-import { destinationPagesWithoutContent, javaAttractions, javaRegion } from './data/destinations';
+import { baliAttractions, baliRegion, destinationPagesWithoutContent, javaAttractions, javaRegion } from './data/destinations';
 import { AboutPage, ContactPage, DestinationDetailPage, DestinationsPage, GalleryPage, HomePage, NotFoundPage, ProgramDetailPage, ProgramsPage, ServicesPage } from './pages';
 import { ScrollArrow } from './components/Sections';
 
@@ -51,11 +51,11 @@ export default function App() {
   const program = featuredPrograms.find((item) => item.slug === programSlug);
   const destinationSegments = clean.startsWith('/destinations/') ? clean.slice('/destinations/'.length).split('/') : [];
   const destination = destinations.find((item) => item.slug === destinationSegments[0]);
-  const attraction = destinationSegments[0] === 'java' ? javaAttractions.find((item) => item.slug === destinationSegments[1]) : undefined;
+  const attraction = destinationSegments[0] === 'java' ? javaAttractions.find((item) => item.slug === destinationSegments[1]) : destinationSegments[0] === 'bali' ? baliAttractions.find((item) => item.slug === destinationSegments[1]) : undefined;
   const destinationRegion = destinationSegments.length === 1 && destinationSegments[0] === 'java'
     ? javaRegion
     : destinationSegments.length === 1
-      ? destinationPagesWithoutContent.find((item) => item.slug === destinationSegments[0])
+      ? destinationSegments[0] === 'bali' ? baliRegion : destinationPagesWithoutContent.find((item) => item.slug === destinationSegments[0])
       : undefined;
   const validDestinationPath = Boolean(destination && (destinationRegion && destinationSegments.length === 1 || attraction && destinationSegments.length === 2));
   const Page = route?.component ?? (program ? ProgramDetailPage : validDestinationPath ? DestinationDetailPage : NotFoundPage);
@@ -65,25 +65,28 @@ export default function App() {
     document.title = pageTitle;
     const program = featuredPrograms.find((item) => clean === `/programs/${item.slug}`);
     const destinationSegments = clean.startsWith('/destinations/') ? clean.slice('/destinations/'.length).split('/') : [];
-    const attraction = destinationSegments[0] === 'java' ? javaAttractions.find((item) => item.slug === destinationSegments[1]) : undefined;
+    const attraction = destinationSegments[0] === 'java' ? javaAttractions.find((item) => item.slug === destinationSegments[1]) : destinationSegments[0] === 'bali' ? baliAttractions.find((item) => item.slug === destinationSegments[1]) : undefined;
     const destinationRegion = destinationSegments.length === 1 && destinationSegments[0] === 'java'
       ? javaRegion
       : destinationSegments.length === 1
-        ? destinationPagesWithoutContent.find((item) => item.slug === destinationSegments[0])
+        ? destinationSegments[0] === 'bali' ? baliRegion : destinationPagesWithoutContent.find((item) => item.slug === destinationSegments[0])
         : undefined;
     const description = (program
       ? `${program.days}-day Indonesia journey from ${program.start} to ${program.finish}, tailored by Aneka Kartika Tours for travel trade partners.`
       : attraction?.metaDescription ?? destinationRegion?.metaDescription ?? descriptions[clean] ?? 'Aneka Kartika Tours & Travel, your local destination management partner in Indonesia since 1979.');
     const canonical = `https://www.aneka-tours.co.id${clean === '/' ? '/' : clean}`;
-    const image = `https://www.aneka-tours.co.id${attraction?.heroImage.src ?? destinationRegion?.heroImage.src ?? socialImages[clean] ?? socialImages['/programs']}`;
+    const socialImage = attraction ? attraction.heroImage?.src : destinationRegion?.heroImage?.src ?? socialImages[clean] ?? socialImages['/programs'];
+    const image = socialImage ? `https://www.aneka-tours.co.id${socialImage}` : '';
     setMeta('meta[name="description"]', 'content', description);
     setMeta('meta[property="og:title"]', 'content', pageTitle);
     setMeta('meta[property="og:description"]', 'content', description);
-    setMeta('meta[property="og:image"]', 'content', image);
+    if (socialImage) setMeta('meta[property="og:image"]', 'content', image);
+    else document.head.querySelector('meta[property="og:image"]')?.remove();
     setMeta('meta[property="og:url"]', 'content', canonical);
     setMeta('meta[name="twitter:title"]', 'content', pageTitle);
     setMeta('meta[name="twitter:description"]', 'content', description);
-    setMeta('meta[name="twitter:image"]', 'content', image);
+    if (socialImage) setMeta('meta[name="twitter:image"]', 'content', image);
+    else document.head.querySelector('meta[name="twitter:image"]')?.remove();
     let canonicalTag = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
     if (!canonicalTag) {
       canonicalTag = document.createElement('link');

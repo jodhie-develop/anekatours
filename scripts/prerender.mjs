@@ -52,45 +52,49 @@ try {
     const tag = `<link rel="canonical" href="${href}" />`;
     return /<link\s+rel=["']canonical["'][^>]*>/i.test(html) ? html.replace(/<link\s+rel=["']canonical["'][^>]*>/i, tag) : html.replace('</head>', `  ${tag}\n  </head>`);
   };
+  const removeMeta = (html, attr, key) => html.replace(new RegExp(`<meta\\s+[^>]*${attr}=["']${key}["'][^>]*>`, 'i'), '');
   const routeTitle = (route, program, attraction, destinationPage) => program ? `${program.title} | Aneka Kartika Tours & Travel` : attraction?.metaTitle ?? destinationPage?.metaTitle ?? titles[route] ?? 'Page not found | Aneka Kartika Tours & Travel';
   const routeDescription = (route, program, attraction, destinationPage) => program ? `${program.days}-day Indonesia journey from ${program.start} to ${program.finish}, tailored by Aneka Kartika Tours for travel trade partners.` : attraction?.metaDescription ?? destinationPage?.metaDescription ?? descriptions[route] ?? 'Aneka Kartika Tours & Travel, your local destination management partner in Indonesia since 1979.';
   const destinationPaths = site.destinations.map((item) => `/destinations/${item.slug}`);
-  const attractionPaths = destinationsData.javaAttractions.map((item) => `/destinations/java/${item.slug}`);
+  const javaAttractionPaths = destinationsData.javaAttractions.map((item) => `/destinations/java/${item.slug}`);
+  const baliAttractionPaths = destinationsData.baliAttractions.map((item) => `/destinations/bali/${item.slug}`);
+  const attractionPaths = [...javaAttractionPaths, ...baliAttractionPaths];
   const paths = [...routeInfo.map(([url]) => url), ...destinationPaths, ...attractionPaths, ...site.featuredPrograms.map((p) => `/programs/${p.slug}`)];
   for (const route of paths) {
     router.setStaticLocation(route);
     const program = site.featuredPrograms.find((item) => route === `/programs/${item.slug}`);
     const destinationSegments = route.startsWith('/destinations/') ? route.slice('/destinations/'.length).split('/') : [];
-    const attraction = destinationSegments[0] === 'java' ? destinationsData.javaAttractions.find((item) => item.slug === destinationSegments[1]) : undefined;
+    const attraction = destinationSegments[0] === 'java' ? destinationsData.javaAttractions.find((item) => item.slug === destinationSegments[1]) : destinationSegments[0] === 'bali' ? destinationsData.baliAttractions.find((item) => item.slug === destinationSegments[1]) : undefined;
     const destinationPage = destinationSegments.length === 1 && destinationSegments[0] === 'java'
       ? destinationsData.javaRegion
       : destinationSegments.length === 1
-        ? destinationsData.destinationPagesWithoutContent.find((item) => item.slug === destinationSegments[0])
+        ? destinationSegments[0] === 'bali' ? destinationsData.baliRegion : destinationsData.destinationPagesWithoutContent.find((item) => item.slug === destinationSegments[0])
         : undefined;
     let html = template.replace('<div id="root"></div>', `<div id="root">${renderToString(React.createElement(App))}</div>`);
     const title = routeTitle(route, program, attraction, destinationPage);
     const desc = routeDescription(route, program, attraction, destinationPage);
-    const image = `${origin}${attraction?.heroImage.src ?? destinationPage?.heroImage.src ?? ogImages[route] ?? ogImages['/programs']}`;
+    const imagePath = attraction ? attraction.heroImage?.src : destinationPage?.heroImage?.src ?? ogImages[route] ?? ogImages['/programs'];
+    const image = imagePath ? `${origin}${imagePath}` : '';
     html = html.replace(/<title>.*?<\/title>/i, `<title>${esc(title)}</title>`);
     html = setMeta(html, 'name', 'description', desc);
     html = setCanonical(html, `${origin}${route === '/' ? '/' : route}`);
     html = setMeta(html, 'property', 'og:title', title);
     html = setMeta(html, 'property', 'og:description', desc);
-    html = setMeta(html, 'property', 'og:image', image);
+    html = image ? setMeta(html, 'property', 'og:image', image) : removeMeta(html, 'property', 'og:image');
     html = setMeta(html, 'property', 'og:url', `${origin}${route}`);
     html = setMeta(html, 'property', 'og:type', 'website');
     html = setMeta(html, 'property', 'og:site_name', 'Aneka Kartika Tours & Travel');
     html = setMeta(html, 'name', 'twitter:card', 'summary_large_image');
     html = setMeta(html, 'name', 'twitter:title', title);
     html = setMeta(html, 'name', 'twitter:description', desc);
-    html = setMeta(html, 'name', 'twitter:image', image);
+    html = image ? setMeta(html, 'name', 'twitter:image', image) : removeMeta(html, 'name', 'twitter:image');
     if (route === '/gallery') html = setMeta(html, 'name', 'robots', 'noindex, nofollow');
     if (attraction || destinationPage) {
       const breadcrumbs = attraction
-        ? ['Home', 'Destinations', 'Java', attraction.h1.split(':')[0]]
+        ? ['Home', 'Destinations', attraction.region, attraction.h1.split(':')[0]]
         : ['Home', 'Destinations', destinationPage.h1 ?? destinationPage.name];
       const breadcrumbPaths = attraction
-        ? ['/', '/destinations', '/destinations/java', route]
+        ? ['/', '/destinations', `/destinations/${attraction.region.toLowerCase()}`, route]
         : ['/', '/destinations', route];
       const breadcrumbJson = {
         '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: breadcrumbs.map((name, index) => ({
@@ -99,12 +103,14 @@ try {
       };
       const schemas = [breadcrumbJson];
       if (attraction) {
-        schemas.push({
+        const attractionSchema = {
           '@context': 'https://schema.org', '@type': 'TouristAttraction', name: attraction.h1.split(':')[0],
-          description: attraction.metaDescription, image: `${origin}${attraction.heroImage.src}`,
-          address: { '@type': 'PostalAddress', addressRegion: 'Java', addressCountry: 'ID' },
-          containedInPlace: { '@type': 'AdministrativeArea', name: 'Java' },
-        });
+          description: attraction.metaDescription,
+          address: { '@type': 'PostalAddress', addressRegion: attraction.region, addressCountry: 'ID' },
+          containedInPlace: { '@type': 'AdministrativeArea', name: attraction.region },
+          ...(attraction.heroImage ? { image: `${origin}${attraction.heroImage.src}` } : {}),
+        };
+        schemas.push(attractionSchema);
         schemas.push({
           '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: attraction.faq.map((item) => ({
             '@type': 'Question', name: item.question, acceptedAnswer: { '@type': 'Answer', text: item.answer },

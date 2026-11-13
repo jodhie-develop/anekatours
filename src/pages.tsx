@@ -4,8 +4,8 @@ import Reveal from './components/Reveal';
 import { Link, useLocation } from './router';
 import { featuredPrograms, pages } from './data/site';
 import Gallery from './components/Gallery';
-import { JavaAttractionPage, JavaRegionPage, OtherDestinationRegionPage } from './components/DestinationContent';
-import { javaAttractions } from './data/destinations';
+import { BaliAttractionPage, BaliRegionPage, JavaAttractionPage, JavaRegionPage, OtherDestinationRegionPage } from './components/DestinationContent';
+import { baliAttractions, javaAttractions } from './data/destinations';
 
 export function HomePage() {
   return (
@@ -80,10 +80,15 @@ export function DestinationDetailPage() {
   const { path } = useLocation();
   const segments = path.replace(/\/+$/, '').split('/').filter(Boolean).slice(1);
   if (segments.length === 1 && segments[0] === 'java') return <JavaRegionPage />;
+  if (segments.length === 1 && segments[0] === 'bali') return <BaliRegionPage />;
   if (segments.length === 1) return <OtherDestinationRegionPage slug={segments[0]} />;
   if (segments.length === 2 && segments[0] === 'java') {
     const attraction = javaAttractions.find((item) => item.slug === segments[1]);
     return attraction ? <JavaAttractionPage attraction={attraction} /> : <NotFoundPage />;
+  }
+  if (segments.length === 2 && segments[0] === 'bali') {
+    const attraction = baliAttractions.find((item) => item.slug === segments[1]);
+    return attraction ? <BaliAttractionPage attraction={attraction} /> : <NotFoundPage />;
   }
   return <NotFoundPage />;
 }

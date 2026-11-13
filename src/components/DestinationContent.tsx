@@ -1,13 +1,13 @@
-import { destinationPagesWithoutContent, javaAttractions, javaRegion, type AttractionPageContent, type DestinationImage } from '../data/destinations';
+import { baliAttractions, baliRegion, destinationPagesWithoutContent, javaAttractions, javaRegion, type AttractionPageContent, type DestinationImage } from '../data/destinations';
 import { destinations } from '../data/site';
 import { Link } from '../router';
 
 const highImagePriority = { fetchpriority: 'high' };
 
-function DestinationHero({ image, title, intro, breadcrumbs }: { image: DestinationImage; title: string; intro?: string[]; breadcrumbs: { label: string; href?: string }[] }) {
+function DestinationHero({ image, title, intro, breadcrumbs }: { image: DestinationImage | null; title: string; intro?: string[]; breadcrumbs: { label: string; href?: string }[] }) {
   return (
     <section className="hero hero--page destination-hero">
-      <img {...highImagePriority} className="hero__bg" src={image.src} srcSet={image.srcSet} sizes="100vw" alt={image.alt} />
+      {image ? <img {...highImagePriority} className="hero__bg" src={image.src} srcSet={image.srcSet} sizes="100vw" alt={image.alt} /> : <div className="destination-hero__no-image" aria-hidden="true" />}
       <div className="hero__shade hero__shade--page" />
       <div className="hero__content">
         <nav className="destination-breadcrumb" aria-label="Breadcrumb">
@@ -27,13 +27,30 @@ function DestinationHero({ image, title, intro, breadcrumbs }: { image: Destinat
   );
 }
 
-function JavaAttractionCard({ attraction }: { attraction: AttractionPageContent }) {
+function JavaAttractionCard({ attraction, regionSlug = 'java' }: { attraction: AttractionPageContent; regionSlug?: string }) {
   return (
-    <Link to={`/destinations/java/${attraction.slug}`} className="destination-place-card">
-      <img src={attraction.heroImage.src} srcSet={attraction.heroImage.srcSet} sizes="(max-width: 768px) 90vw, 40vw" alt={attraction.heroImage.alt} loading="lazy" />
+    <Link to={`/destinations/${regionSlug}/${attraction.slug}`} className={`destination-place-card${attraction.heroImage ? '' : ' destination-place-card--no-image'}`}>
+      {attraction.heroImage && <img src={attraction.heroImage.src} srcSet={attraction.heroImage.srcSet} sizes="(max-width: 768px) 90vw, 40vw" alt={attraction.heroImage.alt} loading="lazy" />}
       <span className="destination-place-card__shade" />
       <span className="destination-place-card__title">{attraction.h1.split(':')[0]}</span>
     </Link>
+  );
+}
+
+export function BaliRegionPage() {
+  return (
+    <>
+      <DestinationHero image={baliRegion.heroImage} title={baliRegion.h1} intro={baliRegion.intro}
+        breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Destinations', href: '/destinations' }, { label: 'Bali' }]} />
+      <section className="section container destination-region-content">
+        <p className="eyebrow">Explore Bali</p>
+        <h2 className="h2">Places to discover</h2>
+        <div className="destination-place-grid">
+          {baliAttractions.map((attraction) => <JavaAttractionCard key={attraction.slug} attraction={attraction} regionSlug="bali" />)}
+        </div>
+        <Link to="/destinations" className="link destination-regions__back">← All destinations</Link>
+      </section>
+    </>
   );
 }
 
@@ -84,13 +101,21 @@ function PairingLine({ pair }: { pair: AttractionPageContent['pairsWith'][number
 }
 
 export function JavaAttractionPage({ attraction }: { attraction: AttractionPageContent }) {
-  const others = javaAttractions.filter((item) => item.slug !== attraction.slug);
+  return <AttractionDetailPage attraction={attraction} regionSlug="java" regionName="Java" others={javaAttractions} />;
+}
+
+export function BaliAttractionPage({ attraction }: { attraction: AttractionPageContent }) {
+  return <AttractionDetailPage attraction={attraction} regionSlug="bali" regionName="Bali" others={baliAttractions} />;
+}
+
+function AttractionDetailPage({ attraction, regionSlug, regionName, others }: { attraction: AttractionPageContent; regionSlug: string; regionName: string; others: AttractionPageContent[] }) {
+  const otherPlaces = others.filter((item) => item.slug !== attraction.slug);
   return (
     <>
       <DestinationHero
         image={attraction.heroImage}
         title={attraction.h1}
-        breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Destinations', href: '/destinations' }, { label: 'Java', href: '/destinations/java' }, { label: attraction.h1.split(':')[0] }]}
+        breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Destinations', href: '/destinations' }, { label: regionName, href: `/destinations/${regionSlug}` }, { label: attraction.h1.split(':')[0] }]}
       />
       <div className="section container destination-detail">
         <section className="destination-detail__section destination-detail__intro">
@@ -148,15 +173,16 @@ export function JavaAttractionPage({ attraction }: { attraction: AttractionPageC
         </section>
 
         <section className="destination-cta">
-          <h2 className="h2">Call to Action</h2>
           <p className="lead">{attraction.cta}</p>
           <Link to={`/contact?destination=${attraction.slug}`} className="btn btn--primary">Request a Quote</Link>
         </section>
 
+        <Link to={`/destinations/${regionSlug}`} className="link destination-detail__back">← Back to {regionName}</Link>
+
         <section className="destination-other-places">
-          <h2 className="h2">Other places in Java</h2>
+          <h2 className="h2">Other places in {regionName}</h2>
           <div className="destination-place-grid destination-place-grid--other">
-            {others.map((place) => <JavaAttractionCard key={place.slug} attraction={place} />)}
+            {otherPlaces.map((place) => <JavaAttractionCard key={place.slug} attraction={place} regionSlug={regionSlug} />)}
           </div>
         </section>
       </div>
