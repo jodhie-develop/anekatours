@@ -6,19 +6,15 @@ import type { DestinationRegionContent } from './destinations';
 // TODO: review klien — Kalimantan intro summarizes only the supplied attractions.
 export const otherDestinationRegions: DestinationRegionContent[] = [
   {
-    "region": "Lombok & Komodo",
-    "slug": "lombok-komodo",
-    "name": "Lombok & Komodo",
-    "metaTitle": "Lombok & Komodo Group Tours | Indonesia DMC | Aneka Kartika",
-    "metaDescription": "Explore the Gili Islands, Mount Rinjani, Sasak Villages, Kuta Lombok, Komodo National Park and Labuan Bajo.",
-    "h1": "Lombok & Komodo",
-    "heroImage": {
-      "src": "/images/destinations/lombok-komodo-1280.webp",
-      "srcSet": "/images/destinations/lombok-komodo-640.webp 640w, /images/destinations/lombok-komodo-1280.webp 1280w",
-      "alt": "Lombok & Komodo landscape"
-    },
+    "region": "Lombok & Gili Islands",
+    "slug": "lombok-gili-islands",
+    "name": "Lombok & Gili Islands",
+    "metaTitle": "Lombok & Gili Islands Group Tours | Indonesia DMC | Aneka Kartika",
+    "metaDescription": "Explore the Gili Islands, Mount Rinjani, Sasak Villages and Kuta Lombok with Aneka Kartika Tours.",
+    "h1": "Lombok & Gili Islands",
+    "heroImage": null,
     "intro": [
-      "Explore the Gili Islands, Mount Rinjani, Sasak Villages, Kuta Lombok, Komodo National Park and Labuan Bajo."
+      "Explore the Gili Islands, Mount Rinjani, Sasak Villages and Kuta Lombok."
     ],
     "attractions": [
       {
@@ -2642,3 +2638,75 @@ export const otherDestinationRegions: DestinationRegionContent[] = [
     ]
   }
 ];
+
+const lombokGiliRegion = otherDestinationRegions.find((region) => region.slug === 'lombok-gili-islands');
+const komodoAttractionSlugs = new Set(['komodo-national-park', 'labuan-bajo']);
+
+if (lombokGiliRegion) {
+  const komodoAttractions = lombokGiliRegion.attractions.filter((attraction) => komodoAttractionSlugs.has(attraction.slug));
+  lombokGiliRegion.attractions = lombokGiliRegion.attractions.filter((attraction) => !komodoAttractionSlugs.has(attraction.slug));
+  for (const attraction of lombokGiliRegion.attractions) {
+    attraction.region = 'Lombok & Gili Islands';
+    attraction.regionSlug = 'lombok-gili-islands';
+  }
+  for (const attraction of komodoAttractions) {
+    attraction.region = 'Komodo & Flores';
+    attraction.regionSlug = 'komodo-flores';
+  }
+
+  const redirectPairingPath = (href: string) => {
+    const match = href.match(/^\/destinations\/lombok-komodo\/([^/]+)$/);
+    if (!match) return href;
+    const regionSlug = komodoAttractionSlugs.has(match[1]) ? 'komodo-flores' : 'lombok-gili-islands';
+    return `/destinations/${regionSlug}/${match[1]}`;
+  };
+  for (const attraction of [...lombokGiliRegion.attractions, ...komodoAttractions]) {
+    for (const pair of attraction.pairsWith) {
+      if (pair.href) pair.href = redirectPairingPath(pair.href);
+      pair.segments?.forEach((segment) => {
+        if (segment.href) segment.href = redirectPairingPath(segment.href);
+      });
+    }
+  }
+
+  const komodoHero = komodoAttractions.find((attraction) => attraction.slug === 'komodo-national-park')?.heroImage ?? null;
+  otherDestinationRegions.push({
+    region: 'Komodo & Flores',
+    slug: 'komodo-flores',
+    name: 'Komodo & Flores',
+    metaTitle: 'Komodo & Flores Group Tours | Indonesia DMC | Aneka Kartika',
+    metaDescription: 'Explore Komodo National Park and Labuan Bajo with Aneka Kartika Tours.',
+    h1: 'Komodo & Flores',
+    heroImage: komodoHero,
+    // TODO: review klien
+    intro: ['Explore Komodo National Park and Labuan Bajo through programmes shaped around your group.'],
+    attractions: komodoAttractions,
+  });
+}
+
+otherDestinationRegions.push(
+  {
+    region: 'Moluccas',
+    slug: 'moluccas',
+    name: 'Moluccas',
+    metaTitle: 'Moluccas Group Tours | Indonesia DMC | Aneka Kartika',
+    metaDescription: 'Discuss a tailored Moluccas programme with Aneka Kartika Tours.',
+    h1: 'Moluccas',
+    heroImage: null,
+    // TODO: review klien and add approved destination content and photography.
+    intro: ['Destination details are being prepared. Contact our team to discuss a programme shaped around your clients.'],
+    attractions: [],
+  },
+  {
+    region: 'West Papua',
+    slug: 'west-papua',
+    name: 'West Papua',
+    metaTitle: 'West Papua Group Tours | Indonesia DMC | Aneka Kartika',
+    metaDescription: 'Discuss a tailored West Papua programme with Aneka Kartika Tours.',
+    h1: 'West Papua',
+    heroImage: null,
+    // TODO: review klien and add approved destination content and photography.
+    intro: ['Destination details are being prepared. Contact our team to discuss a programme shaped around your clients.'],
+    attractions: [],
+  },
+);

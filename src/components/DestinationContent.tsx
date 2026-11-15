@@ -90,10 +90,19 @@ export function OtherDestinationRegionPage({ slug }: { slug: string }) {
       />
       <section className="section container destination-region-content">
         <p className="eyebrow">Explore {region.name}</p>
-        <h2 className="h2">Places to discover</h2>
-        <div className="destination-place-grid">
-          {places.map((attraction) => <JavaAttractionCard key={attraction.slug} attraction={attraction} regionSlug={region.slug} />)}
-        </div>
+        {places.length ? (
+          <>
+            <h2 className="h2">Places to discover</h2>
+            <div className="destination-place-grid">
+              {places.map((attraction) => <JavaAttractionCard key={attraction.slug} attraction={attraction} regionSlug={region.slug} />)}
+            </div>
+          </>
+        ) : (
+          <div className="destination-region-cta">
+            <p className="lead">Our detailed {region.name} travel guide is in preparation. Contact us to discuss a programme for your clients.</p>
+            <Link to={`/contact?destination=${encodeURIComponent(region.name)}`} className="btn btn--primary">Discuss this destination</Link>
+          </div>
+        )}
         <Link to="/destinations" className="link destination-regions__back">← All destinations</Link>
       </section>
     </>

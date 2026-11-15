@@ -878,6 +878,8 @@ p {
     box-shadow 0.3s ease;
 }
 
+.dest-card--no-image { background: linear-gradient(145deg, #132b75, #7d2028); }
+
 .dest-card:hover,
 .dest-card:focus-visible {
   transform: translateY(-7px);

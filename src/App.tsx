@@ -22,7 +22,7 @@ const routes: Record<string, { component: ComponentType; title: string }> = {
 
 const descriptions: Record<string, string> = {
   '/': 'Indonesia destination management for tour operators and travel agents. Build seamless group journeys with Aneka Kartika Tours, established in 1979.',
-  '/destinations': 'Explore Indonesia with a local DMC, from Java and Bali to Sumatra, Kalimantan and Sulawesi. Plan distinctive journeys with Aneka Kartika Tours.',
+  '/destinations': 'Explore Indonesia with a local DMC, from Java, Bali and Lombok to Komodo, Sumatra, Moluccas and West Papua. Plan distinctive journeys with Aneka Kartika Tours.',
   '/programs': 'Browse sample Indonesia tour programs for travel trade partners. Adapt routes, timing and experiences with our Surabaya-based local team.',
   '/services': 'Ground handling, FIT travel and tailored group services for overseas tour operators and travel agents across Indonesia.',
   '/about': 'Meet Aneka Kartika Tours, an Indonesian destination management company serving travel trade partners since 1979.',

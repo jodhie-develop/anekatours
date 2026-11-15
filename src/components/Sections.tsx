@@ -223,9 +223,9 @@ export function Destinations({ compactTop = false }: { compactTop?: boolean }) {
           <Link
             key={d.slug}
             to={`/destinations/${d.slug}`}
-            className="dest-card"
+            className={`dest-card${destinationPage.heroImage ? '' : ' dest-card--no-image'}`}
           >
-            <img src={destinationPage.heroImage.src} srcSet={destinationPage.heroImage.srcSet} sizes="(max-width: 768px) 90vw, 33vw" alt={destinationPage.heroImage.alt} loading="lazy" />
+            {destinationPage.heroImage && <img src={destinationPage.heroImage.src} srcSet={destinationPage.heroImage.srcSet} sizes="(max-width: 768px) 90vw, 33vw" alt={destinationPage.heroImage.alt} loading="lazy" />}
             <span className="dest-card__shade" />
             <span className="dest-card__name">{d.name}</span>
           </Link>

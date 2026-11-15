@@ -38,7 +38,7 @@ export type DestinationRegionContent = {
   metaTitle: string;
   metaDescription: string;
   h1: string;
-  heroImage: DestinationImage;
+  heroImage: DestinationImage | null;
   intro: string[];
   attractions: AttractionPageContent[];
 };
