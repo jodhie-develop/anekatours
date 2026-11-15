@@ -263,20 +263,48 @@ export const featuredPrograms: FeaturedProgram[] = [
   },
   {
     slug: 'north-sumatra-orangutans-highlands-batak-heritage',
-    // TODO: Confirm duration; the supplied document does not specify the number of days.
-    days: null,
+    days: 6,
     title: 'North Sumatra: Orangutans, Highlands & Batak Heritage',
     start: 'Medan Airport',
     finish: 'Medan Airport',
-    image: '/images/destinations/bukit-lawang-1280.webp',
+    image: '/images/optimized/huta-raja-siallagan-danau-toba.webp',
     supportingImages: [
       { image: '/images/destinations/bukit-lawang-1280.webp', title: 'Gunung Leuser rainforest' },
       { image: '/images/destinations/berastagi-1280.webp', title: 'Brastagi highlands' },
-      { image: '/images/destinations/lake-toba-1280.webp', title: 'Lake Toba' },
+      { image: '/images/optimized/huta-raja-siallagan-danau-toba.webp', title: 'Huta Raja and Siallagan, Lake Toba' },
       { image: '/images/destinations/samosir-island-1280.webp', title: 'Samosir Island' },
     ],
     description:
       "From the bustling streets of Medan, head into the countryside towards Bohorok, passing small towns, local markets and extensive rubber and oil palm plantations along the way. Here, the pace changes as you venture into the rainforest of Gunung Leuser National Park for a guided jungle trek. Follow forest trails through dense vegetation and hilly terrain, keeping watch for wild orangutans, gibbons, leaf monkeys, macaques and an abundance of birdlife. After returning to Medan, travel north into the cool highlands of Brastagi, with the volcanic peaks of Sinabung and Sibayak as your backdrop. Along the way, visit traditional Karo villages, discover places of worship with distinctive architecture and admire the spectacular Sipiso-piso Waterfall. The journey then leads to Lake Toba, where a ferry crossing brings you to Samosir Island. Spend time exploring Batak Toba villages, ancient stone meeting places and royal tombs, with a leisurely walk through local communities offering a closer look at island life. Return to Medan with a wonderful mix of rainforest encounters, highland scenery and cultural discoveries behind you.",
+  },
+  {
+    slug: 'sumatra-overland-exploring-north-west-sumatra',
+    days: 9,
+    title: 'Sumatra Overland: Exploring North & West Sumatra',
+    start: 'Medan Airport',
+    finish: 'Padang Airport',
+    image: '/images/destinations/sumatra-1280.webp',
+    supportingImages: [
+      { image: '/images/destinations/bukit-lawang-1280.webp', title: 'Gunung Leuser rainforest' },
+      { image: '/images/destinations/berastagi-1280.webp', title: 'Brastagi highlands' },
+      { image: '/images/optimized/huta-raja-siallagan-danau-toba.webp', title: 'Batak heritage at Lake Toba' },
+      { image: '/images/destinations/samosir-island-1280.webp', title: 'Samosir Island' },
+    ],
+    description:
+      "Begin in Medan and head into the countryside of North Sumatra, passing small towns, traditional markets and seemingly endless rubber and oil palm plantations on the way to Bohorok. The following morning, venture into the rainforest of Gunung Leuser, where jungle trails, towering trees and the possibility of spotting orangutans make for an exciting walk through the forest. From the lowlands, climb towards Brastagi, where cooler air, volcanic peaks and traditional Karo villages mark a change of scenery. Continue past the towering Sipiso-piso Waterfall to Parapat, then cross Lake Toba by ferry to Samosir Island. Spend time exploring Batak Toba villages, ancient stone sites and the everyday rhythm of island life. The road south takes you through rural towns and plantation landscapes before reaching the Minangkabau highlands of West Sumatra. In Bukittinggi, wander through lively markets, admire the distinctive traditional architecture and take in the vast Sianok Canyon. From here, descend through the highlands towards Padang where this journey ends.",
+  },
+  {
+    slug: 'bali-nusa-lembongan-two-sides-of-bali',
+    days: 9,
+    title: 'Bali & Nusa Lembongan: The Two Sides of Bali',
+    start: 'Bali airport',
+    finish: 'Bali airport',
+    image: '/images/destinations/bali-1280.webp',
+    supportingImages: [
+      { image: '/images/destinations/bali-1280.webp', title: 'Bali landscapes' },
+    ],
+    description:
+      "Begin your Bali escape with two nights by the southern coast, leaving room to unwind before the island reveals its charms. One afternoon, head to Uluwatu, where the temple stands dramatically above the Indian Ocean. As the sun sinks towards the horizon, take your seat for the mesmerising Kecak Dance, its chorus of voices and hundreds of performers bringing an ancient tale to life against a glowing dusk sky.\n\nJourney inland via Mengwi and the iconic sea temple of Tanah Lot before settling into Ubud. Discover Eastern Bali's quieter treasures, from the royal water gardens of Tirta Gangga and Taman Ujung to a village where old traditions remain part of everyday life. Another day, take to two wheels for a leisurely ride through Ubud's countryside.\n\nThen trade the mainland for Nusa Lembongan, reached by fast boat, and enjoy three nights at island pace, with little on the agenda beyond sea breezes, turquoise waters and time well spent. Return to mainland for your onward flight.",
   },
 ];
 
