@@ -84,7 +84,7 @@ export const heroPhotos = openingPhotos.filter(({ slug }) =>
 export const destinations: Destination[] = [
   { name: 'Java', slug: 'java', image: '/images/optimized/bromo-023.webp' },
   { name: 'Bali', slug: 'bali', image: '/images/optimized/bali.webp' },
-  { name: 'Lombok & Gili Islands', slug: 'lombok-gili-islands', image: '' },
+  { name: 'Lombok & Gili Islands', slug: 'lombok-gili-islands', image: '/images/optimized/gili-islands-1-1280.webp' },
   { name: 'Komodo & Flores', slug: 'komodo-flores', image: '/images/optimized/lombok-komodo.webp' },
   { name: 'Sumatra', slug: 'sumatra', image: '/images/optimized/sumatra-main.webp' },
   { name: 'Sulawesi', slug: 'sulawesi', image: '/images/optimized/sulawesi.webp' },

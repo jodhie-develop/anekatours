@@ -12,7 +12,11 @@ export const otherDestinationRegions: DestinationRegionContent[] = [
     "metaTitle": "Lombok & Gili Islands Group Tours | Indonesia DMC | Aneka Kartika",
     "metaDescription": "Explore the Gili Islands, Mount Rinjani, Sasak Villages and Kuta Lombok with Aneka Kartika Tours.",
     "h1": "Lombok & Gili Islands",
-    "heroImage": null,
+    "heroImage": {
+      "src": "/images/optimized/gili-islands-1-1280.webp",
+      "srcSet": "/images/optimized/gili-islands-1-640.webp 640w, /images/optimized/gili-islands-1-1280.webp 1280w",
+      "alt": "Boats and coastline in the Gili Islands at sunrise"
+    },
     "intro": [
       "Explore the Gili Islands, Mount Rinjani, Sasak Villages and Kuta Lombok."
     ],
@@ -20,12 +24,15 @@ export const otherDestinationRegions: DestinationRegionContent[] = [
       {
         "region": "Lombok & Komodo",
         "regionSlug": "lombok-komodo",
-        // TODO: Foto utama gallery belum ditemukan untuk gili-islands.
         "slug": "gili-islands",
         "metaTitle": "Gili Islands Group Tours | Lombok | Aneka Kartika",
         "metaDescription": "Gili Trawangan, Meno and Air for groups of up to 20: boat transfers, luggage handling, snorkelling and 3–5★ stays arranged by an Indonesia DMC.",
         "h1": "Gili Islands: Three Car-Free Islands off Lombok",
-        "heroImage": null,
+        "heroImage": {
+          "src": "/images/optimized/gili-islands-8-1280.webp",
+          "srcSet": "/images/optimized/gili-islands-8-640.webp 640w, /images/optimized/gili-islands-8-1280.webp 1280w",
+          "alt": "Boats along the Gili Islands shoreline at sunset"
+        },
         "intro": [
           "Off the northwest coast of Lombok, three small coral islands, Gili Trawangan, Gili Meno and Gili Air, offer white sand, clear water and a pace of life without cars or motorbikes. Guests get around on foot, by bicycle or by cidomo, the local horse cart.",
           "Each island has its own character: Trawangan is the liveliest, Air balances village life with cafés and beaches, and Meno is the quietest of the three. For groups, the Gilis are a relaxed finale after a cultural programme in Bali, Java or Lombok."
