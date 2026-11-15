@@ -332,10 +332,10 @@ export function ProgramShowcase() {
       <h1 className="h2">Choose a journey to explore.</h1>
       <div className="program-card-grid">
         {featuredPrograms.map((program) => (
-          <Link className="program-card" key={program.slug} to={`/programs/${program.slug}`}>
-            <img src={program.image} alt={`${program.title}: ${program.start} to ${program.finish}`} loading="lazy" />
+          <Link className={`program-card ${program.image ? '' : 'program-card--no-image'}`} key={program.slug} to={`/programs/${program.slug}`}>
+            {program.image && <img src={program.image} alt={`${program.title}: ${program.start} to ${program.finish}`} loading="lazy" />}
             <span className="program-card__shade" />
-            <span className="program-card__duration">{program.days} days</span>
+            <span className="program-card__duration">{program.days ? `${program.days} days` : 'Duration to be confirmed'}</span>
             <span className="program-card__content">
               <strong className="program-card__title">{program.title}</strong>
               <span className="program-card__route">

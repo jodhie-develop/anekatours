@@ -1101,6 +1101,10 @@ p {
   isolation: isolate;
 }
 
+.program-card--no-image {
+  background: linear-gradient(145deg, #111d68 0%, #253a8a 55%, #6f233d 100%);
+}
+
 .program-card > img {
   position: absolute;
   z-index: -2;

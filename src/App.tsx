@@ -74,7 +74,7 @@ export default function App() {
         ? destinationSegments[0] === 'bali' ? baliRegion : destinationPagesWithoutContent.find((item) => item.slug === destinationSegments[0])
         : undefined;
     const description = (program
-      ? `${program.days}-day Indonesia journey from ${program.start} to ${program.finish}, tailored by Aneka Kartika Tours for travel trade partners.`
+      ? `${program.days ? `${program.days}-day` : 'Indonesia'} journey from ${program.start} to ${program.finish}, tailored by Aneka Kartika Tours for travel trade partners.`
       : attraction?.metaDescription ?? destinationRegion?.metaDescription ?? descriptions[clean] ?? 'Aneka Kartika Tours & Travel, your local destination management partner in Indonesia since 1979.');
     const canonical = `https://www.aneka-tours.co.id${clean === '/' ? '/' : clean}`;
     const socialImage = attraction ? attraction.heroImage?.src : destinationRegion?.heroImage?.src ?? socialImages[clean] ?? socialImages['/programs'];

@@ -154,11 +154,11 @@ export const programs: Program[] = [
 
 export type FeaturedProgram = {
   slug: string;
-  days: number;
+  days: number | null;
   title: string;
   start: string;
   finish: string;
-  image: string;
+  image: string | null;
   description: string;
   supportingImages: { image: string; title: string }[];
 };
@@ -238,6 +238,45 @@ export const featuredPrograms: FeaturedProgram[] = [
     supportingImages: [],
     description:
       "Step into two distinct worlds of South Sulawesi, from the lakeside traditions of the Bugis to the remarkable cultural heritage of the Toraja highlands. Leaving Makassar, travel inland to Sengkang, the heartland of the Bugis, with a stop at Bantimurung Waterfall along the way. When lake conditions allow, take a boat across Lake Tempe to visit the floating villages and meet the families who make their living on the water. Continue north through changing landscapes to Tana Toraja, a land of fascinating customs and ancestral traditions. Discover its iconic Tongkonan houses, cliffside burial grounds guarded by Tau Tau effigies and the unusual baby graves carved into living trees. Further into the highlands, the rice terraces and mountain villages around Batu Tumonga offer a glimpse of everyday Torajan life. A short journey, yet a fascinating introduction to one of Indonesia's most distinctive cultural regions.",
+  },
+  {
+    slug: 'north-sulawesi-crater-coral-reefs',
+    days: 6,
+    title: 'North Sulawesi – Between Crater and Coral Reefs',
+    start: 'Manado Airport',
+    finish: 'Manado Airport',
+    image: null,
+    supportingImages: [],
+    description:
+      "Your North Sulawesi story begins in Manado, as the afternoon drifts through the lantern-lit lanes of Chinatown and the centuries-old Ban Hin Kiong Temple. Beyond the city, a statue of Christ hovers above the bay, and as the light softens, Makatete Hill unveils its finest view: Bunaken, Siladen and Mount Klabat resting against the sea. Next morning leads you into the cool Minahasa highlands. You walk to the rim of steaming Mt. Mahawu, watch village makers tap sugar palm sap for a spirit older than memory, and wander among the weathered stone Waruga tombs, where the story of the Minahasa people was first written. Lunch is a quiet pause beside Lake Linow, its sulphur waters shifting from jade to turquoise.\n\nThen comes the sea. A short boat ride delivers you to Bunaken Island, one of the world’s celebrated marine parks, where three unhurried days of full board are entirely your own. Optional activity available such as dive the reef walls, float above the coral, or simply linger with the horizon. When it is time to leave, the boat carries you back to Manado, and on to your flight",
+  },
+  {
+    slug: 'into-the-heart-of-borneo',
+    days: 4,
+    title: 'Into the Heart of Borneo – Orangutan & Rainforest Discovery',
+    start: 'Pangkalan Bun Airport',
+    finish: 'Pangkalan Bun Airport',
+    image: '/images/destinations/tanjung-puting-1280.webp',
+    supportingImages: [],
+    description:
+      "Imagine drifting along a winding jungle river, where mist rises above the water, ancient trees form a lush green canopy, and the sounds of the rainforest become your constant companion. Your adventure begins in Pangkalan Bun, followed by a short transfer to Kumai Harbour, where you board a traditional river boat and cruise along the Sekonyer River to Rimba Lodge, your peaceful retreat in the heart of the rainforest.\n\nOver the next two days, journey deeper into Tanjung Puting National Park, first exploring Camp Leakey, then continuing upstream to Pondok Tanggui and the Pasalat reforestation area. Along the way, encounter Borneo's fascinating wildlife, observe orangutans during their feeding programme, and learn about efforts to restore the rainforest. After two unforgettable days immersed in nature, cruise back to Kumai and spend your final night in Pangkalan Bun before departing for your next destination.",
+  },
+  {
+    slug: 'north-sumatra-orangutans-highlands-batak-heritage',
+    // TODO: Confirm duration; the supplied document does not specify the number of days.
+    days: null,
+    title: 'North Sumatra: Orangutans, Highlands & Batak Heritage',
+    start: 'Medan Airport',
+    finish: 'Medan Airport',
+    image: '/images/destinations/bukit-lawang-1280.webp',
+    supportingImages: [
+      { image: '/images/destinations/bukit-lawang-1280.webp', title: 'Gunung Leuser rainforest' },
+      { image: '/images/destinations/berastagi-1280.webp', title: 'Brastagi highlands' },
+      { image: '/images/destinations/lake-toba-1280.webp', title: 'Lake Toba' },
+      { image: '/images/destinations/samosir-island-1280.webp', title: 'Samosir Island' },
+    ],
+    description:
+      "From the bustling streets of Medan, head into the countryside towards Bohorok, passing small towns, local markets and extensive rubber and oil palm plantations along the way. Here, the pace changes as you venture into the rainforest of Gunung Leuser National Park for a guided jungle trek. Follow forest trails through dense vegetation and hilly terrain, keeping watch for wild orangutans, gibbons, leaf monkeys, macaques and an abundance of birdlife. After returning to Medan, travel north into the cool highlands of Brastagi, with the volcanic peaks of Sinabung and Sibayak as your backdrop. Along the way, visit traditional Karo villages, discover places of worship with distinctive architecture and admire the spectacular Sipiso-piso Waterfall. The journey then leads to Lake Toba, where a ferry crossing brings you to Samosir Island. Spend time exploring Batak Toba villages, ancient stone meeting places and royal tombs, with a leisurely walk through local communities offering a closer look at island life. Return to Medan with a wonderful mix of rainforest encounters, highland scenery and cultural discoveries behind you.",
   },
 ];
 

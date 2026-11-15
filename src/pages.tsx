@@ -114,8 +114,8 @@ export function ProgramDetailPage() {
     <>
       <PageHero
         title={program.title}
-        intro={`${program.days} days · Start: ${program.start} · Finish: ${program.finish}`}
-        image={program.image}
+        intro={`${program.days ? `${program.days} days` : 'Duration to be confirmed'} · Start: ${program.start} · Finish: ${program.finish}`}
+        image={program.image ?? undefined}
       />
       <section className="section container program-detail-page">
         <Link to="/programs" className="link">← All sample programs</Link>

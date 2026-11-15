@@ -56,7 +56,7 @@ try {
   };
   const removeMeta = (html, attr, key) => html.replace(new RegExp(`<meta\\s+[^>]*${attr}=["']${key}["'][^>]*>`, 'i'), '');
   const routeTitle = (route, program, attraction, destinationPage) => program ? `${program.title} | Aneka Kartika Tours & Travel` : attraction?.metaTitle ?? destinationPage?.metaTitle ?? titles[route] ?? 'Page not found | Aneka Kartika Tours & Travel';
-  const routeDescription = (route, program, attraction, destinationPage) => program ? `${program.days}-day Indonesia journey from ${program.start} to ${program.finish}, tailored by Aneka Kartika Tours for travel trade partners.` : attraction?.metaDescription ?? destinationPage?.metaDescription ?? descriptions[route] ?? 'Aneka Kartika Tours & Travel, your local destination management partner in Indonesia since 1979.';
+  const routeDescription = (route, program, attraction, destinationPage) => program ? `${program.days ? `${program.days}-day` : 'Indonesia'} journey from ${program.start} to ${program.finish}, tailored by Aneka Kartika Tours for travel trade partners.` : attraction?.metaDescription ?? destinationPage?.metaDescription ?? descriptions[route] ?? 'Aneka Kartika Tours & Travel, your local destination management partner in Indonesia since 1979.';
   const destinationPaths = site.destinations.map((item) => `/destinations/${item.slug}`);
   const javaAttractionPaths = destinationsData.javaAttractions.map((item) => `/destinations/java/${item.slug}`);
   const baliAttractionPaths = destinationsData.baliAttractions.map((item) => `/destinations/bali/${item.slug}`);
