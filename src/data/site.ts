@@ -299,9 +299,13 @@ export const featuredPrograms: FeaturedProgram[] = [
     title: 'Bali & Nusa Lembongan: The Two Sides of Bali',
     start: 'Bali airport',
     finish: 'Bali airport',
-    image: '/images/destinations/bali-1280.webp',
+    image: '/images/optimized/bali-nusa-lembongan-01.webp',
     supportingImages: [
-      { image: '/images/destinations/bali-1280.webp', title: 'Bali landscapes' },
+      { image: '/images/optimized/bali-nusa-lembongan-02.webp', title: 'Bali & Nusa Lembongan landscape' },
+      { image: '/images/optimized/bali-nusa-lembongan-03.webp', title: 'Nusa Lembongan at sunset' },
+      { image: '/images/optimized/bali-nusa-lembongan-04.webp', title: 'Bali & Nusa Lembongan landscape' },
+      { image: '/images/optimized/bali-nusa-lembongan-05.webp', title: 'Bali & Nusa Lembongan landscape' },
+      { image: '/images/optimized/bali-nusa-lembongan-06.webp', title: 'Bali & Nusa Lembongan landscape' },
     ],
     description:
       "Begin your Bali escape with two nights by the southern coast, leaving room to unwind before the island reveals its charms. One afternoon, head to Uluwatu, where the temple stands dramatically above the Indian Ocean. As the sun sinks towards the horizon, take your seat for the mesmerising Kecak Dance, its chorus of voices and hundreds of performers bringing an ancient tale to life against a glowing dusk sky.\n\nJourney inland via Mengwi and the iconic sea temple of Tanah Lot before settling into Ubud. Discover Eastern Bali's quieter treasures, from the royal water gardens of Tirta Gangga and Taman Ujung to a village where old traditions remain part of everyday life. Another day, take to two wheels for a leisurely ride through Ubud's countryside.\n\nThen trade the mainland for Nusa Lembongan, reached by fast boat, and enjoy three nights at island pace, with little on the agenda beyond sea breezes, turquoise waters and time well spent. Return to mainland for your onward flight.",
