@@ -209,6 +209,33 @@ export const featuredPrograms: FeaturedProgram[] = [
     description:
       "There is another side of Bali, found along its quieter roads, in its mountain villages, rice-growing countryside and little coastal hideaways. Leaving your hotel behind, head towards Tanah Lot and the former royal temple of Taman Ayun before continuing inland to Jatiluwih. Here, the landscape opens into magnificent rice terraces, and the night is spent in the peaceful surroundings of the countryside, far from the island's busier corners. The road north takes you through Bedugul and its lakeside temple of Ulun Danu Beratan, before winding through the cool highlands of Munduk, where a short walk brings you to a secluded waterfall. Further north, Pemuteran offers a welcome change of pace, with two nights to enjoy its laid-back coastal setting, perhaps venturing into Bali Barat National Park or simply taking in the tranquillity of the village. The journey back towards South Bali follows a different route, tracing the northern coastline through Singaraja, with time to visit its old Chinese temple and Brahma Vihara-Arama Buddhist monastery. Continue inland to Sidemen, where another two-night stay invites you to enjoy the quieter charms of Bali's eastern countryside, before eventually making your way back to South Bali.",
   },
+  {
+    slug: 'java-rail-odyssey',
+    days: 12,
+    title: 'The Java Rail Odyssey',
+    start: 'Jakarta airport',
+    finish: 'Bali hotel',
+    image: '/images/optimized/borobudur-7.webp',
+    supportingImages: [
+      { image: '/images/optimized/borobudur-7.webp', title: 'Borobudur Temple' },
+      { image: '/images/optimized/prambanan-5.webp', title: 'Prambanan Temple' },
+      { image: '/images/optimized/bromo-023.webp', title: 'Mount Bromo' },
+      { image: '/images/optimized/rice-25.webp', title: 'Java rice fields' },
+    ],
+    description:
+      "Travel across Java from west to east, taking in its historic cities, cultural landmarks and changing landscapes along the way. Start in Jakarta with a walk through the old quarter before boarding Southeast Asia’s first high-speed train to Bandung. Explore the city's colonial streets on foot and venture into the nearby volcanic highlands. From here, take the train across Central Java, passing rice fields, villages and countryside en route to Yogyakarta. Spend three nights discovering the region’s heritage, from Borobudur and Prambanan to the Sultan’s Palace. Continue east to Surabaya for a walk through its old quarter, then head inland to Bromo for an early morning view of its remarkable volcanic scenery. The railway journey continues to Banyuwangi, where a visit to a nearby village offers a glimpse of local life and plantation traditions. Having crossed Java from end to end, head to Bali for two final nights by the coast, with time to slow down and enjoy a change of pace.",
+  },
+  {
+    slug: 'bugis-toraja-south-sulawesi',
+    days: 5,
+    title: 'Bugis & Toraja – A Journey into South Sulawesi',
+    start: 'Makassar Airport',
+    finish: 'Makassar Airport',
+    image: '/images/destinations/tana-toraja-1280.webp',
+    supportingImages: [],
+    description:
+      "Step into two distinct worlds of South Sulawesi, from the lakeside traditions of the Bugis to the remarkable cultural heritage of the Toraja highlands. Leaving Makassar, travel inland to Sengkang, the heartland of the Bugis, with a stop at Bantimurung Waterfall along the way. When lake conditions allow, take a boat across Lake Tempe to visit the floating villages and meet the families who make their living on the water. Continue north through changing landscapes to Tana Toraja, a land of fascinating customs and ancestral traditions. Discover its iconic Tongkonan houses, cliffside burial grounds guarded by Tau Tau effigies and the unusual baby graves carved into living trees. Further into the highlands, the rice terraces and mountain villages around Batu Tumonga offer a glimpse of everyday Torajan life. A short journey, yet a fascinating introduction to one of Indonesia's most distinctive cultural regions.",
+  },
 ];
 
 // TODO: Confirm that the East Java Discovery route should end at a Bali hotel; its current route metadata is retained.
