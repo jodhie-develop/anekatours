@@ -4,6 +4,7 @@ import { Link } from '../router';
 
 type ChatLink = { label: string; href: string; external?: boolean };
 type ChatMessage = { id: number; from: 'assistant' | 'visitor'; text: string; links?: ChatLink[] };
+const MAX_CHAT_MESSAGE_LENGTH = 500;
 
 const quickPrompts = ['Sample programs', 'Destinations', 'Request a quote', 'Contact us'];
 
@@ -14,6 +15,16 @@ function renderMessageText(text: string) {
     }
     return part;
   });
+}
+
+function isSafeChatLink(link: ChatLink) {
+  if (typeof link.label !== 'string' || typeof link.href !== 'string') return false;
+  if (!link.external) return link.href.startsWith('/') && !link.href.startsWith('//');
+  try {
+    return ['http:', 'https:', 'mailto:'].includes(new URL(link.href).protocol);
+  } catch {
+    return false;
+  }
 }
 
 export default function Chatbot() {
@@ -43,6 +54,10 @@ export default function Chatbot() {
     const visitor: ChatMessage = { id: nextId.current++, from: 'visitor', text: query };
     const conversation = [...messages, visitor];
     const visitorQuestionCount = conversation.filter((message) => message.from === 'visitor').length;
+    const history = messages.slice(-10).map((message) => ({
+      role: message.from === 'visitor' ? 'user' : 'assistant',
+      content: message.text,
+    }));
     setMessages(conversation);
     setInput('');
     setSending(true);
@@ -51,11 +66,9 @@ export default function Chatbot() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
+          message: query,
+          history,
           ...(leadId ? { leadId } : {}),
-          messages: conversation.slice(-12).map((message) => ({
-            role: message.from === 'visitor' ? 'user' : 'assistant',
-            content: message.text,
-          })),
         }),
       });
       const result = await response.json();
@@ -152,7 +165,7 @@ export default function Chatbot() {
                 <p>{renderMessageText(message.text)}</p>
                 {message.links && (
                   <div className="chatbot-message__links">
-                    {message.links.map((link) => (
+                    {message.links.filter(isSafeChatLink).map((link) => (
                       link.external ? (
                         <a key={link.label} href={link.href} target={link.href.startsWith('https:') ? '_blank' : undefined} rel="noopener noreferrer">{link.label}</a>
                       ) : (
@@ -200,7 +213,7 @@ export default function Chatbot() {
                 onChange={(event) => setInput(event.target.value)}
                 placeholder={sending ? 'Please wait…' : 'Ask about travelling in Indonesia'}
                 aria-label="Type your question"
-                maxLength={1200}
+                maxLength={MAX_CHAT_MESSAGE_LENGTH}
                 disabled={sending}
               />
               <button type="submit" aria-label="Send message" disabled={!input.trim() || sending}>

@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { createLead, isLeadStorageConfigured } from '../lib/chat-lead-csv.js';
-import { adminCredentialsConfigured, getClientAddress } from '../lib/admin-auth.js';
+import { adminCredentialsConfigured, getClientAddress, sameOriginRequest } from '../lib/admin-auth.js';
 
 const MODEL = process.env.OPENAI_MODEL || 'gpt-6-luna';
 const attempts = new Map();
@@ -70,6 +70,7 @@ export default async function handler(req, res) {
     res.setHeader('Allow', 'POST');
     return fail(res, 405, 'Method not allowed.');
   }
+  if (!sameOriginRequest(req)) return fail(res, 403, 'Request origin could not be verified.');
   if (!isLeadStorageConfigured() || !adminCredentialsConfigured() || process.env.CHAT_LEADS_ENABLED !== 'true') {
     return fail(res, 503, 'Chat lead capture is not configured yet.');
   }
