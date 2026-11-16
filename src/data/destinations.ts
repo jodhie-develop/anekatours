@@ -1,3 +1,5 @@
+import { additionalBaliAttractions, additionalJavaAttractions } from './additional-attractions';
+
 export type DestinationImage = {
   src: string;
   srcSet: string;
@@ -47,7 +49,7 @@ export const javaRegion = {
   region: 'Java',
   slug: 'java',
   metaTitle: 'Java Group Tours | Indonesia DMC | Aneka Kartika',
-  metaDescription: 'Explore Mount Bromo, Ijen Crater, Borobudur, Prambanan and Yogyakarta with Aneka Kartika Tours.',
+  metaDescription: 'Explore Jakarta, Bogor, Baduy Village, Sukuh Temple, Solo, Semarang, Mount Bromo, Ijen Crater, Borobudur, Prambanan and Yogyakarta with Aneka Kartika Tours.',
   h1: 'Java',
   heroImage: {
     src: '/images/destinations/mount-bromo-1280.webp',
@@ -55,7 +57,7 @@ export const javaRegion = {
     alt: 'Mount Bromo, Batok and Semeru at sunrise above the Sea of Sand',
   },
   // TODO: client review
-  intro: ['Explore Java’s volcanic landscapes and historic temples through Mount Bromo, Ijen Crater, Borobudur, Prambanan and Yogyakarta. These five places can be combined in a Java programme shaped around your travellers.'],
+  intro: ['Explore Java through Jakarta, Bogor, Baduy Village, Sukuh Temple, Solo, Semarang, Mount Bromo, Ijen Crater, Borobudur, Prambanan and Yogyakarta. These city, cultural and landscape visits can be combined in a Java programme shaped around your travellers.'],
 };
 
 export const javaAttractions: AttractionPageContent[] = [
@@ -328,7 +330,7 @@ export const baliRegion = {
   region: 'Bali',
   slug: 'bali',
   metaTitle: 'Bali Group Tours | Indonesia DMC | Aneka Kartika',
-  metaDescription: 'Discover Ubud, Uluwatu, Tanah Lot, Jatiluwih, Besakih and Nusa Penida with Aneka Kartika Tours.',
+  metaDescription: 'Discover Ubud, Uluwatu, Tanah Lot, Jatiluwih, Besakih, Nusa Penida, Pemuteran, Sidemen, Nusa Lembongan and Bedugul with Aneka Kartika Tours.',
   h1: 'Bali',
   heroImage: {
     src: '/images/destinations/bali-1280.webp',
@@ -336,7 +338,7 @@ export const baliRegion = {
     alt: 'Bali landscape',
   },
   // TODO: review klien
-  intro: ['The six Bali places featured here are Ubud, Uluwatu, Tanah Lot, Jatiluwih, Besakih and Nusa Penida.'],
+  intro: ['Discover Bali through Ubud, Uluwatu, Tanah Lot, Jatiluwih, Besakih, Nusa Penida, Pemuteran, Sidemen, Nusa Lembongan and Bedugul. These coastal, cultural and highland places can be combined in a programme shaped around your group.'],
 };
 
 export const baliAttractions: AttractionPageContent[] = [
@@ -943,6 +945,9 @@ export const baliAttractions: AttractionPageContent[] = [
     "cta": "Want to add Nusa Penida to your Bali programme? Send us your dates and group profile, and we will plan the crossing and the island day for you."
   }
 ];
+
+javaAttractions.push(...additionalJavaAttractions);
+baliAttractions.push(...additionalBaliAttractions);
 
 export const allDestinationAttractions = [...javaAttractions, ...baliAttractions, ...otherDestinationRegions.flatMap((region) => region.attractions)];
 export const publishedDestinationAttractions = allDestinationAttractions.filter((attraction) => attraction.published !== false);

@@ -1,4 +1,10 @@
 import type { DestinationRegionContent } from './destinations';
+import {
+  additionalKomodoAttractions,
+  additionalLombokAttractions,
+  additionalSumatraAttractions,
+  additionalSulawesiAttractions,
+} from './additional-attractions';
 
 // TODO: review klien — Lombok & Komodo intro summarizes only the supplied attractions.
 // TODO: review klien — Sumatra intro summarizes only the supplied attractions.
@@ -10,7 +16,7 @@ export const otherDestinationRegions: DestinationRegionContent[] = [
     "slug": "lombok-gili-islands",
     "name": "Lombok & Gili Islands",
     "metaTitle": "Lombok & Gili Islands Group Tours | Indonesia DMC | Aneka Kartika",
-    "metaDescription": "Explore the Gili Islands, Mount Rinjani, Sasak Villages and Kuta Lombok with Aneka Kartika Tours.",
+    "metaDescription": "Explore the Gili Islands, Selong Belanak, Senaru waterfalls, Mount Rinjani, Sasak Villages and Kuta Lombok with Aneka Kartika Tours.",
     "h1": "Lombok & Gili Islands",
     "heroImage": {
       "src": "/images/optimized/gili-islands-1-1280.webp",
@@ -18,7 +24,7 @@ export const otherDestinationRegions: DestinationRegionContent[] = [
       "alt": "Boats and coastline in the Gili Islands at sunrise"
     },
     "intro": [
-      "Explore the Gili Islands, Mount Rinjani, Sasak Villages and Kuta Lombok."
+      "Explore the Gili Islands, Selong Belanak, Sendang Gile and Tiu Kelep waterfalls, Mount Rinjani, Sasak Villages and Kuta Lombok."
     ],
     "attractions": [
       {
@@ -141,13 +147,15 @@ export const otherDestinationRegions: DestinationRegionContent[] = [
       {
         "region": "Lombok & Komodo",
         "regionSlug": "lombok-komodo",
-        // TODO: menunggu konfirmasi status taman nasional.
-        // TODO: Foto utama gallery belum ditemukan untuk mount-rinjani.
         "slug": "mount-rinjani",
         "metaTitle": "Mount Rinjani Treks & Foothills for Groups | Aneka Kartika",
         "metaDescription": "Mount Rinjani crater-rim treks and foothill walks for groups of up to 20, with licensed guides, porters and permits arranged by an Indonesia DMC.",
         "h1": "Mount Rinjani: Lombok’s Sacred Volcano",
-        "heroImage": null,
+        "heroImage": {
+          "src": "/images/optimized/lombok-rinjani-1280.webp",
+          "srcSet": "/images/optimized/lombok-rinjani-640.webp 640w, /images/optimized/lombok-rinjani-1280.webp 1280w",
+          "alt": "Mount Rinjani rising above Lombok’s green landscape"
+        },
         "intro": [
           "At 3,726 metres, Mount Rinjani is the second-highest volcano in Indonesia and dominates the island of Lombok. Inside its vast caldera lies Segara Anak, a crescent-shaped crater lake with a young volcanic cone rising from its waters, sacred to both the Sasak and Balinese communities.",
           "A trek to the crater rim is one of the great mountain experiences in Southeast Asia, suited to fit and well-prepared travellers. For groups with mixed abilities, the green foothills around Senaru and Sembalun offer waterfalls, villages and mountain views without the climb."
@@ -251,7 +259,7 @@ export const otherDestinationRegions: DestinationRegionContent[] = [
           }
         ],
         "cta": "Planning an active programme in Lombok? Send us your group profile and dates, and we will match the right Rinjani experience to your clients.",
-        "published": false
+        "published": true
       },
       {
         "region": "Lombok & Komodo",
@@ -701,7 +709,7 @@ export const otherDestinationRegions: DestinationRegionContent[] = [
     "slug": "sumatra",
     "name": "Sumatra",
     "metaTitle": "Sumatra Group Tours | Indonesia DMC | Aneka Kartika",
-    "metaDescription": "Explore Lake Toba, Samosir Island, Bukit Lawang, Berastagi, Bukittinggi and Harau Valley.",
+    "metaDescription": "Explore Lake Toba, Samosir Island, Bukit Lawang, Bohorok, Tangkahan, Berastagi, Bukittinggi and Harau Valley.",
     "h1": "Sumatra",
     "heroImage": {
       "src": "/images/destinations/sumatra-1280.webp",
@@ -709,7 +717,7 @@ export const otherDestinationRegions: DestinationRegionContent[] = [
       "alt": "Sumatra landscape"
     },
     "intro": [
-      "Explore Lake Toba, Samosir Island, Bukit Lawang, Berastagi, Bukittinggi and Harau Valley."
+      "Explore Lake Toba, Samosir Island, Bukit Lawang, Bohorok, Tangkahan, Berastagi, Bukittinggi and Harau Valley."
     ],
     "attractions": [
       {
@@ -1377,7 +1385,7 @@ export const otherDestinationRegions: DestinationRegionContent[] = [
     "slug": "sulawesi",
     "name": "Sulawesi",
     "metaTitle": "Sulawesi Group Tours | Indonesia DMC | Aneka Kartika",
-    "metaDescription": "Explore Tana Toraja, Makassar, Tanjung Bira, Bunaken, Tangkoko and the Minahasa Highlands.",
+    "metaDescription": "Explore Tana Toraja, Makassar, Tanjung Bira, Bunaken, Tangkoko, the Minahasa Highlands and Luwuk & Banggai.",
     "h1": "Sulawesi",
     "heroImage": {
       "src": "/images/destinations/sulawesi-1280.webp",
@@ -1385,7 +1393,7 @@ export const otherDestinationRegions: DestinationRegionContent[] = [
       "alt": "Sulawesi landscape"
     },
     "intro": [
-      "Explore Tana Toraja, Makassar, Tanjung Bira, Bunaken, Tangkoko and the Minahasa Highlands."
+      "Explore Tana Toraja, Makassar, Tanjung Bira, Bunaken, Tangkoko, the Minahasa Highlands and Luwuk & Banggai."
     ],
     "attractions": [
       {
@@ -2717,3 +2725,25 @@ otherDestinationRegions.push(
     attractions: [],
   },
 );
+
+for (const attraction of [
+  ...additionalLombokAttractions,
+  ...additionalSumatraAttractions,
+  ...additionalSulawesiAttractions,
+  ...additionalKomodoAttractions,
+]) {
+  const region = otherDestinationRegions.find((item) => item.slug === attraction.regionSlug);
+  region?.attractions.push(attraction);
+}
+
+const lombokRegion = otherDestinationRegions.find((item) => item.slug === 'lombok-gili-islands');
+if (lombokRegion) lombokRegion.intro = ['Explore the Gili Islands, Selong Belanak, Sendang Gile and Tiu Kelep waterfalls, Mount Rinjani, Sasak Villages and Kuta Lombok.'];
+const sumatraRegion = otherDestinationRegions.find((item) => item.slug === 'sumatra');
+if (sumatraRegion) sumatraRegion.intro = ['Explore Lake Toba, Samosir Island, Bukit Lawang, Bohorok, Tangkahan, Berastagi, Bukittinggi and Harau Valley.'];
+const sulawesiRegion = otherDestinationRegions.find((item) => item.slug === 'sulawesi');
+if (sulawesiRegion) sulawesiRegion.intro = ['Explore Tana Toraja, Makassar, Tanjung Bira, Bunaken, Tangkoko, the Minahasa Highlands and Luwuk & Banggai.'];
+const komodoRegion = otherDestinationRegions.find((item) => item.slug === 'komodo-flores');
+if (komodoRegion) {
+  komodoRegion.metaDescription = 'Explore Komodo National Park, Labuan Bajo, Kelimutu, Wae Rebo and Sumba with Aneka Kartika Tours.';
+  komodoRegion.intro = ['Explore Komodo National Park, Labuan Bajo, Kelimutu, Wae Rebo and Sumba through programmes shaped around your group.'];
+}

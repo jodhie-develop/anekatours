@@ -114,7 +114,7 @@ export default function QuoteForm({ full = false }: { full?: boolean }) {
         <textarea name="notes" placeholder="Notes" rows={4} maxLength={3000} />
       </label>
       <label className="field">
-        <span>Hotel class</span>
+        <span>Hotel Type</span>
         <select name="hotel" defaultValue={quote.hotelClasses[0]}>{quote.hotelClasses.map((hotel) => <option key={hotel}>{hotel}</option>)}</select>
       </label>
       {siteKey && <div className="form__turnstile" ref={turnstileRef} />}
