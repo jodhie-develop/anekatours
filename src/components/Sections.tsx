@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import Reveal from './Reveal';
 import { Link } from '../router';
-import { company, destinations, featuredPrograms, hero, heroPhotos, intro, programs, services, pages } from '../data/site';
+import { company, hero, heroPhotos, intro, programs, services, pages } from '../data/site';
+import { useCms } from '../data/CmsProvider';
 import { baliRegion, destinationPagesWithoutContent, javaRegion } from '../data/destinations';
 
 const heroSlides = heroPhotos;
@@ -211,6 +212,7 @@ function StatCounter({ value }: { value: number }) {
 }
 
 export function Destinations({ compactTop = false }: { compactTop?: boolean }) {
+  const { destinations } = useCms();
   return (
     <Reveal as="section" className={`section container ${compactTop ? 'section--tight-top' : ''}`}>
       <p className="eyebrow">One country. Endless possibilities.</p>
@@ -218,14 +220,15 @@ export function Destinations({ compactTop = false }: { compactTop?: boolean }) {
       <div className="bento bento--destinations">
         {destinations.map((d) => {
           const destinationPage = d.slug === 'java' ? javaRegion : d.slug === 'bali' ? baliRegion : destinationPagesWithoutContent.find((item) => item.slug === d.slug);
-          if (!destinationPage) return null;
+          const image = d.image || destinationPage?.heroImage?.src;
+          const imageAlt = d.imageAlt || destinationPage?.heroImage?.alt || d.name;
           return (
           <Link
             key={d.slug}
             to={`/destinations/${d.slug}`}
-            className={`dest-card${destinationPage.heroImage ? '' : ' dest-card--no-image'}`}
+            className={`dest-card${image ? '' : ' dest-card--no-image'}`}
           >
-            {destinationPage.heroImage && <img src={destinationPage.heroImage.src} srcSet={destinationPage.heroImage.srcSet} sizes="(max-width: 768px) 90vw, 33vw" alt={destinationPage.heroImage.alt} loading="lazy" />}
+            {image && <img src={image} sizes="(max-width: 768px) 90vw, 33vw" alt={imageAlt} loading="lazy" />}
             <span className="dest-card__shade" />
             <span className="dest-card__name">{d.name}</span>
           </Link>
@@ -326,12 +329,13 @@ export function Programs({ withFilter = false, showHeading = true }: { withFilte
 }
 
 export function ProgramShowcase() {
+  const { programs } = useCms();
   return (
     <section className="section container program-list-section">
       <p className="eyebrow">Sample programs</p>
       <h1 className="h2">Choose a journey to explore.</h1>
       <div className="program-card-grid">
-        {featuredPrograms.map((program) => (
+        {programs.map((program) => (
           <Link className={`program-card ${program.image ? '' : 'program-card--no-image'}`} key={program.slug} to={`/programs/${program.slug}`}>
             {program.image && <img src={program.image} alt={`${program.title}: ${program.start} to ${program.finish}`} loading="lazy" />}
             <span className="program-card__shade" />

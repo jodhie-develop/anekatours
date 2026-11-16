@@ -4,10 +4,12 @@ import Footer from './components/Footer';
 import IntroScreen from './components/IntroScreen';
 import Chatbot from './components/Chatbot';
 import { useLocation } from './router';
-import { destinations, featuredPrograms, pages } from './data/site';
-import { baliRegion, destinationPagesWithoutContent, getDestinationAttraction, javaRegion } from './data/destinations';
+import { pages } from './data/site';
+import { baliRegion, destinationPagesWithoutContent, javaRegion } from './data/destinations';
 import { AboutPage, AdminChatLeadsPage, ContactPage, DestinationDetailPage, DestinationsPage, GalleryPage, HomePage, NotFoundPage, ProgramDetailPage, ProgramsPage, ServicesPage } from './pages';
 import { ScrollArrow } from './components/Sections';
+import AdminContent from './components/AdminContent';
+import { CmsProvider, useCms } from './data/CmsProvider';
 
 const routes: Record<string, { component: ComponentType; title: string }> = {
   '/': { component: HomePage, title: 'Aneka Kartika Tours & Travel | Indonesia DMC' },
@@ -15,6 +17,7 @@ const routes: Record<string, { component: ComponentType; title: string }> = {
   '/programs': { component: ProgramsPage, title: pages.programs.seoTitle },
   '/gallery': { component: GalleryPage, title: pages.gallery.seoTitle },
   '/admin/chat-leads': { component: AdminChatLeadsPage, title: 'Chat Enquiries | Aneka Kartika Admin' },
+  '/admin/content': { component: AdminContent, title: 'Website Content | Aneka Kartika Admin' },
   '/services': { component: ServicesPage, title: pages.services.seoTitle },
   '/about': { component: AboutPage, title: pages.about.seoTitle },
   '/contact': { component: ContactPage, title: pages.contact.seoTitle },
@@ -45,34 +48,49 @@ function setMeta(selector: string, attribute: string, value: string) {
 }
 
 export default function App() {
+  return <CmsProvider><AppContent /></CmsProvider>;
+}
+
+function AppContent() {
+  const { destinations, attractions, programs } = useCms();
   const { path, search } = useLocation();
   const clean = path.length > 1 ? path.replace(/\/+$/, '') : path;
   const route = routes[clean];
-  const isAdminPage = clean === '/admin/chat-leads';
+  const isAdminPage = clean.startsWith('/admin');
   const programSlug = clean.startsWith('/programs/') ? clean.slice('/programs/'.length) : '';
-  const program = featuredPrograms.find((item) => item.slug === programSlug);
+  const program = programs.find((item) => item.slug === programSlug);
   const destinationSegments = clean.startsWith('/destinations/') ? clean.slice('/destinations/'.length).split('/') : [];
   const destination = destinations.find((item) => item.slug === destinationSegments[0]);
-  const attraction = destinationSegments.length === 2 ? getDestinationAttraction(destinationSegments[0], destinationSegments[1]) : undefined;
-  const destinationRegion = destinationSegments.length === 1 && destinationSegments[0] === 'java'
+  const attraction = destinationSegments.length === 2 ? attractions.find((item) => item.regionSlug === destinationSegments[0] && item.slug === destinationSegments[1]) : undefined;
+  const staticDestinationRegion = destinationSegments.length === 1 && destinationSegments[0] === 'java'
     ? javaRegion
     : destinationSegments.length === 1
       ? destinationSegments[0] === 'bali' ? baliRegion : destinationPagesWithoutContent.find((item) => item.slug === destinationSegments[0])
       : undefined;
+  const destinationRegion = staticDestinationRegion ?? (destination ? {
+    slug: destination.slug, name: destination.name, h1: destination.name, intro: destination.intro,
+    metaTitle: destination.metaTitle, metaDescription: destination.metaDescription,
+    heroImage: destination.image ? { src: destination.image, srcSet: `${destination.image} 1280w`, alt: destination.imageAlt } : null,
+  } : undefined);
   const validDestinationPath = Boolean(destination && (destinationRegion && destinationSegments.length === 1 || attraction && destinationSegments.length === 2));
   const Page = route?.component ?? (program ? ProgramDetailPage : validDestinationPath ? DestinationDetailPage : NotFoundPage);
   const pageTitle = route?.title ?? (program ? `${program.title} | Aneka Kartika Tours & Travel` : attraction?.metaTitle ?? destinationRegion?.metaTitle ?? 'Page not found | Aneka Kartika Tours & Travel');
 
   useEffect(() => {
     document.title = pageTitle;
-    const program = featuredPrograms.find((item) => clean === `/programs/${item.slug}`);
+    const program = programs.find((item) => clean === `/programs/${item.slug}`);
     const destinationSegments = clean.startsWith('/destinations/') ? clean.slice('/destinations/'.length).split('/') : [];
-    const attraction = destinationSegments.length === 2 ? getDestinationAttraction(destinationSegments[0], destinationSegments[1]) : undefined;
-    const destinationRegion = destinationSegments.length === 1 && destinationSegments[0] === 'java'
+    const attraction = destinationSegments.length === 2 ? attractions.find((item) => item.regionSlug === destinationSegments[0] && item.slug === destinationSegments[1]) : undefined;
+    const staticRegion = destinationSegments.length === 1 && destinationSegments[0] === 'java'
       ? javaRegion
       : destinationSegments.length === 1
         ? destinationSegments[0] === 'bali' ? baliRegion : destinationPagesWithoutContent.find((item) => item.slug === destinationSegments[0])
         : undefined;
+    const cmsRegion = destinationSegments.length === 1 ? destinations.find((item) => item.slug === destinationSegments[0]) : undefined;
+    const destinationRegion = staticRegion ?? (cmsRegion ? {
+      metaTitle: cmsRegion.metaTitle, metaDescription: cmsRegion.metaDescription,
+      heroImage: cmsRegion.image ? { src: cmsRegion.image, srcSet: `${cmsRegion.image} 1280w`, alt: cmsRegion.imageAlt } : null,
+    } : undefined);
     const description = (program
       ? `${program.days ? `${program.days}-day` : 'Indonesia'} journey from ${program.start} to ${program.finish}, tailored by Aneka Kartika Tours for travel trade partners.`
       : attraction?.metaDescription ?? destinationRegion?.metaDescription ?? descriptions[clean] ?? 'Aneka Kartika Tours & Travel, your local destination management partner in Indonesia since 1979.');
@@ -102,7 +120,7 @@ export default function App() {
       robotsTag.content = 'noindex, nofollow';
     } else robotsTag?.remove();
     window.scrollTo(0, 0);
-  }, [clean, search, pageTitle, route, programSlug]);
+  }, [clean, search, pageTitle, route, programSlug, destinations, attractions, programs]);
 
   if (isAdminPage) return <Page />;
 

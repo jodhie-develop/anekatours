@@ -14,6 +14,7 @@ const descriptions = {
   '/contact': 'Share your Indonesia group brief with Aneka Kartika Tours. Request a tailored proposal from our local destination team.',
   '/gallery': 'View landscapes, wildlife and local life in Sumatra through the Aneka Kartika Tours photo gallery.',
   '/admin/chat-leads': 'Private Aneka Kartika chat enquiry administration page.',
+  '/admin/content': 'Private Aneka Kartika website content administration page.',
 };
 const titles = {
   '/': 'Aneka Kartika Tours & Travel | Indonesia DMC',
@@ -24,6 +25,7 @@ const titles = {
   '/contact': 'Request an Indonesia Group Quote | Aneka Kartika Tours & Travel',
   '/gallery': 'Sumatra Photo Gallery | Aneka Kartika Tours & Travel',
   '/admin/chat-leads': 'Chat Enquiries | Aneka Kartika Admin',
+  '/admin/content': 'Website Content | Aneka Kartika Admin',
 };
 const ogImages = {
   '/': '/images/og/home.jpg', '/destinations': '/images/og/destinations.jpg',
@@ -62,7 +64,7 @@ try {
   const baliAttractionPaths = destinationsData.baliAttractions.map((item) => `/destinations/bali/${item.slug}`);
   const otherAttractionPaths = destinationsData.otherDestinationRegions.flatMap((region) => region.attractions.filter((item) => item.published !== false).map((item) => `/destinations/${region.slug}/${item.slug}`));
   const attractionPaths = [...javaAttractionPaths, ...baliAttractionPaths, ...otherAttractionPaths];
-  const paths = [...routeInfo.map(([url]) => url), '/admin/chat-leads', ...destinationPaths, ...attractionPaths, ...site.featuredPrograms.map((p) => `/programs/${p.slug}`)];
+  const paths = [...routeInfo.map(([url]) => url), '/admin/chat-leads', '/admin/content', ...destinationPaths, ...attractionPaths, ...site.featuredPrograms.map((p) => `/programs/${p.slug}`)];
   for (const route of paths) {
     router.setStaticLocation(route);
     const program = site.featuredPrograms.find((item) => route === `/programs/${item.slug}`);
@@ -94,7 +96,7 @@ try {
     html = setMeta(html, 'name', 'twitter:title', title);
     html = setMeta(html, 'name', 'twitter:description', desc);
     html = image ? setMeta(html, 'name', 'twitter:image', image) : removeMeta(html, 'name', 'twitter:image');
-    if (route === '/gallery' || route === '/admin/chat-leads') html = setMeta(html, 'name', 'robots', 'noindex, nofollow');
+    if (route === '/gallery' || route.startsWith('/admin/')) html = setMeta(html, 'name', 'robots', 'noindex, nofollow');
     if (attraction || destinationPage) {
       const breadcrumbs = attraction
         ? ['Home', 'Destinations', attraction.region, attraction.h1.split(':')[0]]

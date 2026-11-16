@@ -69,11 +69,6 @@ const bogorImage: DestinationImage = {
   srcSet: '/images/optimized/bogor-presidential-palace.webp 1280w',
   alt: 'Bogor Presidential Palace and grounds',
 };
-const rinjaniImage: DestinationImage = {
-  src: '/images/optimized/lombok-rinjani-1280.webp',
-  srcSet: '/images/optimized/lombok-rinjani-640.webp 640w, /images/optimized/lombok-rinjani-1280.webp 1280w',
-  alt: 'Mount Rinjani rising above the green landscape of Lombok',
-};
 const sendangGileImage: DestinationImage = {
   src: '/images/optimized/sendang-gile-waterfall-1280.webp',
   srcSet: '/images/optimized/sendang-gile-waterfall-640.webp 640w, /images/optimized/sendang-gile-waterfall-1280.webp 1280w',

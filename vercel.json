@@ -50,6 +50,8 @@
   ],
   "rewrites": [
     {"source": "/destinations", "destination": "/destinations/index.html"},
+    {"source": "/programs/:slug", "destination": "/index.html"},
+    {"source": "/destinations/:region/:attraction", "destination": "/index.html"},
     {"source": "/destinations/:region", "destination": "/destinations/:region/index.html"},
     {"source": "/destinations/java/:attraction", "destination": "/destinations/java/:attraction/index.html"},
     {"source": "/destinations/bali/:attraction", "destination": "/destinations/bali/:attraction/index.html"},

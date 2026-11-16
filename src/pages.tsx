@@ -2,11 +2,12 @@ import { CtaBand, Destinations, Hero, Intro, PageHero, ProgramShowcase, Programs
 import QuoteForm from './components/QuoteForm';
 import Reveal from './components/Reveal';
 import { Link, useLocation } from './router';
-import { featuredPrograms, pages } from './data/site';
+import { pages } from './data/site';
 import Gallery from './components/Gallery';
 import AdminChatLeads from './components/AdminChatLeads';
-import { BaliAttractionPage, BaliRegionPage, JavaAttractionPage, JavaRegionPage, OtherAttractionPage, OtherDestinationRegionPage } from './components/DestinationContent';
-import { baliAttractions, getDestinationAttraction, javaAttractions } from './data/destinations';
+import { BaliRegionPage, DestinationAttractionDetail, JavaRegionPage, ManagedDestinationRegionPage, OtherDestinationRegionPage } from './components/DestinationContent';
+import { baliRegion, destinationPagesWithoutContent, javaRegion } from './data/destinations';
+import { useCms } from './data/CmsProvider';
 
 export function HomePage() {
   return (
@@ -79,21 +80,21 @@ export function DestinationsPage() {
 
 export function DestinationDetailPage() {
   const { path } = useLocation();
+  const { destinations, attractions } = useCms();
   const segments = path.replace(/\/+$/, '').split('/').filter(Boolean).slice(1);
-  if (segments.length === 1 && segments[0] === 'java') return <JavaRegionPage />;
-  if (segments.length === 1 && segments[0] === 'bali') return <BaliRegionPage />;
-  if (segments.length === 1) return <OtherDestinationRegionPage slug={segments[0]} />;
-  if (segments.length === 2 && segments[0] === 'java') {
-    const attraction = javaAttractions.find((item) => item.slug === segments[1]);
-    return attraction ? <JavaAttractionPage attraction={attraction} /> : <NotFoundPage />;
-  }
-  if (segments.length === 2 && segments[0] === 'bali') {
-    const attraction = baliAttractions.find((item) => item.slug === segments[1]);
-    return attraction ? <BaliAttractionPage attraction={attraction} /> : <NotFoundPage />;
+  if (segments.length === 1 && segments[0] === 'java') return <JavaRegionPage attractions={attractions.filter((item) => item.regionSlug === 'java')} />;
+  if (segments.length === 1 && segments[0] === 'bali') return <BaliRegionPage attractions={attractions.filter((item) => item.regionSlug === 'bali')} />;
+  if (segments.length === 1) {
+    const region = destinations.find((item) => item.slug === segments[0]);
+    if (region) return <ManagedDestinationRegionPage destination={region} attractions={attractions.filter((item) => item.regionSlug === segments[0])} />;
+    return <OtherDestinationRegionPage slug={segments[0]} attractions={attractions.filter((item) => item.regionSlug === segments[0])} />;
   }
   if (segments.length === 2) {
-    const attraction = getDestinationAttraction(segments[0], segments[1]);
-    return attraction ? <OtherAttractionPage regionSlug={segments[0]} slug={segments[1]} /> : <NotFoundPage />;
+    const [regionSlug, attractionSlug] = segments;
+    const attraction = attractions.find((item) => item.regionSlug === regionSlug && item.slug === attractionSlug);
+    const region = regionSlug === 'java' ? javaRegion : regionSlug === 'bali' ? baliRegion : destinationPagesWithoutContent.find((item) => item.slug === regionSlug);
+    const regionName = regionSlug === 'java' ? 'Java' : regionSlug === 'bali' ? 'Bali' : destinations.find((item) => item.slug === regionSlug)?.name ?? (region && 'name' in region ? region.name : '');
+    if (attraction && regionName) return <DestinationAttractionDetail attraction={attraction} regionName={regionName} others={attractions.filter((item) => item.regionSlug === regionSlug)} />;
   }
   return <NotFoundPage />;
 }
@@ -104,9 +105,10 @@ export function ProgramsPage() {
 
 export function ProgramDetailPage() {
   const { path } = useLocation();
+  const { programs } = useCms();
   const segments = path.split('/').filter(Boolean);
   const slug = segments[segments.length - 1];
-  const program = featuredPrograms.find((item) => item.slug === slug);
+  const program = programs.find((item) => item.slug === slug);
 
   if (!program) return <NotFoundPage />;
 

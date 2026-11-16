@@ -1,6 +1,7 @@
 import { baliAttractions, baliRegion, destinationPagesWithoutContent, getDestinationAttraction, javaAttractions, javaRegion, type AttractionPageContent, type DestinationImage } from '../data/destinations';
 import { destinations } from '../data/site';
 import { Link } from '../router';
+import type { CmsDestination } from '../data/cms';
 
 const highImagePriority = { fetchpriority: 'high' };
 
@@ -37,7 +38,7 @@ function JavaAttractionCard({ attraction, regionSlug = 'java' }: { attraction: A
   );
 }
 
-export function BaliRegionPage() {
+export function BaliRegionPage({ attractions = baliAttractions }: { attractions?: AttractionPageContent[] }) {
   return (
     <>
       <DestinationHero image={baliRegion.heroImage} title={baliRegion.h1} intro={baliRegion.intro}
@@ -46,7 +47,7 @@ export function BaliRegionPage() {
         <p className="eyebrow">Explore Bali</p>
         <h2 className="h2">Places to discover</h2>
         <div className="destination-place-grid">
-          {baliAttractions.map((attraction) => <JavaAttractionCard key={attraction.slug} attraction={attraction} regionSlug="bali" />)}
+          {attractions.map((attraction) => <JavaAttractionCard key={attraction.slug} attraction={attraction} regionSlug="bali" />)}
         </div>
         <Link to="/destinations" className="link destination-regions__back">← All destinations</Link>
       </section>
@@ -54,7 +55,7 @@ export function BaliRegionPage() {
   );
 }
 
-export function JavaRegionPage() {
+export function JavaRegionPage({ attractions = javaAttractions }: { attractions?: AttractionPageContent[] }) {
   const javaCard = destinations.find(({ slug }) => slug === javaRegion.slug);
   return (
     <>
@@ -68,7 +69,7 @@ export function JavaRegionPage() {
         <p className="eyebrow">Explore Java</p>
         <h2 className="h2">Places to discover</h2>
         <div className="destination-place-grid">
-          {javaAttractions.map((attraction) => <JavaAttractionCard key={attraction.slug} attraction={attraction} />)}
+          {attractions.map((attraction) => <JavaAttractionCard key={attraction.slug} attraction={attraction} />)}
         </div>
         {javaCard && <Link to="/destinations" className="link destination-regions__back">← All destinations</Link>}
       </section>
@@ -76,10 +77,10 @@ export function JavaRegionPage() {
   );
 }
 
-export function OtherDestinationRegionPage({ slug }: { slug: string }) {
+export function OtherDestinationRegionPage({ slug, attractions: cmsAttractions }: { slug: string; attractions?: AttractionPageContent[] }) {
   const region = destinationPagesWithoutContent.find((item) => item.slug === slug);
   if (!region) return null;
-  const places = region.attractions.filter((attraction) => attraction.published !== false);
+  const places = (cmsAttractions ?? region.attractions).filter((attraction) => attraction.published !== false);
   return (
     <>
       <DestinationHero
@@ -109,6 +110,18 @@ export function OtherDestinationRegionPage({ slug }: { slug: string }) {
   );
 }
 
+export function ManagedDestinationRegionPage({ destination, attractions }: { destination: CmsDestination; attractions: AttractionPageContent[] }) {
+  const places = attractions.filter((item) => item.published !== false);
+  const image = destination.image ? { src: destination.image, srcSet: `${destination.image} 1280w`, alt: destination.imageAlt || destination.name } : null;
+  return <>
+    <DestinationHero image={image} title={destination.name} intro={destination.intro} breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Destinations', href: '/destinations' }, { label: destination.name }]} />
+    <section className="section container destination-region-content"><p className="eyebrow">Explore {destination.name}</p>
+      {places.length ? <><h2 className="h2">Places to discover</h2><div className="destination-place-grid">{places.map((item) => <JavaAttractionCard key={item.slug} attraction={item} regionSlug={destination.slug} />)}</div></> : <div className="destination-region-cta"><p className="lead">Contact us to discuss a programme for your clients.</p><Link to={`/contact?destination=${encodeURIComponent(destination.name)}`} className="btn btn--primary">Discuss this destination</Link></div>}
+      <Link to="/destinations" className="link destination-regions__back">← All destinations</Link>
+    </section>
+  </>;
+}
+
 function PairingLine({ pair }: { pair: AttractionPageContent['pairsWith'][number] }) {
   if (pair.segments) return <p>{pair.segments.map((segment, index) => {
     const match = segment.href?.match(/^\/destinations\/([^/]+)\/([^/]+)$/);
@@ -132,6 +145,10 @@ export function OtherAttractionPage({ regionSlug, slug }: { regionSlug: string; 
   const region = destinationPagesWithoutContent.find((item) => item.slug === regionSlug);
   if (!attraction || !region) return null;
   return <AttractionDetailPage attraction={attraction} regionSlug={region.slug} regionName={region.name} others={region.attractions.filter((item) => item.published !== false)} />;
+}
+
+export function DestinationAttractionDetail({ attraction, regionName, others }: { attraction: AttractionPageContent; regionName: string; others: AttractionPageContent[] }) {
+  return <AttractionDetailPage attraction={attraction} regionSlug={attraction.regionSlug || regionName.toLowerCase().replace(/\s+/g, '-')} regionName={regionName} others={others} />;
 }
 
 function AttractionDetailPage({ attraction, regionSlug, regionName, others }: { attraction: AttractionPageContent; regionSlug: string; regionName: string; others: AttractionPageContent[] }) {

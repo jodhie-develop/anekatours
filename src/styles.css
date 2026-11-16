@@ -2139,6 +2139,44 @@ p {
 
 .admin-leads { min-height: 100vh; background: #f5f6fb; color: var(--green); }
 .admin-leads__topbar { min-height: 72px; padding: 12px max(24px, calc((100vw - 1120px) / 2)); display: flex; align-items: center; justify-content: space-between; gap: 1rem; background: var(--green); color: var(--white); }
+.admin-leads__topbar-actions { display: flex; align-items: center; gap: 1rem; }
+.admin-leads__topbar-actions > a, .admin-content__toplinks > a { color: white; font-size: .9rem; font-weight: 700; text-decoration: none; }
+.admin-leads__topbar-actions > a:hover, .admin-content__toplinks > a:hover { text-decoration: underline; }
+.admin-content__toplinks { display: flex; align-items: center; gap: 1rem; }
+.admin-content__tabs { display: flex; gap: .5rem; margin-bottom: 1rem; }
+.admin-content__tabs button { padding: .65rem 1rem; border: 1px solid #c7cce0; border-radius: 999px; background: #fff; color: var(--green); font: inherit; font-weight: 700; cursor: pointer; }
+.admin-content__tabs button.is-active { border-color: var(--green); background: var(--green); color: #fff; }
+.admin-content__workspace { display: grid; grid-template-columns: minmax(240px, .7fr) minmax(0, 1.6fr); gap: 1rem; align-items: start; }
+.admin-content__sidebar, .admin-content__editor { min-width: 0; padding: 1rem; border: 1px solid #e0e3ee; border-radius: 16px; background: #fff; }
+.admin-content__sidebar .admin-leads__toolbar { align-items: stretch; flex-direction: column; }
+.admin-content__items { display: grid; gap: .45rem; max-height: 70vh; overflow-y: auto; }
+.admin-content__items button { display: grid; gap: .25rem; width: 100%; padding: .7rem; border: 1px solid transparent; border-radius: 10px; background: transparent; color: var(--green); text-align: left; cursor: pointer; }
+.admin-content__items button:hover, .admin-content__items button.is-active { border-color: #d5daec; background: #f5f6fb; }
+.admin-content__items small { color: #68708b; }
+.admin-content__form { display: grid; gap: 1rem; }
+.admin-content__form h2, .admin-content__supporting h3 { margin: 0; }
+.admin-content__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.admin-content__field { display: grid; align-content: start; gap: .4rem; color: var(--green); font-size: .88rem; font-weight: 700; }
+.admin-content__field small { color: #68708b; font-size: .76rem; font-weight: 400; }
+.admin-content__field input, .admin-content__field select, .admin-content__field textarea { width: 100%; min-width: 0; padding: .7rem .8rem; border: 1px solid #c7cce0; border-radius: 10px; background: #fff; color: #111b57; font: inherit; font-weight: 400; }
+.admin-content__field textarea { resize: vertical; line-height: 1.5; }
+.admin-content__field--wide { grid-column: 1 / -1; }
+.admin-content__preview { width: 100%; max-height: 220px; border-radius: 10px; object-fit: cover; }
+.admin-content__check { display: flex; align-items: center; gap: .55rem; color: var(--green); font-size: .9rem; font-weight: 700; }
+.admin-content__check input { width: 18px; height: 18px; accent-color: var(--green); }
+.admin-content__supporting { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.admin-content__supporting h3 { grid-column: 1 / -1; }
+.admin-content__feedback, .admin-content__notice { margin: 0; color: #68708b; font-size: .9rem; }
+.admin-content__notice { color: #17633e; }
+.admin-content button:focus-visible, .admin-content a:focus-visible, .admin-content input:focus-visible, .admin-content textarea:focus-visible, .admin-content select:focus-visible { outline: 3px solid #c45262; outline-offset: 2px; }
+@media (max-width: 760px) {
+  .admin-content__workspace { grid-template-columns: minmax(0, 1fr); }
+  .admin-content__items { max-height: 260px; }
+  .admin-content__grid, .admin-content__supporting { grid-template-columns: minmax(0, 1fr); }
+  .admin-content__toplinks { flex-wrap: wrap; justify-content: flex-end; gap: .5rem .75rem; }
+  .admin-content__toplinks > a { font-size: .78rem; }
+  .admin-content__toplinks .admin-leads__button { min-height: 34px; padding: .35rem .7rem; font-size: .78rem; }
+}
 .admin-leads__brand { display: inline-flex; align-items: center; gap: 9px; color: inherit; font-family: var(--font-display); font-weight: 800; text-decoration: none; }
 .admin-leads__brand img { width: 34px; height: 34px; padding: 3px; border-radius: 50%; background: #fff; }
 .admin-leads__brand span { color: #f2b5bd; font-size: .8em; }
