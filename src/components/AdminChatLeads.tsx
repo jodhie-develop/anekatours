@@ -137,7 +137,7 @@ export default function AdminChatLeads() {
     <main className="admin-leads">
       <header className="admin-leads__topbar">
         <a href="/" className="admin-leads__brand"><img src="/favicon-32x32.png" alt="" /> Aneka Kartika <span>Admin</span></a>
-        {authenticated && <div className="admin-leads__topbar-actions"><a href="/admin/content">Website content</a><button type="button" className="admin-leads__button admin-leads__button--quiet" onClick={logout}>Sign out</button></div>}
+        {authenticated && <div className="admin-leads__topbar-actions"><a href="/admin">Admin menu</a><button type="button" className="admin-leads__button admin-leads__button--quiet" onClick={logout}>Sign out</button></div>}
       </header>
       <div className="admin-leads__content">
         {!authenticated ? (

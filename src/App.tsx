@@ -9,9 +9,11 @@ import { baliRegion, destinationPagesWithoutContent, javaRegion } from './data/d
 import { AboutPage, AdminChatLeadsPage, ContactPage, DestinationDetailPage, DestinationsPage, GalleryPage, HomePage, NotFoundPage, ProgramDetailPage, ProgramsPage, ServicesPage } from './pages';
 import { ScrollArrow } from './components/Sections';
 import AdminContent from './components/AdminContent';
+import AdminDashboard from './components/AdminDashboard';
 import { CmsProvider, useCms } from './data/CmsProvider';
 
 const routes: Record<string, { component: ComponentType; title: string }> = {
+  '/admin': { component: AdminDashboard, title: 'Admin Dashboard | Aneka Kartika' },
   '/': { component: HomePage, title: 'Aneka Kartika Tours & Travel | Indonesia DMC' },
   '/destinations': { component: DestinationsPage, title: pages.destinations.seoTitle },
   '/programs': { component: ProgramsPage, title: pages.programs.seoTitle },

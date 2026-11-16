@@ -227,7 +227,7 @@ export default function AdminContent() {
 
   return (
     <main className="admin-leads admin-content">
-      <header className="admin-leads__topbar"><strong>Aneka Kartika Admin</strong><div className="admin-content__toplinks"><a href="/admin/chat-leads">Chat enquiries</a><a href="/">View website</a><button type="button" className="admin-leads__button admin-leads__button--quiet" onClick={() => void signOut()}>Sign out</button></div></header>
+      <header className="admin-leads__topbar"><strong>Aneka Kartika Admin</strong><div className="admin-content__toplinks"><a href="/admin">Admin menu</a><a href="/">View website</a><button type="button" className="admin-leads__button admin-leads__button--quiet" onClick={() => void signOut()}>Sign out</button></div></header>
       <div className="admin-leads__content">
         <div className="admin-leads__heading"><div><h1>Website content</h1><p>Manage destination regions, place detail pages, sample programs, and their photos.</p></div></div>
         <nav className="admin-content__tabs" aria-label="Content type"><button className={tab === 'regions' ? 'is-active' : ''} onClick={() => selectTab('regions')}>Destination regions</button><button className={tab === 'destinations' ? 'is-active' : ''} onClick={() => selectTab('destinations')}>Places</button><button className={tab === 'programs' ? 'is-active' : ''} onClick={() => selectTab('programs')}>Sample programs</button></nav>

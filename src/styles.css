@@ -2198,6 +2198,14 @@ p {
 .admin-leads__button--danger { border-color: #efd2d6; background: #fff; color: #a51c30; }
 .admin-leads__error { color: #a51c30; font-size: .9rem; }
 .admin-leads__empty { padding: 2rem; border: 1px dashed #c7cce0; border-radius: 14px; color: #5c6480; text-align: center; }
+.admin-dashboard__menu { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.admin-dashboard__card { display: flex; min-height: 150px; align-items: center; gap: 1rem; padding: 1.4rem; border: 1px solid #e0e4ef; border-radius: 18px; background: #fff; box-shadow: 0 12px 32px #101c5520; color: #111b57; text-decoration: none; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+.admin-dashboard__card:hover { transform: translateY(-3px); border-color: #b9c2e0; box-shadow: 0 18px 38px #101c5528; }
+.admin-dashboard__card > span:nth-child(2) { display: grid; gap: .4rem; }
+.admin-dashboard__card strong { font-family: var(--font-display); font-size: 1.2rem; }
+.admin-dashboard__card small { color: #5c6480; line-height: 1.5; }
+.admin-dashboard__icon { display: grid; width: 48px; height: 48px; flex: 0 0 48px; place-items: center; border-radius: 14px; background: #101c55; color: #fff; font-size: 1.35rem; }
+.admin-dashboard__arrow { margin-left: auto; color: #a51c30; font-size: 1.5rem; }
 .admin-leads__list { display: grid; gap: 1rem; }
 .admin-lead-card { display: grid; gap: 1rem; padding: 1.2rem; border: 1px solid #e0e3ee; border-radius: 16px; background: #fff; box-shadow: 0 6px 20px rgba(10,23,99,.04); }
 .admin-lead-card__meta, .admin-lead-card__actions { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .7rem; color: #68708b; font-size: .82rem; }
@@ -2871,6 +2879,7 @@ p {
   .admin-leads__topbar { padding-right: 16px; padding-left: 16px; }
   .admin-leads__heading { align-items: flex-start; flex-direction: column; }
   .admin-leads__toolbar { align-items: stretch; flex-direction: column; }
+  .admin-dashboard__menu { grid-template-columns: 1fr; }
   .admin-lead-card__fields { grid-template-columns: minmax(0, 1fr); }
   .admin-lead-card__actions { align-items: flex-start; flex-direction: column; }
 }

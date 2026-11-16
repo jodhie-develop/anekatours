@@ -15,6 +15,7 @@ const descriptions = {
   '/gallery': 'View landscapes, wildlife and local life in Sumatra through the Aneka Kartika Tours photo gallery.',
   '/admin/chat-leads': 'Private Aneka Kartika chat enquiry administration page.',
   '/admin/content': 'Private Aneka Kartika website content administration page.',
+  '/admin': 'Private Aneka Kartika administration dashboard.',
 };
 const titles = {
   '/': 'Aneka Kartika Tours & Travel | Indonesia DMC',
@@ -26,6 +27,7 @@ const titles = {
   '/gallery': 'Sumatra Photo Gallery | Aneka Kartika Tours & Travel',
   '/admin/chat-leads': 'Chat Enquiries | Aneka Kartika Admin',
   '/admin/content': 'Website Content | Aneka Kartika Admin',
+  '/admin': 'Admin Dashboard | Aneka Kartika',
 };
 const ogImages = {
   '/': '/images/og/home.jpg', '/destinations': '/images/og/destinations.jpg',
@@ -64,7 +66,7 @@ try {
   const baliAttractionPaths = destinationsData.baliAttractions.map((item) => `/destinations/bali/${item.slug}`);
   const otherAttractionPaths = destinationsData.otherDestinationRegions.flatMap((region) => region.attractions.filter((item) => item.published !== false).map((item) => `/destinations/${region.slug}/${item.slug}`));
   const attractionPaths = [...javaAttractionPaths, ...baliAttractionPaths, ...otherAttractionPaths];
-  const paths = [...routeInfo.map(([url]) => url), '/admin/chat-leads', '/admin/content', ...destinationPaths, ...attractionPaths, ...site.featuredPrograms.map((p) => `/programs/${p.slug}`)];
+  const paths = [...routeInfo.map(([url]) => url), '/admin', '/admin/chat-leads', '/admin/content', ...destinationPaths, ...attractionPaths, ...site.featuredPrograms.map((p) => `/programs/${p.slug}`)];
   for (const route of paths) {
     router.setStaticLocation(route);
     const program = site.featuredPrograms.find((item) => route === `/programs/${item.slug}`);
