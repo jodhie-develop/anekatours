@@ -317,7 +317,8 @@ export const featuredPrograms: FeaturedProgram[] = [
 export const quote = {
   title: 'Your next Indonesia journey starts here.',
   subtitle: 'Share your group brief with our team. We’ll work with you on an itinerary built around your clients.',
-  hotelClasses: ['3 star', '4 star', '5 star', 'Boutique & Heritage'],
+  hotelStars: ['3', '4', '5'],
+  hotelTypes: ['Boutique', 'Heritage'],
 };
 
 // ---------- Subpages ----------

@@ -16,7 +16,6 @@ const baseFields: Field[] = [
   { name: 'country', label: 'Country', type: 'text', required: true },
   { name: 'destinations', label: 'Destination / region', type: 'text' },
   { name: 'dates', label: 'Travel dates', type: 'text' },
-  { name: 'groupSize', label: 'Group size', type: 'text' },
   { name: 'language', label: 'Guide language', type: 'text' },
 ];
 
@@ -114,8 +113,12 @@ export default function QuoteForm({ full = false }: { full?: boolean }) {
         <textarea name="notes" placeholder="Notes" rows={4} maxLength={3000} />
       </label>
       <label className="field">
+        <span>Hotel Star</span>
+        <select name="hotelStar" defaultValue={quote.hotelStars[0]}>{quote.hotelStars.map((hotelStar) => <option key={hotelStar}>{hotelStar}</option>)}</select>
+      </label>
+      <label className="field">
         <span>Hotel Type</span>
-        <select name="hotel" defaultValue={quote.hotelClasses[0]}>{quote.hotelClasses.map((hotel) => <option key={hotel}>{hotel}</option>)}</select>
+        <select name="hotelType" defaultValue={quote.hotelTypes[0]}>{quote.hotelTypes.map((hotelType) => <option key={hotelType}>{hotelType}</option>)}</select>
       </label>
       {siteKey && <div className="form__turnstile" ref={turnstileRef} />}
       <div className="form__submit">
