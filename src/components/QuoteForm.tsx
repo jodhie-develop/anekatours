@@ -13,6 +13,7 @@ type Field = { name: string; label: string; type: string; required?: boolean };
 const baseFields: Field[] = [
   { name: 'agency', label: 'Agency name', type: 'text', required: true },
   { name: 'email', label: 'Work email', type: 'email', required: true },
+  { name: 'phone', label: 'Phone number / WhatsApp Number', type: 'tel', required: true },
   { name: 'country', label: 'Country', type: 'text', required: true },
   { name: 'destinations', label: 'Destination / region', type: 'text' },
   { name: 'dates', label: 'Travel dates', type: 'text' },
