@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { createLead, isLeadStorageConfigured } from '../lib/chat-lead-csv.js';
 import { adminCredentialsConfigured, getClientAddress, sameOriginRequest } from '../lib/admin-auth.js';
+import { sendNotificationEmail } from '../lib/brevo-email.js';
 
 const MODEL = process.env.OPENAI_MODEL || 'gpt-6-luna';
 const attempts = new Map();
@@ -102,6 +103,26 @@ export default async function handler(req, res) {
       questionCount: String(messages.filter((message) => message.role === 'user').length),
     };
     await createLead(lead);
+    try {
+      await sendNotificationEmail({
+        subject: `New chatbot enquiry — ${lead.email}`,
+        text: [
+          'A visitor shared contact details in Aneka Kartika Smart Assistant.',
+          '',
+          `Email: ${lead.email}`,
+          `WhatsApp: ${lead.whatsapp}`,
+          `Visitor questions: ${lead.questionCount}`,
+          `Received: ${lead.createdAt}`,
+          '',
+          'Conversation summary:',
+          lead.summary,
+        ].join('\n'),
+        replyTo: lead.email,
+      });
+    } catch (error) {
+      // Keep the secure lead record even if the email provider is temporarily unavailable.
+      console.error('Chat lead notification delivery failed:', error?.name || 'unknown error');
+    }
     return res.status(201).json({ ok: true, leadId: lead.id });
   } catch (error) {
     console.error('Chat lead save failed:', error?.name || 'unknown error');

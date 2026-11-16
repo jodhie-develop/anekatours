@@ -1,6 +1,8 @@
+import { isBrevoConfigured, sendNotificationEmail } from '../lib/brevo-email.js';
+
 const limits = {
-  agency: 120, email: 254, country: 100, destinations: 300, dates: 120,
-  groupSize: 80, language: 100, program: 150, hotel: 50, notes: 3000,
+  agency: 120, email: 254, phone: 60, country: 100, destinations: 300, dates: 120,
+  language: 100, program: 150, hotelStar: 20, hotelType: 40, notes: 3000,
 };
 
 function fail(res, status, message) {
@@ -23,9 +25,8 @@ export default async function handler(req, res) {
     } catch { return fail(res, 400, 'Invalid request.'); }
   }
   if (!body || typeof body !== 'object' || Array.isArray(body)) return fail(res, 400, 'Invalid request.');
-
-  // Quietly accept bot submissions without delivering email.
   if (typeof body.website === 'string' && body.website.trim()) return res.status(202).json({ ok: true });
+
   const clean = {};
   for (const [field, max] of Object.entries(limits)) {
     const value = typeof body[field] === 'string' ? body[field].trim() : '';
@@ -34,7 +35,8 @@ export default async function handler(req, res) {
   }
   if (!clean.agency || !clean.email || !clean.country) return fail(res, 400, 'Agency name, work email and country are required.');
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean.email)) return fail(res, 400, 'Enter a valid email address.');
-  if (!process.env.RESEND_API_KEY || !process.env.RESEND_FROM_EMAIL) return fail(res, 503, 'Quote delivery is not configured yet. Please email info@aneka-tours.co.id.');
+  if (clean.phone && !/^[+\d][\d\s().-]{6,32}$/.test(clean.phone)) return fail(res, 400, 'Enter a valid phone or WhatsApp number.');
+  if (!isBrevoConfigured()) return fail(res, 503, 'Quote delivery is not configured yet. Please email info@aneka-tours.co.id.');
 
   if (process.env.TURNSTILE_SECRET_KEY) {
     if (!body.turnstileToken || typeof body.turnstileToken !== 'string' || body.turnstileToken.length > 4096) return fail(res, 400, 'Please complete the spam protection check.');
@@ -50,33 +52,28 @@ export default async function handler(req, res) {
   }
 
   const text = [
-    `Agency: ${clean.agency}`, `Work email: ${clean.email}`, `Country: ${clean.country}`,
-    `Destinations: ${clean.destinations || '—'}`, `Travel dates: ${clean.dates || '—'}`,
-    `Group size: ${clean.groupSize || '—'}`, `Guide language: ${clean.language || '—'}`,
-    `Program: ${clean.program || '—'}`, `Hotel class: ${clean.hotel || '—'}`,
-    '', 'Notes:', clean.notes || '—',
+    'New website quote request',
+    '',
+    `Agency: ${clean.agency}`,
+    `Work email: ${clean.email}`,
+    `Phone / WhatsApp: ${clean.phone || '—'}`,
+    `Country: ${clean.country}`,
+    `Destinations: ${clean.destinations || '—'}`,
+    `Travel dates: ${clean.dates || '—'}`,
+    `Guide language: ${clean.language || '—'}`,
+    `Program: ${clean.program || '—'}`,
+    `Hotel star: ${clean.hotelStar || '—'}`,
+    `Hotel type: ${clean.hotelType || '—'}`,
+    '',
+    'Notes:',
+    clean.notes || '—',
   ].join('\n');
 
   try {
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        from: process.env.RESEND_FROM_EMAIL,
-        to: ['info@aneka-tours.co.id'],
-        reply_to: clean.email,
-        subject: `Website quote request — ${clean.agency}`,
-        text,
-      }),
-    });
-    if (!response.ok) {
-      const details = await response.text();
-      console.error('Resend rejected quote request:', response.status, details.slice(0, 500));
-      return fail(res, 502, 'We could not send your request. Please try again or email info@aneka-tours.co.id.');
-    }
+    await sendNotificationEmail({ subject: `Website quote request — ${clean.agency}`, text, replyTo: clean.email });
     return res.status(200).json({ ok: true });
   } catch (error) {
-    console.error('Quote email delivery failed:', error);
+    console.error('Quote notification delivery failed:', error?.name || 'unknown error');
     return fail(res, 502, 'We could not send your request. Please try again or email info@aneka-tours.co.id.');
   }
 }
