@@ -36,7 +36,7 @@ export const navLinks = [
 export const hero = {
   eyebrow: 'Indonesia, through local eyes',
   title: `Your ground partner in Indonesia since ${company.sinceYear}`,
-  subtitle: 'Extraordinary places. Seamless group journeys. A local team on your side.',
+  subtitle: 'Extraordinary places. Seamless journeys. A local team on your side.',
 };
 
 export const intro = {
@@ -99,12 +99,12 @@ export const services = [
     text: 'Independent journeys shaped around each traveller’s interests, preferred pace and priorities, with local coordination from arrival to departure.',
   },
   {
-    title: 'Tailor-made Groups',
+    title: 'Tailor-made Journeys',
     text: 'Journeys shaped around your clients’ interests, pace and priorities, from first idea to final departure.',
   },
   {
     title: 'MICE & Incentive',
-    text: 'Memorable settings and locally coordinated experiences for meetings, rewards and incentive groups.',
+    text: 'Thoughtfully designed journeys, locally supported and tailored to every occasion.',
   },
   {
     title: 'Student & Special Interest',
@@ -127,7 +127,7 @@ export const programs: Program[] = [
     days: 8,
     title: 'Java to Bali: Culture & Volcanoes',
     route: ['Yogyakarta', 'Bromo', 'Ubud'],
-    category: 'Tailor-made Groups',
+    category: 'Tailor-made Journeys',
     image: '/images/optimized/borobudur-7.webp',
     itineraryUrl: '#',
     pdfUrl: '#',
@@ -316,7 +316,7 @@ export const featuredPrograms: FeaturedProgram[] = [
 
 export const quote = {
   title: 'Your next Indonesia journey starts here.',
-  subtitle: 'Share your group brief with our team. We’ll work with you on an itinerary built around your clients.',
+  subtitle: "Every journey starts with an idea. Share yours with us, and we'll help turn it into an unforgettable experience.",
   hotelStars: ['3', '4', '5'],
   hotelTypes: ['Boutique', 'Heritage'],
 };
@@ -361,7 +361,7 @@ export const pages = {
   },
   services: {
     seoTitle: 'B2B Group Travel Services | Aneka Kartika Tours & Travel Indonesia',
-    title: 'Different groups. The same care.',
+    title: 'Every journey. Every traveler. Exceptional care.',
   },
   destinations: {
     seoTitle: 'Indonesia Destinations | Aneka Kartika Tours & Travel DMC',

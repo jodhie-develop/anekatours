@@ -216,7 +216,7 @@ export function Destinations({ compactTop = false }: { compactTop?: boolean }) {
   return (
     <Reveal as="section" className={`section container ${compactTop ? 'section--tight-top' : ''}`}>
       <p className="eyebrow">One country. Endless possibilities.</p>
-      <h2 className="h2">Where will your next group go?</h2>
+      <h2 className="h2">Where will your next adventure take you?</h2>
       <div className="bento bento--destinations">
         {destinations.map((d) => {
           const destinationPage = d.slug === 'java' ? javaRegion : d.slug === 'bali' ? baliRegion : destinationPagesWithoutContent.find((item) => item.slug === d.slug);
