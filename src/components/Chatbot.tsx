@@ -79,7 +79,7 @@ export default function Chatbot() {
         nextMessages.push({
           id: nextId.current++,
           from: 'assistant',
-          text: 'Before we continue, may I kindly ask you to provide your email address and WhatsApp number? We will use these details, together with a brief summary of this conversation, solely to follow up on your enquiry. Please submit the details below and confirm your consent.',
+          text: 'Thank you for your questions. If you would like further information from our team, please provide your email address and WhatsApp number below and confirm your consent. We would be pleased to follow up with you.',
         });
         setContactRequired(true);
       }
