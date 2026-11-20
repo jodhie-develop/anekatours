@@ -99,7 +99,7 @@ export const services = [
     text: 'Independent journeys shaped around each traveller’s interests, preferred pace and priorities, with local coordination from arrival to departure.',
   },
   {
-    title: 'Tailor-made Journeys',
+    title: 'Groups',
     text: 'Journeys shaped around your clients’ interests, pace and priorities, from first idea to final departure.',
   },
   {
@@ -127,7 +127,7 @@ export const programs: Program[] = [
     days: 8,
     title: 'Java to Bali: Culture & Volcanoes',
     route: ['Yogyakarta', 'Bromo', 'Ubud'],
-    category: 'Tailor-made Journeys',
+    category: 'Groups',
     image: '/images/optimized/borobudur-7.webp',
     itineraryUrl: '#',
     pdfUrl: '#',
