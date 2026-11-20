@@ -43,8 +43,8 @@ export const intro = {
   statement: 'We work exclusively with tour operators and travel agents.\nYou bring the travellers. We bring Indonesia to life.',
   stats: [
     { value: 24, label: 'years of experience' },
-    { value: 2000, suffix: '+', label: 'number of clients' },
-    { value: 15, label: 'partner countries' },
+    { value: 128432, label: 'number of clients' },
+    { value: 15, suffix: '+', label: 'partner countries' },
   ],
 };
 

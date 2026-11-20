@@ -152,7 +152,7 @@ export function Intro() {
         <ul className="stats">
           {stats.map((s) => (
             <li key={s.label}>
-              <StatCounter value={s.value} />
+              <StatCounter value={s.value} suffix={s.suffix} />
               <span className="stats__label">{s.label}</span>
             </li>
           ))}
@@ -162,7 +162,7 @@ export function Intro() {
   );
 }
 
-function StatCounter({ value }: { value: number }) {
+function StatCounter({ value, suffix = '' }: { value: number; suffix?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const [count, setCount] = useState(value);
 
@@ -208,7 +208,7 @@ function StatCounter({ value }: { value: number }) {
     };
   }, [value]);
 
-  return <span className="stats__value" ref={ref}>{count.toLocaleString('en-US')}{value >= 2000 ? '+' : ''}</span>;
+  return <span className="stats__value" ref={ref}>{count.toLocaleString('en-US')}{suffix}</span>;
 }
 
 export function Destinations({ compactTop = false }: { compactTop?: boolean }) {
