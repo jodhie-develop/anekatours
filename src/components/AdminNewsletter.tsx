@@ -5,6 +5,7 @@ type NewsletterDraft = {
   storyHeading: string; storyBody: string; image: string; imageAlt: string; featureTitle: string;
   featureDescription: string; ctaLabel: string; ctaUrl: string;
 };
+type NewsletterRecord = { id: string; updatedAt: string; sentAt?: string; campaignId?: number; draft: NewsletterDraft };
 const base = 'https://anekatours.vercel.app';
 const initialDraft: NewsletterDraft = {
   campaignName: 'Island Notes — East Java', subject: 'A different side of East Java',
@@ -29,6 +30,8 @@ function previewHtml(draft: NewsletterDraft) {
 
 export default function AdminNewsletter() {
   const [draft, setDraft] = useState<NewsletterDraft>(initialDraft);
+  const [newsletters, setNewsletters] = useState<NewsletterRecord[]>([]);
+  const [selectedId, setSelectedId] = useState('');
   const [missing, setMissing] = useState<string[]>([]);
   const [authenticated, setAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -40,7 +43,7 @@ export default function AdminNewsletter() {
       const result = await response.json();
       if (response.status === 401) throw new Error('Please sign in through the admin menu first.');
       if (!response.ok) throw new Error(result.error || 'Could not load the newsletter editor.');
-      setDraft(result.draft); setMissing(result.missing || []); setAuthenticated(true);
+      setNewsletters(Array.isArray(result.newsletters) ? result.newsletters : []); setMissing(result.missing || []); setAuthenticated(true);
     }).catch((cause) => setError(cause instanceof Error ? cause.message : 'Could not load newsletter editor.'))
       .finally(() => setLoading(false));
   }, []);
@@ -77,8 +80,9 @@ export default function AdminNewsletter() {
   const save = async () => {
     setBusy(true); setError(''); setNotice('');
     try {
-      const response = await fetch('/api/admin-newsletter', { method: 'PUT', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ draft }) });
+      const response = await fetch('/api/admin-newsletter', { method: 'PUT', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ id: selectedId, draft }) });
       const result = await response.json(); if (!response.ok) throw new Error(result.error || 'Could not save the draft.');
+      setNewsletters((current) => [result.newsletter, ...current.filter((item) => item.id !== result.newsletter.id)]);
       setNotice('Newsletter draft saved.');
     } catch (cause) { setError(cause instanceof Error ? cause.message : 'Could not save the draft.'); }
     finally { setBusy(false); }
@@ -87,17 +91,37 @@ export default function AdminNewsletter() {
     if (!window.confirm('Send this newsletter now to the configured Brevo opt-in list? This action cannot be undone.')) return;
     setBusy(true); setError(''); setNotice('');
     try {
-      const response = await fetch('/api/admin-newsletter', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ draft, confirmSend: true }) });
+      const response = await fetch('/api/admin-newsletter', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ id: selectedId, draft, confirmSend: true }) });
       const result = await response.json(); if (!response.ok) throw new Error(result.error || 'Brevo could not send the campaign.');
+      if (result.newsletter) setNewsletters((current) => [result.newsletter, ...current.filter((item) => item.id !== result.newsletter.id)]);
       setNotice(`${result.message} Campaign ID: ${result.campaignId}.`);
     } catch (cause) { setError(cause instanceof Error ? cause.message : 'Brevo could not send the campaign.'); }
     finally { setBusy(false); }
   };
+  const createNewsletter = () => { setDraft(structuredClone(initialDraft)); setSelectedId(crypto.randomUUID()); setError(''); setNotice(''); };
+  const openNewsletter = (item: NewsletterRecord) => { setDraft(structuredClone(item.draft)); setSelectedId(item.id); setError(''); setNotice(''); };
+  const backToList = () => {
+    if (!window.confirm('Return to the newsletter list? Unsaved edits will be discarded.')) return;
+    setSelectedId(''); setError(''); setNotice('');
+  };
   if (loading) return <main className="admin-leads"><div className="admin-leads__content"><p className="admin-leads__empty">Loading newsletter editor…</p></div></main>;
-  return <main className="admin-leads admin-newsletter">
+  if (!authenticated) return <main className="admin-leads admin-newsletter"><header className="admin-leads__topbar"><a href="/admin" className="admin-leads__brand"><img src="/favicon-32x32.png" alt="" /> Aneka Kartika <span>Admin</span></a><a href="/admin">Admin menu</a></header><div className="admin-leads__content"><p className="admin-leads__error" role="alert">{error}</p></div></main>;
+  if (!selectedId) return <main className="admin-leads admin-newsletter">
     <header className="admin-leads__topbar"><a href="/admin" className="admin-leads__brand"><img src="/favicon-32x32.png" alt="" /> Aneka Kartika <span>Admin</span></a><a href="/admin">Admin menu</a></header>
+    <div className="admin-leads__content"><div className="admin-leads__heading"><div><p className="eyebrow">Email campaigns</p><h1 className="h2">Newsletters</h1><p>{newsletters.length} {newsletters.length === 1 ? 'newsletter' : 'newsletters'} saved</p></div><button className="admin-leads__button" type="button" onClick={createNewsletter}>Create newsletter</button></div>
+      <div className="admin-newsletter__notice"><strong>Recipient safety:</strong> the Brevo list must contain only people who subscribed to newsletter updates. Chat enquiry emails are not automatically used for marketing.</div>
+      {newsletters.length ? <div className="admin-newsletter__list">{[...newsletters].sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt)).map((item) => <button type="button" className="admin-newsletter__list-item" key={item.id} onClick={() => openNewsletter(item)}>
+        <span className="admin-newsletter__list-main"><strong>{item.draft.campaignName}</strong><small>{item.draft.subject}</small></span>
+        <span className={`admin-newsletter__status${item.sentAt ? ' is-sent' : ''}`}>{item.sentAt ? `Sent ${new Date(item.sentAt).toLocaleDateString()}` : 'Draft'}</span>
+        <span className="admin-newsletter__list-date">Updated {new Date(item.updatedAt).toLocaleDateString()}</span>
+        <span className="admin-dashboard__arrow" aria-hidden="true">→</span>
+      </button>)}</div> : <div className="admin-leads__empty"><p>No newsletters yet.</p><button type="button" className="admin-leads__button" onClick={createNewsletter}>Create the first newsletter</button></div>}
+    </div>
+  </main>;
+  return <main className="admin-leads admin-newsletter">
+    <header className="admin-leads__topbar"><a href="/admin" className="admin-leads__brand"><img src="/favicon-32x32.png" alt="" /> Aneka Kartika <span>Admin</span></a><div className="admin-newsletter__nav"><button type="button" className="admin-leads__button admin-leads__button--quiet" onClick={backToList}>All newsletters</button><a href="/admin">Admin menu</a></div></header>
     <div className="admin-leads__content"><div className="admin-leads__heading"><div><p className="eyebrow">Email campaign</p><h1 className="h2">Newsletter editor</h1><p>Compose, preview, save as a draft, and send through Brevo.</p></div></div>
-      {!authenticated ? <p className="admin-leads__error" role="alert">{error}</p> : <>
+      <>
         <div className="admin-newsletter__notice"><strong>Recipient safety:</strong> the Brevo list must contain only people who subscribed to newsletter updates. Chat enquiry emails are not automatically used for marketing.</div>
         <div className="admin-newsletter__layout"><form className="admin-newsletter__form" onSubmit={(event) => { event.preventDefault(); void save(); }}>
           <label>Campaign name<input value={draft.campaignName} onChange={update('campaignName')} maxLength={120} required /></label>
@@ -117,7 +141,7 @@ export default function AdminNewsletter() {
           {error && <p className="admin-leads__error" role="alert">{error}</p>}{notice && <p className="admin-content__notice" role="status">{notice}</p>}
           <div className="admin-newsletter__actions"><button className="admin-leads__button admin-leads__button--quiet" type="submit" disabled={busy}>{busy ? 'Saving…' : 'Save draft'}</button><button className="admin-leads__button" type="button" onClick={() => void send()} disabled={busy || missing.length > 0}>{busy ? 'Please wait…' : 'Send'}</button></div>
         </form><section className="admin-newsletter__preview"><h2>Email preview</h2><iframe title="Newsletter preview" sandbox="" srcDoc={previewHtml(draft)} /></section></div>
-      </>}
+      </>
     </div>
   </main>;
 }

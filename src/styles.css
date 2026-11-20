@@ -2208,6 +2208,15 @@ p {
 .admin-dashboard__arrow { margin-left: auto; color: #a51c30; font-size: 1.5rem; }
 .admin-newsletter__notice, .admin-newsletter__setup { margin: 0 0 1.2rem; padding: .9rem 1rem; border: 1px solid #e7d4a4; border-radius: 12px; background: #fffaf0; color: #614e20; font-size: .9rem; line-height: 1.55; }
 .admin-newsletter__setup { margin: 0; }
+.admin-newsletter__list { display: grid; gap: .75rem; }
+.admin-newsletter__list-item { display: flex; width: 100%; align-items: center; gap: 1.2rem; padding: 1rem 1.2rem; border: 1px solid #e0e4ef; border-radius: 14px; background: #fff; color: #111b57; text-align: left; cursor: pointer; transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease; }
+.admin-newsletter__list-item:hover { transform: translateY(-2px); border-color: #b9c2e0; box-shadow: 0 12px 28px #101c5518; }
+.admin-newsletter__list-main { display: grid; min-width: 0; flex: 1; gap: .35rem; }
+.admin-newsletter__list-main strong { overflow: hidden; font-family: var(--font-display); font-size: 1rem; text-overflow: ellipsis; white-space: nowrap; }
+.admin-newsletter__list-main small, .admin-newsletter__list-date { color: #69728e; font-size: .82rem; }
+.admin-newsletter__status { flex: 0 0 auto; padding: .35rem .65rem; border-radius: 999px; background: #f1f3f8; color: #59617c; font-size: .76rem; font-weight: 700; }
+.admin-newsletter__status.is-sent { background: #e7f5ef; color: #147246; }
+.admin-newsletter__nav { display: flex; align-items: center; gap: 1rem; }
 .admin-newsletter__layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, .9fr); align-items: start; gap: 1.5rem; }
 .admin-newsletter__form { display: grid; gap: .9rem; padding: 1.2rem; border: 1px solid #e0e4ef; border-radius: 16px; background: #fff; }
 .admin-newsletter__form label { display: grid; gap: .35rem; color: #111b57; font-size: .88rem; font-weight: 700; }
@@ -2893,6 +2902,8 @@ p {
   .admin-leads__toolbar { align-items: stretch; flex-direction: column; }
   .admin-dashboard__menu { grid-template-columns: 1fr; }
   .admin-newsletter__layout { grid-template-columns: 1fr; }
+  .admin-newsletter__list-item { align-items: flex-start; flex-wrap: wrap; gap: .7rem; }
+  .admin-newsletter__list-date { width: 100%; }
   .admin-newsletter__preview { position: static; }
   .admin-newsletter__preview iframe { height: 680px; }
   .admin-lead-card__fields { grid-template-columns: minmax(0, 1fr); }

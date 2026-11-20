@@ -2,22 +2,6 @@ import { get, put } from '@vercel/blob';
 import { hasAdminSession, sameOriginRequest } from '../lib/admin-auth.js';
 
 const DRAFT_PATH = 'site-cms/newsletter-draft.json';
-const DEFAULT_DRAFT = {
-  campaignName: 'Island Notes — East Java',
-  subject: 'A different side of East Java',
-  preheader: 'A closer look at East Java, with a four-day sample journey from Surabaya to Bali.',
-  headline: 'A different side of East Java',
-  intro: 'From Surabaya to the volcanic highlands and onward to Bali, discover a sample journey shaped around the places, pace and interests of your travellers.',
-  storyHeading: 'A journey made for a closer look',
-  storyBody: 'The East Java Discovery sample begins in Surabaya and travels east through the region’s volcanic landscapes and rural heartland. It features an early morning visit to Mount Bromo, time among local village life and plantations, and the highlands of Mount Ijen before the ferry crossing to Bali.',
-  image: '/images/optimized/bromo-023.webp',
-  imageAlt: 'Mount Bromo at first light',
-  featureTitle: 'East Java Discovery · 4 days',
-  featureDescription: 'Surabaya Airport to Bali hotel, with Mount Bromo, East Java highlands and a ferry crossing to Bali.',
-  ctaLabel: 'Explore the sample program',
-  ctaUrl: 'https://anekatours.vercel.app/programs/east-java-discovery',
-};
-
 function fail(res, status, message) { return res.status(status).json({ error: message }); }
 function bodyOf(req) {
   if (typeof req.body !== 'string') return req.body ?? {};
@@ -41,6 +25,23 @@ function validDraft(draft) {
     && Object.entries(limits).every(([key, max]) => typeof draft[key] === 'string' && draft[key].trim().length > 0 && draft[key].length <= max)
     && validUrl(draft.image, true) && validUrl(draft.ctaUrl);
 }
+async function readNewsletters() {
+  const result = await get(DRAFT_PATH, { access: 'private', useCache: false });
+  if (!result || result.statusCode !== 200 || !result.stream) return [];
+  const parsed = JSON.parse(await new Response(result.stream).text());
+  if (Array.isArray(parsed.newsletters)) return parsed.newsletters.filter((item) => item && item.id && item.draft);
+  // Migrate the single-draft format from the first newsletter editor version.
+  if (validDraft(parsed)) return [{ id: '00000000-0000-4000-8000-000000000001', updatedAt: new Date().toISOString(), draft: parsed }];
+  return [];
+}
+async function saveNewsletter(id, draft, extra = {}) {
+  const newsletters = await readNewsletters();
+  const existing = newsletters.find((item) => item.id === id);
+  const item = { ...existing, id, ...extra, draft, updatedAt: new Date().toISOString() };
+  const next = [item, ...newsletters.filter((entry) => entry.id !== id)].slice(0, 100);
+  await put(DRAFT_PATH, JSON.stringify({ newsletters: next }), { access: 'private', addRandomSuffix: false, allowOverwrite: true, contentType: 'application/json; charset=utf-8' });
+  return item;
+}
 function esc(value) {
   return String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 }
@@ -57,24 +58,25 @@ export default async function handler(req, res) {
   if (!hasAdminSession(req)) return fail(res, 401, 'Please sign in to the admin page.');
   if (req.method === 'GET') {
     try {
-      const result = await get('site-cms/newsletter-draft.json', { access: 'private', useCache: false });
-      const draft = result?.statusCode === 200 && result.stream ? JSON.parse(await new Response(result.stream).text()) : DEFAULT_DRAFT;
-      return res.status(200).json({ draft, missing: readiness() });
+      return res.status(200).json({ newsletters: await readNewsletters(), missing: readiness() });
     } catch (error) {
       console.error('Newsletter draft read failed:', error?.name || 'unknown error');
-      return res.status(200).json({ draft: DEFAULT_DRAFT, missing: readiness() });
+      return res.status(200).json({ newsletters: [], missing: readiness() });
     }
   }
   if (!['PUT', 'POST'].includes(req.method)) { res.setHeader('Allow', 'GET, PUT, POST'); return fail(res, 405, 'Method not allowed.'); }
   if (!sameOriginRequest(req)) return fail(res, 403, 'Request origin could not be verified.');
   const body = bodyOf(req);
   if (!body || !validDraft(body.draft)) return fail(res, 400, 'Some newsletter fields or links are invalid.');
+  const id = typeof body.id === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(body.id) ? body.id : '';
   if (req.method === 'PUT') {
+    if (!id) return fail(res, 400, 'Newsletter ID is invalid.');
     try {
-      await put('site-cms/newsletter-draft.json', JSON.stringify(body.draft), { access: 'private', addRandomSuffix: false, allowOverwrite: true, contentType: 'application/json; charset=utf-8' });
-      return res.status(200).json({ ok: true });
+      const newsletter = await saveNewsletter(id, body.draft, { sentAt: undefined, campaignId: undefined });
+      return res.status(200).json({ ok: true, newsletter });
     } catch (error) { console.error('Newsletter draft write failed:', error?.name || 'unknown error'); return fail(res, 503, 'Draft could not be saved. Check that private Vercel Blob storage is configured.'); }
   }
+  if (!id) return fail(res, 400, 'Save this newsletter draft before sending.');
   if (!body.confirmSend) return fail(res, 400, 'Confirm the campaign send before continuing.');
   const missing = readiness();
   if (missing.length) return res.status(503).json({ error: `Sending is not configured yet: ${missing.join('; ')}.` });
@@ -99,7 +101,10 @@ export default async function handler(req, res) {
       console.error('Brevo campaign send failed:', send.status, 'campaign:', campaignId);
       return fail(res, 502, `Campaign #${campaignId} was created but Brevo did not schedule it. Review this draft in Brevo.`);
     }
-    return res.status(200).json({ ok: true, campaignId, message: 'Brevo accepted the campaign for sending.' });
+    let newsletter;
+    try { newsletter = await saveNewsletter(id, body.draft, { sentAt: new Date().toISOString(), campaignId }); }
+    catch (error) { console.error('Newsletter sent but history save failed:', error?.name || 'unknown error'); }
+    return res.status(200).json({ ok: true, campaignId, newsletter, message: 'Brevo accepted the campaign for sending.' });
   } catch (error) {
     console.error('Brevo newsletter request failed:', error?.name || 'unknown error', campaignId || '');
     return fail(res, 502, campaignId ? `Campaign #${campaignId} may still be a draft in Brevo. Check it before retrying.` : 'Could not connect to Brevo.');
