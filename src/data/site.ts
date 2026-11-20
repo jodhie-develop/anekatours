@@ -361,7 +361,7 @@ export const pages = {
   },
   services: {
     seoTitle: 'B2B Group Travel Services | Aneka Kartika Tours & Travel Indonesia',
-    title: 'Every journey. Every traveler. Exceptional care.',
+    title: 'Every journey. Every traveler. Same exceptional care.',
   },
   destinations: {
     seoTitle: 'Indonesia Destinations | Aneka Kartika Tours & Travel DMC',
