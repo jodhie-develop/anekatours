@@ -107,8 +107,12 @@ export const services = [
     text: 'Thoughtfully designed journeys, locally supported and tailored to every occasion.',
   },
   {
-    title: 'Student & Special Interest',
-    text: 'Purposeful encounters for curious travellers, with educational, cultural and specialist interests at the heart.',
+    title: 'Students & Educational Tours',
+    text: 'Purposeful learning journeys for student groups, with educational visits, cultural encounters and local coordination.',
+  },
+  {
+    title: 'Special Interest',
+    text: 'Journeys shaped around a shared passion, with local experiences and practical coordination tailored to each group’s interests.',
   },
 ];
 
