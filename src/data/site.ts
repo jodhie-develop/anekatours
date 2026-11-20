@@ -222,7 +222,7 @@ export const featuredPrograms: FeaturedProgram[] = [
     title: 'The Java Rail Odyssey',
     start: 'Jakarta airport',
     finish: 'Bali hotel',
-    image: '/images/optimized/borobudur-7.webp',
+    image: '/images/optimized/daily-life-19.webp',
     supportingImages: [
       { image: '/images/optimized/borobudur-7.webp', title: 'Borobudur Temple' },
       { image: '/images/optimized/prambanan-5.webp', title: 'Prambanan Temple' },

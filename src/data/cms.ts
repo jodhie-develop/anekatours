@@ -60,7 +60,13 @@ export function mergeAttractions(overrides: CmsAttraction[], hidden: string[] = 
 export function mergePrograms(overrides: CmsProgram[], hidden: string[] = []): FeaturedProgram[] {
   const merged = new Map<string, CmsProgram>();
   for (const item of makeCmsSeed().programs) merged.set(item.slug, item);
-  for (const item of overrides) merged.set(item.slug, item);
+  for (const item of overrides) {
+    // Migrate the previously shared Java Rail Odyssey cover from Borobudur to its new image.
+    const migrated = item.slug === 'java-rail-odyssey' && item.image === '/images/optimized/borobudur-7.webp'
+      ? { ...item, image: '/images/optimized/daily-life-19.webp' }
+      : item;
+    merged.set(item.slug, migrated);
+  }
   const hiddenSlugs = new Set(hidden);
   return [...merged.values()]
     .filter((item) => item.published !== false && !hiddenSlugs.has(item.slug))
