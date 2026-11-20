@@ -321,8 +321,7 @@ export const featuredPrograms: FeaturedProgram[] = [
 export const quote = {
   title: 'Your next Indonesia journey starts here.',
   subtitle: "Every journey starts with an idea. Share yours with us, and we'll help turn it into an unforgettable experience.",
-  hotelStars: ['3', '4', '5'],
-  hotelTypes: ['Boutique', 'Heritage'],
+  hotelCategories: ['3', '4', '5', 'Boutique'],
 };
 
 // ---------- Subpages ----------

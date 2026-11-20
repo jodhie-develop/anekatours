@@ -114,12 +114,8 @@ export default function QuoteForm({ full = false }: { full?: boolean }) {
         <textarea name="notes" placeholder="Notes" rows={4} maxLength={3000} />
       </label>
       <label className="field">
-        <span>Hotel Star</span>
-        <select name="hotelStar" defaultValue={quote.hotelStars[0]}>{quote.hotelStars.map((hotelStar) => <option key={hotelStar}>{hotelStar}</option>)}</select>
-      </label>
-      <label className="field">
-        <span>Hotel Type</span>
-        <select name="hotelType" defaultValue={quote.hotelTypes[0]}>{quote.hotelTypes.map((hotelType) => <option key={hotelType}>{hotelType}</option>)}</select>
+        <span>Hotel Category</span>
+        <select name="hotelCategory" defaultValue={quote.hotelCategories[0]}>{quote.hotelCategories.map((hotelCategory) => <option key={hotelCategory}>{hotelCategory}</option>)}</select>
       </label>
       {siteKey && <div className="form__turnstile" ref={turnstileRef} />}
       <div className="form__submit">

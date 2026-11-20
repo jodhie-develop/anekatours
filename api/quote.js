@@ -2,7 +2,7 @@ import { isBrevoConfigured, sendNotificationEmail } from '../lib/brevo-email.js'
 
 const limits = {
   agency: 120, email: 254, phone: 60, country: 100, destinations: 300, dates: 120,
-  language: 100, program: 150, hotelStar: 20, hotelType: 40, notes: 3000,
+  language: 100, program: 150, hotelCategory: 40, notes: 3000,
 };
 
 function fail(res, status, message) {
@@ -62,8 +62,7 @@ export default async function handler(req, res) {
     `Travel dates: ${clean.dates || '—'}`,
     `Guide language: ${clean.language || '—'}`,
     `Program: ${clean.program || '—'}`,
-    `Hotel star: ${clean.hotelStar || '—'}`,
-    `Hotel type: ${clean.hotelType || '—'}`,
+    `Hotel category: ${clean.hotelCategory || '—'}`,
     '',
     'Notes:',
     clean.notes || '—',
