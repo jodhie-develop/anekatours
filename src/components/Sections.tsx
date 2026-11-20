@@ -333,7 +333,7 @@ export function ProgramShowcase() {
   return (
     <section className="section container program-list-section">
       <p className="eyebrow">Sample programs</p>
-      <h1 className="h2">Choose a journey to explore.</h1>
+      <h1 className="h2">Choose a journey to begin with.</h1>
       <div className="program-card-grid">
         {programs.map((program) => (
           <Link className={`program-card ${program.image ? '' : 'program-card--no-image'}`} key={program.slug} to={`/programs/${program.slug}`}>
