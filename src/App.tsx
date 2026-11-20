@@ -10,10 +10,12 @@ import { AboutPage, AdminChatLeadsPage, ContactPage, DestinationDetailPage, Dest
 import { ScrollArrow } from './components/Sections';
 import AdminContent from './components/AdminContent';
 import AdminDashboard from './components/AdminDashboard';
+import AdminNewsletter from './components/AdminNewsletter';
 import { CmsProvider, useCms } from './data/CmsProvider';
 
 const routes: Record<string, { component: ComponentType; title: string }> = {
   '/admin': { component: AdminDashboard, title: 'Admin Dashboard | Aneka Kartika' },
+  '/admin/newsletter': { component: AdminNewsletter, title: 'Newsletter Editor | Aneka Kartika Admin' },
   '/': { component: HomePage, title: 'Aneka Kartika Tours & Travel | Indonesia DMC' },
   '/destinations': { component: DestinationsPage, title: pages.destinations.seoTitle },
   '/programs': { component: ProgramsPage, title: pages.programs.seoTitle },

@@ -2206,6 +2206,18 @@ p {
 .admin-dashboard__card small { color: #5c6480; line-height: 1.5; }
 .admin-dashboard__icon { display: grid; width: 48px; height: 48px; flex: 0 0 48px; place-items: center; border-radius: 14px; background: #101c55; color: #fff; font-size: 1.35rem; }
 .admin-dashboard__arrow { margin-left: auto; color: #a51c30; font-size: 1.5rem; }
+.admin-newsletter__notice, .admin-newsletter__setup { margin: 0 0 1.2rem; padding: .9rem 1rem; border: 1px solid #e7d4a4; border-radius: 12px; background: #fffaf0; color: #614e20; font-size: .9rem; line-height: 1.55; }
+.admin-newsletter__setup { margin: 0; }
+.admin-newsletter__layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, .9fr); align-items: start; gap: 1.5rem; }
+.admin-newsletter__form { display: grid; gap: .9rem; padding: 1.2rem; border: 1px solid #e0e4ef; border-radius: 16px; background: #fff; }
+.admin-newsletter__form label { display: grid; gap: .35rem; color: #111b57; font-size: .88rem; font-weight: 700; }
+.admin-newsletter__form input, .admin-newsletter__form textarea { width: 100%; min-width: 0; padding: .7rem .8rem; border: 1px solid #c7cce0; border-radius: 10px; background: #fff; color: #111b57; font: inherit; font-weight: 400; }
+.admin-newsletter__form textarea { resize: vertical; line-height: 1.5; }
+.admin-newsletter__form small { color: #69728e; font-size: .78rem; font-weight: 400; }
+.admin-newsletter__actions { display: flex; justify-content: flex-end; gap: .7rem; }
+.admin-newsletter__preview { position: sticky; top: 14px; min-width: 0; }
+.admin-newsletter__preview h2 { margin: 0 0 .7rem; color: #111b57; font-size: 1.1rem; }
+.admin-newsletter__preview iframe { width: 100%; height: min(78vh, 900px); border: 1px solid #d9deed; border-radius: 14px; background: #f1f3f8; }
 .admin-leads__list { display: grid; gap: 1rem; }
 .admin-lead-card { display: grid; gap: 1rem; padding: 1.2rem; border: 1px solid #e0e3ee; border-radius: 16px; background: #fff; box-shadow: 0 6px 20px rgba(10,23,99,.04); }
 .admin-lead-card__meta, .admin-lead-card__actions { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .7rem; color: #68708b; font-size: .82rem; }
@@ -2880,6 +2892,9 @@ p {
   .admin-leads__heading { align-items: flex-start; flex-direction: column; }
   .admin-leads__toolbar { align-items: stretch; flex-direction: column; }
   .admin-dashboard__menu { grid-template-columns: 1fr; }
+  .admin-newsletter__layout { grid-template-columns: 1fr; }
+  .admin-newsletter__preview { position: static; }
+  .admin-newsletter__preview iframe { height: 680px; }
   .admin-lead-card__fields { grid-template-columns: minmax(0, 1fr); }
   .admin-lead-card__actions { align-items: flex-start; flex-direction: column; }
 }

@@ -45,6 +45,7 @@ export default function AdminDashboard() {
         <nav className="admin-dashboard__menu" aria-label="Admin menu">
           <a className="admin-dashboard__card" href="/admin/chat-leads"><span className="admin-dashboard__icon" aria-hidden="true">✉</span><span><strong>Chat Leads</strong><small>Review visitor contact details and conversation summaries.</small></span><span className="admin-dashboard__arrow" aria-hidden="true">→</span></a>
           <a className="admin-dashboard__card" href="/admin/content"><span className="admin-dashboard__icon" aria-hidden="true">▧</span><span><strong>Website Content</strong><small>Manage destinations, attraction details, sample programs, and photos.</small></span><span className="admin-dashboard__arrow" aria-hidden="true">→</span></a>
+          <a className="admin-dashboard__card" href="/admin/newsletter"><span className="admin-dashboard__icon" aria-hidden="true">✉</span><span><strong>Newsletter</strong><small>Create and preview email campaigns, save drafts, and send through Brevo.</small></span><span className="admin-dashboard__arrow" aria-hidden="true">→</span></a>
         </nav>
       </>}
     </div>
