@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Reveal from './Reveal';
 import { Link } from '../router';
-import { company, destinations as siteDestinations, hero, heroPhotos, intro, programs, services, pages } from '../data/site';
+import { company, destinations as siteDestinations, hero, heroPhotos, intro, services, pages } from '../data/site';
 import { useCms } from '../data/CmsProvider';
 import { baliRegion, destinationPagesWithoutContent, javaRegion } from '../data/destinations';
 
@@ -261,8 +261,6 @@ export function Services({ asPage = false }: { asPage?: boolean }) {
   );
 }
 
-const groupTypes = ['All', ...services.map((s) => s.title)];
-
 function ProgramTags({ serviceTypes, destinationSlugs, light = false }: { serviceTypes: string[]; destinationSlugs: string[]; light?: boolean }) {
   const regions = destinationSlugs.map((slug) => siteDestinations.find((item) => item.slug === slug)?.name ?? slug);
   return <span className={`program-tags ${light ? 'program-tags--light' : ''}`} aria-label={`Services: ${serviceTypes.join(', ')}. Destinations: ${regions.join(', ')}`}>
@@ -271,67 +269,69 @@ function ProgramTags({ serviceTypes, destinationSlugs, light = false }: { servic
   </span>;
 }
 
-export function Programs({ withFilter = false, showHeading = true }: { withFilter?: boolean; showHeading?: boolean }) {
-  const [type, setType] = useState('All');
-  const list = type === 'All' ? programs : programs.filter((p) => p.category === type);
+export function Programs({ showHeading = true }: { withFilter?: boolean; showHeading?: boolean }) {
+  const { programs } = useCms();
+  const highlights = programs.filter((program) => program.highlighted);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  const goTo = (index: number) => {
+    const track = trackRef.current;
+    const slide = track?.children[index] as HTMLElement | undefined;
+    if (!track || !slide) return;
+    track.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' });
+    setActiveIndex(index);
+  };
+
+  const updateActiveSlide = () => {
+    const track = trackRef.current;
+    if (!track) return;
+    const slides = Array.from(track.children) as HTMLElement[];
+    if (!slides.length) return;
+    const closest = slides.reduce((bestIndex, slide, index) =>
+      Math.abs(slide.offsetLeft - track.scrollLeft) < Math.abs(slides[bestIndex].offsetLeft - track.scrollLeft) ? index : bestIndex, 0);
+    setActiveIndex(closest);
+  };
+
+  useEffect(() => {
+    if (paused || highlights.length < 2 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const timer = window.setInterval(() => {
+      if (document.hidden) return;
+      setActiveIndex((current) => {
+        const next = (current + 1) % highlights.length;
+        const track = trackRef.current;
+        const slide = track?.children[next] as HTMLElement | undefined;
+        if (track && slide) track.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' });
+        return next;
+      });
+    }, 6500);
+    return () => window.clearInterval(timer);
+  }, [highlights.length, paused]);
 
   return (
     <Reveal as="section" className={`section container ${showHeading ? '' : 'section--tight-top'}`}>
-      {showHeading && (
-        <>
-          <h2 className="h2">{pages.programs.title}</h2>
-          <p className="lead">{pages.programs.intro}</p>
-        </>
-      )}
-
-      {withFilter && (
-        <div className="filter" role="group" aria-label={pages.programs.filterLabel}>
-          <span className="label">{pages.programs.filterLabel}</span>
-          <div className="filter__chips">
-            {groupTypes.map((g) => (
-              <button
-                key={g}
-                type="button"
-                className={`chip ${type === g ? 'is-active' : ''}`}
-                aria-pressed={type === g}
-                onClick={() => setType(g)}
-              >
-                {g}
-              </button>
-            ))}
-          </div>
+      {showHeading && <><h2 className="h2">{pages.programs.title}</h2><p className="lead">{pages.programs.intro}</p></>}
+      {highlights.length ? <div className="program-carousel" role="region" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} onFocus={() => setPaused(true)} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setPaused(false); }} aria-roledescription="carousel" aria-label="Featured sample programs">
+        <div className="program-carousel__track" ref={trackRef} onScroll={updateActiveSlide}>
+          {highlights.map((program, index) => <Link className={`program-card program-carousel__slide ${program.image ? '' : 'program-card--no-image'}`} key={program.slug} to={`/programs/${program.slug}`} aria-roledescription="slide" aria-label={`${program.title}, slide ${index + 1} of ${highlights.length}`}>
+            {program.image && <img src={program.image} alt="" loading={index === 0 ? 'eager' : 'lazy'} />}
+            <span className="program-card__shade" />
+            <span className="program-card__duration">{program.days ? `${program.days} days` : 'Duration to be confirmed'}</span>
+            <span className="program-card__content">
+              <strong className="program-card__title">{program.title}</strong>
+              <ProgramTags serviceTypes={program.serviceTypes} destinationSlugs={program.destinationSlugs} light />
+              <span className="program-card__route"><span><small>Start</small>{program.start}</span><span className="program-card__arrow" aria-hidden="true">→</span><span><small>Finish</small>{program.finish}</span></span>
+            </span>
+            <span className="program-card__open">View program <span aria-hidden="true">↗</span></span>
+          </Link>)}
         </div>
-      )}
-
-      <div className="programs">
-        {list.map((p) => (
-          <article key={p.title} className="program">
-            <div className="program__img">
-              <img src={p.image} alt={p.title} loading="lazy" />
-            </div>
-            <div className="program__body">
-              <span className="label">{p.days} days</span>
-              <h3 className="program__title">{p.title}</h3>
-              <p className="program__route">{p.route.join(' · ')}</p>
-              <span className="label">{p.category}</span>
-              <div className="program__links">
-                {p.itineraryUrl !== '#' && p.itineraryUrl && (
-                  <a href={p.itineraryUrl} className="link">View itinerary</a>
-                )}
-                {withFilter ? (
-                  <Link to={`/contact?program=${encodeURIComponent(p.title)}`} className="link">
-                    Request this program
-                  </Link>
-                ) : (
-                  <Link to={`/contact?program=${encodeURIComponent(p.title)}`} className="link">Request this program</Link>
-                )}
-                {p.pdfUrl !== '#' && p.pdfUrl && <a href={p.pdfUrl} className="link">Download PDF</a>}
-              </div>
-            </div>
-          </article>
-        ))}
-        {list.length === 0 && <p className="empty">No sample programs for this group type yet — ask us for a tailored proposal.</p>}
-      </div>
+        {highlights.length > 1 && <div className="program-carousel__controls">
+          <button type="button" aria-label="Previous highlighted program" onClick={() => goTo((activeIndex - 1 + highlights.length) % highlights.length)}>←</button>
+          <div className="program-carousel__dots" aria-label="Choose a highlighted program">{highlights.map((program, index) => <button key={program.slug} type="button" aria-label={`Show ${program.title}`} aria-current={activeIndex === index ? 'true' : undefined} onClick={() => goTo(index)} />)}</div>
+          <button type="button" aria-label="Next highlighted program" onClick={() => goTo((activeIndex + 1) % highlights.length)}>→</button>
+        </div>}
+      </div> : <p className="empty">No sample programs are currently highlighted. Explore all programs to find a starting point for your journey. <Link to="/programs" className="link">View all sample programs</Link></p>}
     </Reveal>
   );
 }

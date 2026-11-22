@@ -68,7 +68,7 @@ function blankAttraction(regionSlug: string, regionName: string): CmsAttraction 
 }
 
 function blankProgram(): CmsProgram {
-  return { slug: '', days: null, title: '', start: '', finish: '', serviceTypes: [], destinationSlugs: [], image: null, description: '', supportingImages: [], published: true };
+  return { slug: '', days: null, title: '', start: '', finish: '', highlighted: false, serviceTypes: [], destinationSlugs: [], image: null, description: '', supportingImages: [], published: true };
 }
 
 function blankDestination(): CmsDestination {
@@ -102,7 +102,7 @@ export default function AdminContent() {
         attractions: result.attractions.length ? result.attractions : seed.attractions,
         programs: result.programs.length ? result.programs.map((program: CmsProgram) => {
           const seeded = seed.programs.find((item) => item.slug === program.slug);
-          return { ...program, serviceTypes: program.serviceTypes ?? seeded?.serviceTypes ?? [], destinationSlugs: program.destinationSlugs ?? seeded?.destinationSlugs ?? [] };
+          return { ...program, highlighted: program.highlighted ?? seeded?.highlighted ?? false, serviceTypes: program.serviceTypes ?? seeded?.serviceTypes ?? [], destinationSlugs: program.destinationSlugs ?? seeded?.destinationSlugs ?? [] };
         }) : seed.programs,
       } as CmsContent;
       setContent(loaded);
@@ -329,6 +329,7 @@ function ProgramEditor({ record, update, upload, onSave, busy, error, notice }: 
       <label className="admin-content__field admin-content__field--wide"><span>Program title</span><input value={record.title} onChange={change('title')} required /></label>
       <label className="admin-content__field"><span>Start</span><input value={record.start} onChange={change('start')} required /></label>
       <label className="admin-content__field"><span>Finish</span><input value={record.finish} onChange={change('finish')} required /></label>
+      <label className="admin-content__check"><input type="checkbox" checked={record.highlighted} onChange={(event) => update('highlighted', event.target.checked)} /><span>Highlight on homepage</span></label>
       <div className="admin-content__field admin-content__field--wide"><span>Service categories</span><div className="admin-content__checks">{programServiceTypes.map((service) => <label key={service}><input type="checkbox" checked={record.serviceTypes.includes(service)} onChange={(event) => update('serviceTypes', event.target.checked ? [...record.serviceTypes, service] : record.serviceTypes.filter((item) => item !== service))} /><span>{service}</span></label>)}</div></div>
       <div className="admin-content__field admin-content__field--wide"><span>Destination regions</span><div className="admin-content__checks">{siteDestinations.map((destination) => <label key={destination.slug}><input type="checkbox" checked={record.destinationSlugs.includes(destination.slug)} onChange={(event) => update('destinationSlugs', event.target.checked ? [...record.destinationSlugs, destination.slug] : record.destinationSlugs.filter((item) => item !== destination.slug))} /><span>{destination.name}</span></label>)}</div></div>
       <label className="admin-content__field admin-content__field--wide"><span>Program description</span><textarea rows={8} value={record.description} onChange={change('description')} /></label>

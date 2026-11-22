@@ -69,6 +69,7 @@ export function mergePrograms(overrides: CmsProgram[], hidden: string[] = []): F
     merged.set(item.slug, {
       ...item,
       image: migratedImage,
+      highlighted: item.highlighted ?? defaultItem?.highlighted ?? false,
       serviceTypes: item.serviceTypes ?? defaultItem?.serviceTypes ?? [],
       destinationSlugs: item.destinationSlugs ?? defaultItem?.destinationSlugs ?? [],
     });

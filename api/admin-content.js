@@ -31,6 +31,7 @@ function validContent(content) {
     && validText(item.title, 180) && validText(item.start, 120) && validText(item.finish, 120)
     && (item.image === null || validImage(item.image)) && validText(item.description, 12000)
     && (item.published === undefined || typeof item.published === 'boolean')
+    && (item.highlighted === undefined || typeof item.highlighted === 'boolean')
     && (item.days === null || Number.isInteger(item.days) && item.days > 0 && item.days <= 365)
     && (item.serviceTypes === undefined || Array.isArray(item.serviceTypes) && item.serviceTypes.length <= 4 && item.serviceTypes.every((value) => ['FIT-Individual', 'Groups', 'MICE & Incentive', 'Students & Educational Tours'].includes(value)))
     && (item.destinationSlugs === undefined || Array.isArray(item.destinationSlugs) && item.destinationSlugs.length <= 20 && item.destinationSlugs.every((value) => /^[a-z0-9-]{1,80}$/.test(value)))

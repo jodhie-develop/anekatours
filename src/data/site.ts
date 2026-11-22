@@ -164,6 +164,7 @@ export type FeaturedProgram = {
   title: string;
   start: string;
   finish: string;
+  highlighted: boolean;
   serviceTypes: string[];
   destinationSlugs: string[];
   image: string | null;
@@ -178,6 +179,7 @@ export const featuredPrograms: FeaturedProgram[] = [
     title: 'East Java Discovery',
     start: 'Surabaya Airport',
     finish: 'Bali hotel',
+    highlighted: true,
     serviceTypes: ['FIT-Individual', 'Groups', 'Students & Educational Tours'],
     destinationSlugs: ['java', 'bali'],
     image: '/images/optimized/bromo-023.webp',
@@ -196,6 +198,7 @@ export const featuredPrograms: FeaturedProgram[] = [
     title: 'Java to Bali, Culture & Volcano',
     start: 'Yogyakarta airport',
     finish: 'Bali hotel',
+    highlighted: true,
     serviceTypes: ['FIT-Individual', 'Groups', 'Students & Educational Tours'],
     destinationSlugs: ['java', 'bali'],
     image: '/images/optimized/borobudur-7.webp',
@@ -214,6 +217,7 @@ export const featuredPrograms: FeaturedProgram[] = [
     title: 'Bali, Along the Quiet Roads',
     start: 'Bali hotel (South)',
     finish: 'Bali hotel (South)',
+    highlighted: true,
     serviceTypes: ['FIT-Individual', 'Groups'],
     destinationSlugs: ['bali'],
     image: '/images/optimized/jatiluwih-kk.webp',
@@ -232,6 +236,7 @@ export const featuredPrograms: FeaturedProgram[] = [
     title: 'The Java Rail Odyssey',
     start: 'Jakarta airport',
     finish: 'Bali hotel',
+    highlighted: true,
     serviceTypes: ['FIT-Individual', 'Groups', 'Students & Educational Tours'],
     destinationSlugs: ['java', 'bali'],
     image: '/images/optimized/daily-life-19.webp',
@@ -250,6 +255,7 @@ export const featuredPrograms: FeaturedProgram[] = [
     title: 'Bugis & Toraja – A Journey into South Sulawesi',
     start: 'Makassar Airport',
     finish: 'Makassar Airport',
+    highlighted: true,
     serviceTypes: ['FIT-Individual', 'Groups', 'Students & Educational Tours'],
     destinationSlugs: ['sulawesi'],
     image: '/images/destinations/tana-toraja-1280.webp',
@@ -263,6 +269,7 @@ export const featuredPrograms: FeaturedProgram[] = [
     title: 'North Sulawesi – Between Crater and Coral Reefs',
     start: 'Manado Airport',
     finish: 'Manado Airport',
+    highlighted: false,
     serviceTypes: ['FIT-Individual', 'Groups', 'MICE & Incentive', 'Students & Educational Tours'],
     destinationSlugs: ['sulawesi'],
     image: null,
@@ -276,6 +283,7 @@ export const featuredPrograms: FeaturedProgram[] = [
     title: 'Into the Heart of Borneo – Orangutan & Rainforest Discovery',
     start: 'Pangkalan Bun Airport',
     finish: 'Pangkalan Bun Airport',
+    highlighted: false,
     serviceTypes: ['FIT-Individual', 'Groups', 'Students & Educational Tours'],
     destinationSlugs: ['kalimantan'],
     image: '/images/destinations/tanjung-puting-1280.webp',
@@ -289,6 +297,7 @@ export const featuredPrograms: FeaturedProgram[] = [
     title: 'North Sumatra: Orangutans, Highlands & Batak Heritage',
     start: 'Medan Airport',
     finish: 'Medan Airport',
+    highlighted: false,
     serviceTypes: ['FIT-Individual', 'Groups', 'Students & Educational Tours'],
     destinationSlugs: ['sumatra'],
     image: '/images/optimized/huta-raja-siallagan-danau-toba.webp',
@@ -307,6 +316,7 @@ export const featuredPrograms: FeaturedProgram[] = [
     title: 'Sumatra Overland: Exploring North & West Sumatra',
     start: 'Medan Airport',
     finish: 'Padang Airport',
+    highlighted: false,
     serviceTypes: ['FIT-Individual', 'Groups', 'Students & Educational Tours'],
     destinationSlugs: ['sumatra'],
     image: '/images/destinations/sumatra-1280.webp',
@@ -325,6 +335,7 @@ export const featuredPrograms: FeaturedProgram[] = [
     title: 'Bali & Nusa Lembongan: The Two Sides of Bali',
     start: 'Bali airport',
     finish: 'Bali airport',
+    highlighted: false,
     serviceTypes: ['FIT-Individual', 'Groups', 'MICE & Incentive'],
     destinationSlugs: ['bali'],
     image: '/images/optimized/bali-nusa-lembongan-01.webp',
@@ -343,6 +354,7 @@ export const featuredPrograms: FeaturedProgram[] = [
     title: 'North Moluccas Odyssey: Ternate, Tidore & Jailolo',
     start: 'Ternate airport',
     finish: 'Ternate airport',
+    highlighted: false,
     serviceTypes: ['FIT-Individual', 'Groups', 'Students & Educational Tours'],
     destinationSlugs: ['moluccas'],
     image: null,
