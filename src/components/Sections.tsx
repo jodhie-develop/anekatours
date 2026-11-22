@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Reveal from './Reveal';
 import { Link } from '../router';
-import { company, hero, heroPhotos, intro, programs, services, pages } from '../data/site';
+import { company, destinations as siteDestinations, hero, heroPhotos, intro, programs, services, pages } from '../data/site';
 import { useCms } from '../data/CmsProvider';
 import { baliRegion, destinationPagesWithoutContent, javaRegion } from '../data/destinations';
 
@@ -263,6 +263,14 @@ export function Services({ asPage = false }: { asPage?: boolean }) {
 
 const groupTypes = ['All', ...services.map((s) => s.title)];
 
+function ProgramTags({ serviceTypes, destinationSlugs, light = false }: { serviceTypes: string[]; destinationSlugs: string[]; light?: boolean }) {
+  const regions = destinationSlugs.map((slug) => siteDestinations.find((item) => item.slug === slug)?.name ?? slug);
+  return <span className={`program-tags ${light ? 'program-tags--light' : ''}`} aria-label={`Services: ${serviceTypes.join(', ')}. Destinations: ${regions.join(', ')}`}>
+    {serviceTypes.map((service) => <span className="program-tag" key={`service-${service}`}>{service}</span>)}
+    {regions.map((region) => <span className="program-tag program-tag--destination" key={`destination-${region}`}>{region}</span>)}
+  </span>;
+}
+
 export function Programs({ withFilter = false, showHeading = true }: { withFilter?: boolean; showHeading?: boolean }) {
   const [type, setType] = useState('All');
   const list = type === 'All' ? programs : programs.filter((p) => p.category === type);
@@ -342,6 +350,7 @@ export function ProgramShowcase() {
             <span className="program-card__duration">{program.days ? `${program.days} days` : 'Duration to be confirmed'}</span>
             <span className="program-card__content">
               <strong className="program-card__title">{program.title}</strong>
+              <ProgramTags serviceTypes={program.serviceTypes} destinationSlugs={program.destinationSlugs} light />
               <span className="program-card__route">
                 <span><small>Start</small>{program.start}</span>
                 <span className="program-card__arrow" aria-hidden="true">→</span>

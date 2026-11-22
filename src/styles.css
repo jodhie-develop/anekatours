@@ -1160,6 +1160,48 @@ p {
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
 }
 
+.program-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.program-tag {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 5px 9px;
+  border: 1px solid rgba(16, 29, 99, 0.13);
+  border-radius: 999px;
+  background: #f1f3fb;
+  color: #17245f;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.program-tag--destination {
+  border-color: rgba(181, 18, 42, 0.22);
+  background: #fff3f4;
+  color: #92152a;
+}
+
+.program-tags--light .program-tag {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(12, 24, 78, 0.68);
+  color: #fff;
+  backdrop-filter: blur(7px);
+}
+
+.program-tags--light .program-tag--destination {
+  border-color: rgba(255, 199, 207, 0.62);
+  background: rgba(131, 23, 48, 0.65);
+}
+
+.admin-content__checks { display: flex; flex-wrap: wrap; gap: .55rem; }
+.admin-content__checks label { display: inline-flex; align-items: center; gap: .45rem; padding: .48rem .65rem; border: 1px solid #d4d8e7; border-radius: 999px; color: #17245f; font-size: .82rem; font-weight: 600; }
+.admin-content__checks input { width: auto; margin: 0; accent-color: #bd1e32; }
+
 .program-card__route {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);

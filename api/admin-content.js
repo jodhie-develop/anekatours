@@ -32,6 +32,8 @@ function validContent(content) {
     && (item.image === null || validImage(item.image)) && validText(item.description, 12000)
     && (item.published === undefined || typeof item.published === 'boolean')
     && (item.days === null || Number.isInteger(item.days) && item.days > 0 && item.days <= 365)
+    && (item.serviceTypes === undefined || Array.isArray(item.serviceTypes) && item.serviceTypes.length <= 4 && item.serviceTypes.every((value) => ['FIT-Individual', 'Groups', 'MICE & Incentive', 'Students & Educational Tours'].includes(value)))
+    && (item.destinationSlugs === undefined || Array.isArray(item.destinationSlugs) && item.destinationSlugs.length <= 20 && item.destinationSlugs.every((value) => /^[a-z0-9-]{1,80}$/.test(value)))
     && Array.isArray(item.supportingImages) && item.supportingImages.length <= 8
     && item.supportingImages.every((image) => image && validImage(image.image) && validText(image.title, 160)));
   const destinationsValid = content.destinations.every((item) => item && /^[a-z0-9-]{1,80}$/.test(item.slug)

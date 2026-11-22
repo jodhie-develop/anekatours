@@ -62,10 +62,16 @@ export function mergePrograms(overrides: CmsProgram[], hidden: string[] = []): F
   for (const item of makeCmsSeed().programs) merged.set(item.slug, item);
   for (const item of overrides) {
     // Migrate the previously shared Java Rail Odyssey cover from Borobudur to its new image.
-    const migrated = item.slug === 'java-rail-odyssey' && item.image === '/images/optimized/borobudur-7.webp'
-      ? { ...item, image: '/images/optimized/daily-life-19.webp' }
-      : item;
-    merged.set(item.slug, migrated);
+    const defaultItem = merged.get(item.slug);
+    const migratedImage = item.slug === 'java-rail-odyssey' && item.image === '/images/optimized/borobudur-7.webp'
+      ? '/images/optimized/daily-life-19.webp'
+      : item.image;
+    merged.set(item.slug, {
+      ...item,
+      image: migratedImage,
+      serviceTypes: item.serviceTypes ?? defaultItem?.serviceTypes ?? [],
+      destinationSlugs: item.destinationSlugs ?? defaultItem?.destinationSlugs ?? [],
+    });
   }
   const hiddenSlugs = new Set(hidden);
   return [...merged.values()]

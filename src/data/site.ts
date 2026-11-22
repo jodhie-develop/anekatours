@@ -93,6 +93,8 @@ export const destinations: Destination[] = [
   { name: 'West Papua', slug: 'west-papua', image: '' },
 ];
 
+export const programServiceTypes = ['FIT-Individual', 'Groups', 'MICE & Incentive', 'Students & Educational Tours'];
+
 export const services = [
   {
     title: 'FIT-Individual',
@@ -162,6 +164,8 @@ export type FeaturedProgram = {
   title: string;
   start: string;
   finish: string;
+  serviceTypes: string[];
+  destinationSlugs: string[];
   image: string | null;
   description: string;
   supportingImages: { image: string; title: string }[];
@@ -174,6 +178,8 @@ export const featuredPrograms: FeaturedProgram[] = [
     title: 'East Java Discovery',
     start: 'Surabaya Airport',
     finish: 'Bali hotel',
+    serviceTypes: ['FIT-Individual', 'Groups', 'Students & Educational Tours'],
+    destinationSlugs: ['java', 'bali'],
     image: '/images/optimized/bromo-023.webp',
     supportingImages: [
       { image: '/images/optimized/bromo-023.webp', title: 'Mount Bromo at first light' },
@@ -190,6 +196,8 @@ export const featuredPrograms: FeaturedProgram[] = [
     title: 'Java to Bali, Culture & Volcano',
     start: 'Yogyakarta airport',
     finish: 'Bali hotel',
+    serviceTypes: ['FIT-Individual', 'Groups', 'Students & Educational Tours'],
+    destinationSlugs: ['java', 'bali'],
     image: '/images/optimized/borobudur-7.webp',
     supportingImages: [
       { image: '/images/optimized/borobudur-7.webp', title: 'Borobudur Temple' },
@@ -206,6 +214,8 @@ export const featuredPrograms: FeaturedProgram[] = [
     title: 'Bali, Along the Quiet Roads',
     start: 'Bali hotel (South)',
     finish: 'Bali hotel (South)',
+    serviceTypes: ['FIT-Individual', 'Groups'],
+    destinationSlugs: ['bali'],
     image: '/images/optimized/jatiluwih-kk.webp',
     supportingImages: [
       { image: '/images/optimized/jatiluwih-kk.webp', title: 'Jatiluwih rice terraces' },
@@ -222,6 +232,8 @@ export const featuredPrograms: FeaturedProgram[] = [
     title: 'The Java Rail Odyssey',
     start: 'Jakarta airport',
     finish: 'Bali hotel',
+    serviceTypes: ['FIT-Individual', 'Groups', 'Students & Educational Tours'],
+    destinationSlugs: ['java', 'bali'],
     image: '/images/optimized/daily-life-19.webp',
     supportingImages: [
       { image: '/images/optimized/borobudur-7.webp', title: 'Borobudur Temple' },
@@ -238,6 +250,8 @@ export const featuredPrograms: FeaturedProgram[] = [
     title: 'Bugis & Toraja – A Journey into South Sulawesi',
     start: 'Makassar Airport',
     finish: 'Makassar Airport',
+    serviceTypes: ['FIT-Individual', 'Groups', 'Students & Educational Tours'],
+    destinationSlugs: ['sulawesi'],
     image: '/images/destinations/tana-toraja-1280.webp',
     supportingImages: [],
     description:
@@ -249,6 +263,8 @@ export const featuredPrograms: FeaturedProgram[] = [
     title: 'North Sulawesi – Between Crater and Coral Reefs',
     start: 'Manado Airport',
     finish: 'Manado Airport',
+    serviceTypes: ['FIT-Individual', 'Groups', 'MICE & Incentive', 'Students & Educational Tours'],
+    destinationSlugs: ['sulawesi'],
     image: null,
     supportingImages: [],
     description:
@@ -260,6 +276,8 @@ export const featuredPrograms: FeaturedProgram[] = [
     title: 'Into the Heart of Borneo – Orangutan & Rainforest Discovery',
     start: 'Pangkalan Bun Airport',
     finish: 'Pangkalan Bun Airport',
+    serviceTypes: ['FIT-Individual', 'Groups', 'Students & Educational Tours'],
+    destinationSlugs: ['kalimantan'],
     image: '/images/destinations/tanjung-puting-1280.webp',
     supportingImages: [],
     description:
@@ -271,6 +289,8 @@ export const featuredPrograms: FeaturedProgram[] = [
     title: 'North Sumatra: Orangutans, Highlands & Batak Heritage',
     start: 'Medan Airport',
     finish: 'Medan Airport',
+    serviceTypes: ['FIT-Individual', 'Groups', 'Students & Educational Tours'],
+    destinationSlugs: ['sumatra'],
     image: '/images/optimized/huta-raja-siallagan-danau-toba.webp',
     supportingImages: [
       { image: '/images/destinations/bukit-lawang-1280.webp', title: 'Gunung Leuser rainforest' },
@@ -287,6 +307,8 @@ export const featuredPrograms: FeaturedProgram[] = [
     title: 'Sumatra Overland: Exploring North & West Sumatra',
     start: 'Medan Airport',
     finish: 'Padang Airport',
+    serviceTypes: ['FIT-Individual', 'Groups', 'Students & Educational Tours'],
+    destinationSlugs: ['sumatra'],
     image: '/images/destinations/sumatra-1280.webp',
     supportingImages: [
       { image: '/images/destinations/bukit-lawang-1280.webp', title: 'Gunung Leuser rainforest' },
@@ -303,6 +325,8 @@ export const featuredPrograms: FeaturedProgram[] = [
     title: 'Bali & Nusa Lembongan: The Two Sides of Bali',
     start: 'Bali airport',
     finish: 'Bali airport',
+    serviceTypes: ['FIT-Individual', 'Groups', 'MICE & Incentive'],
+    destinationSlugs: ['bali'],
     image: '/images/optimized/bali-nusa-lembongan-01.webp',
     supportingImages: [
       { image: '/images/optimized/bali-nusa-lembongan-02.webp', title: 'Bali & Nusa Lembongan landscape' },
@@ -311,6 +335,20 @@ export const featuredPrograms: FeaturedProgram[] = [
     ],
     description:
       "Begin your Bali escape with two nights by the southern coast, leaving room to unwind before the island reveals its charms. One afternoon, head to Uluwatu, where the temple stands dramatically above the Indian Ocean. As the sun sinks towards the horizon, take your seat for the mesmerising Kecak Dance, its chorus of voices and hundreds of performers bringing an ancient tale to life against a glowing dusk sky.\n\nJourney inland via Mengwi and the iconic sea temple of Tanah Lot before settling into Ubud. Discover Eastern Bali's quieter treasures, from the royal water gardens of Tirta Gangga and Taman Ujung to a village where old traditions remain part of everyday life. Another day, take to two wheels for a leisurely ride through Ubud's countryside.\n\nThen trade the mainland for Nusa Lembongan, reached by fast boat, and enjoy three nights at island pace, with little on the agenda beyond sea breezes, turquoise waters and time well spent. Return to mainland for your onward flight.",
+  },
+
+  {
+    slug: 'north-moluccas-odyssey',
+    days: 4,
+    title: 'North Moluccas Odyssey: Ternate, Tidore & Jailolo',
+    start: 'Ternate airport',
+    finish: 'Ternate airport',
+    serviceTypes: ['FIT-Individual', 'Groups', 'Students & Educational Tours'],
+    destinationSlugs: ['moluccas'],
+    image: null,
+    supportingImages: [],
+    description:
+      "Begin in Ternate among clove and nutmeg groves, where the scent that once drew empires across oceans still hangs in the air, and meet one of the world's oldest clove trees. Climb to the Sultan's Kedaton, visit Wallace's house where evolution was first put to paper, and watch the sun settle over the meeting point of Portuguese and Spanish explorers. Next, trace the spice wars through Oranje Fort, the lively spice market and Toluko Fort, then cross the black lava fields of Batu Angus and the still waters of Lake Tolire. A boat ride carries you to Tidore, Ternate's historic rival, for Elcano's monument, old forts and the Sultan's palace. Finally, speed across to Jailolo to glide through mangroves, soak your feet in a hot spring and discover the traditional Sahu house. Farewell with spice and stories in your bag.",
   },
 ];
 

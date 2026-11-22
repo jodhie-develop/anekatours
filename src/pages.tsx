@@ -2,7 +2,7 @@ import { CtaBand, Destinations, Hero, Intro, PageHero, ProgramShowcase, Programs
 import QuoteForm from './components/QuoteForm';
 import Reveal from './components/Reveal';
 import { Link, useLocation } from './router';
-import { pages } from './data/site';
+import { destinations as siteDestinations, pages } from './data/site';
 import Gallery from './components/Gallery';
 import AdminChatLeads from './components/AdminChatLeads';
 import { BaliRegionPage, DestinationAttractionDetail, JavaRegionPage, ManagedDestinationRegionPage, OtherDestinationRegionPage } from './components/DestinationContent';
@@ -123,6 +123,10 @@ export function ProgramDetailPage() {
         <Link to="/programs" className="link">← All sample programs</Link>
         <div className="program-detail-page__content">
           <p className="eyebrow">The journey</p>
+          <div className="program-tags" aria-label={`Services: ${program.serviceTypes.join(', ')}. Destinations: ${program.destinationSlugs.join(', ')}`}>
+            {program.serviceTypes.map((service) => <span className="program-tag" key={`service-${service}`}>{service}</span>)}
+            {program.destinationSlugs.map((slug) => <span className="program-tag program-tag--destination" key={`destination-${slug}`}>{siteDestinations.find((item) => item.slug === slug)?.name ?? slug}</span>)}
+          </div>
           <p className="program-detail-page__description">{program.description}</p>
           {program.supportingImages.length > 0 && (
             <div className="program-detail-page__supporting">
